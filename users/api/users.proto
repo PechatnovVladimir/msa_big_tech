@@ -31,8 +31,8 @@ service UserService {
 message CreateProfileRequest {
   int64 user_id = 1;
   string nickname = 2;
-  string bio = 3;
-  string avatar_url = 4;
+  optional string bio = 3;
+  optional string avatar_url = 4;
 }
 
 message CreateProfileResponse {
@@ -41,9 +41,9 @@ message CreateProfileResponse {
 
 message UpdateProfileRequest {
   int64 user_id = 1;
-  string nickname = 2;
-  string bio = 3;
-  string avatar_url = 4;
+  optional string nickname = 2;
+  optional string bio = 3;
+  optional string avatar_url = 4;
 }
 
 message UpdateProfileResponse {
