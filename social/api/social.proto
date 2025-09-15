@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package  github.com.PechatnovVladimir.msa_big_tech.social.api;
+
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg;social";
+
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+import "google/api/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Social API";
+    version: "1.0";
+    description: "API social-service";
+  };
+  schemes: HTTP;
+};
+
+
+service SocialService {
+  rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse) {
+    option (google.api.http) = {
+      post: "/v1/social/SendFriendRequest"
+      body: "*"
+    };
+
+  }
+
+  rpc ListRequests (ListRequestsRequest) returns (ListRequestsResponse) {
+    option (google.api.http) = {
+      get: "/v1/social/ListRequests/{user_id}"
+    };
+  }
+
+  rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
+    option (google.api.http) = {
+      post: "/v1/social/AcceptFriendRequest"
+      body: "*"
+    };
+  }
+
+  rpc DeclineFriendRequest (DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {
+    option (google.api.http) = {
+      post: "/v1/social/DeclineFriendRequest"
+      body: "*"
+    };
+  }
+
+  rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendResponse) {
+    option (google.api.http) = {
+      delete: "/v1/social/RemoveFriend/{user_id}"
+    };
+  }
+
+  rpc ListFriends (ListFriendsRequest) returns (ListFriendsResponse){
+    option (google.api.http) = {
+      get: "/v1/social/ListFriends/{user_id}"
+    };
+  }
+}
+enum Status {
+  UNKNOWN = 0;
+  PENDING = 1;
+  ACCEPTED = 2;
+  DECLINED  = 3;
+}
+
+message FriendRequest {
+  int64 request_id = 1;
+  Status status = 2;
+}
+
+message SendFriendRequestRequest {
+  int64 user_id = 1;
+}
+
+message SendFriendRequestResponse {
+  FriendRequest FriendRequest = 1;
+}
+
+message ListRequestsRequest {
+  int64 user_id = 1;
+}
+
+message ListRequestsResponse {
+  repeated FriendRequest FriendRequest = 1;
+}
+
+message AcceptFriendRequestRequest {
+  int64 request_id = 1;
+}
+
+message AcceptFriendRequestResponse {
+  FriendRequest FriendRequest = 1;
+}
+
+message DeclineFriendRequestRequest {
+  int64 request_id = 1;
+}
+
+message DeclineFriendRequestResponse {
+  FriendRequest FriendRequest = 1;
+}
+
+message RemoveFriendRequest {
+  int64 user_id =1;
+}
+
+message RemoveFriendResponse {
+
+}
+
+message Cursor {
+  int64 user_id = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+
+message ListFriendsRequest {
+  int64 user_id = 1;
+  int64 limit = 2;
+  optional Cursor cursor = 3;
+}
+
+message ListFriendsResponse {
+  repeated int64 friend_user_ids = 1;
+  optional Cursor next_cursor = 2;
+}

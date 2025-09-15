@@ -1,0 +1,380 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Social API",
+    "description": "API social-service",
+    "version": "1.0"
+  },
+  "tags": [
+    {
+      "name": "SocialService"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/social/AcceptFriendRequest": {
+      "post": {
+        "operationId": "SocialService_AcceptFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiAcceptFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiAcceptFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/v1/social/DeclineFriendRequest": {
+      "post": {
+        "operationId": "SocialService_DeclineFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiDeclineFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiDeclineFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/v1/social/ListFriends/{userId}": {
+      "get": {
+        "operationId": "SocialService_ListFriends",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiListFriendsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "cursor.userId",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "cursor.createdAt",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/v1/social/ListRequests/{userId}": {
+      "get": {
+        "operationId": "SocialService_ListRequests",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiListRequestsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/v1/social/RemoveFriend/{userId}": {
+      "delete": {
+        "operationId": "SocialService_RemoveFriend",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiRemoveFriendResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    },
+    "/v1/social/SendFriendRequest": {
+      "post": {
+        "operationId": "SocialService_SendFriendRequest",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiSendFriendRequestResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiSendFriendRequestRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SocialService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "apiAcceptFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiAcceptFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/apiFriendRequest"
+        }
+      }
+    },
+    "apiCursor": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "apiDeclineFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiDeclineFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/apiFriendRequest"
+        }
+      }
+    },
+    "apiFriendRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "$ref": "#/definitions/socialapiStatus"
+        }
+      }
+    },
+    "apiListFriendsResponse": {
+      "type": "object",
+      "properties": {
+        "friendUserIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "nextCursor": {
+          "$ref": "#/definitions/apiCursor"
+        }
+      }
+    },
+    "apiListRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/apiFriendRequest"
+          }
+        }
+      }
+    },
+    "apiRemoveFriendResponse": {
+      "type": "object"
+    },
+    "apiSendFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "apiSendFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/apiFriendRequest"
+        }
+      }
+    },
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "@type": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": {}
+    },
+    "socialapiStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED"
+      ],
+      "default": "UNKNOWN"
+    }
+  }
+}
