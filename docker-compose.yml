@@ -34,6 +34,43 @@ services:
     # volumes:
     #   - ./chat/configs:/root/configs:ro
 
+  social-service:
+    build:
+      context: .
+      dockerfile: social/Dockerfile
+    container_name: social-service
+    ports:
+      - "50053:50053"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50053
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+    # volumes:
+    #   - ./social/configs:/root/configs:ro
+
+  users-service:
+    build:
+      context: .
+      dockerfile: users/Dockerfile
+    container_name: users-service
+    ports:
+      - "50054:50054"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50054
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+    # volumes:
+    #   - ./social/configs:/root/configs:ro
+
+
 networks:
   msa-network:
     driver: bridge
