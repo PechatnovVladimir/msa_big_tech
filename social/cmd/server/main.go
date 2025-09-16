@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/server"
-	auth "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/server"
+	social "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"
@@ -10,19 +10,18 @@ import (
 )
 
 func main() {
-
-	lis, err := net.Listen("tcp", ":8082")
+	lis, err := net.Listen("tcp", ":8084")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	authService := server.NewAuthService()
+	socialService := server.NewSocialService()
 	grpcServer := grpc.NewServer()
-	auth.RegisterAuthServiceServer(grpcServer, authService)
+	social.RegisterSocialServiceServer(grpcServer, socialService)
 
 	reflection.Register(grpcServer) // регистрируем дополнительные обработчики
 
-	log.Printf("auth server listening at %v", lis.Addr())
+	log.Printf("Social server listening at %v", lis.Addr())
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}

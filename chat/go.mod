@@ -1,4 +1,4 @@
-module github.com/PechatnovVladimir/msa_big_tech/social
+module github.com/PechatnovVladimir/msa_big_tech/chat
 
 go 1.25.1
 
