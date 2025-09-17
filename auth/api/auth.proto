@@ -4,12 +4,31 @@ package  github.com.PechatnovVladimir.msa_big_tech.auth.api;
 
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/auth/pkg;auth";
 
+import "google/api/annotations.proto";
+
 service AuthService {
-  rpc Register(RegisterRequest) returns (RegisterResponse) {}
+  rpc Register(RegisterRequest) returns (RegisterResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/register"
+      body: "*"
+    };
+  }
 
-  rpc Login(LoginRequest) returns (LoginResponse) {}
+  rpc Login(LoginRequest) returns (LoginResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/login"
+      body: "*"
+    };
 
-  rpc Refresh(RefreshRequest) returns (RefreshResponse) {}
+  }
+
+  rpc Refresh(RefreshRequest) returns (RefreshResponse) {
+    option (google.api.http) = {
+      post: "/api/v1/refresh"
+      body: "*"
+    };
+
+  }
 }
 
 message RegisterRequest {

@@ -7,6 +7,7 @@
 package auth
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -337,7 +338,7 @@ var File_api_auth_proto protoreflect.FileDescriptor
 
 const file_api_auth_proto_rawDesc = "" +
 	"\n" +
-	"\x0eapi/auth.proto\x122github.com.PechatnovVladimir.msa_big_tech.auth.api\"C\n" +
+	"\x0eapi/auth.proto\x122github.com.PechatnovVladimir.msa_big_tech.auth.api\x1a\x1cgoogle/api/annotations.proto\"C\n" +
 	"\x0fRegisterRequest\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"+\n" +
@@ -355,11 +356,11 @@ const file_api_auth_proto_rawDesc = "" +
 	"\x0fRefreshResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\x03R\x06userId2\xcf\x03\n" +
-	"\vAuthService\x12\x97\x01\n" +
-	"\bRegister\x12C.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterRequest\x1aD.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterResponse\"\x00\x12\x8e\x01\n" +
-	"\x05Login\x12@.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginRequest\x1aA.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginResponse\"\x00\x12\x94\x01\n" +
-	"\aRefresh\x12B.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshResponse\"\x00B?Z=github.com/PechatnovVladimir/msa_big_tech/auth/proto/gen;authb\x06proto3"
+	"\auser_id\x18\x03 \x01(\x03R\x06userId2\x9c\x04\n" +
+	"\vAuthService\x12\xb2\x01\n" +
+	"\bRegister\x12C.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterRequest\x1aD.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/api/v1/register\x12\xa6\x01\n" +
+	"\x05Login\x12@.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginRequest\x1aA.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginResponse\"\x18\x82\xd3\xe4\x93\x02\x12:\x01*\"\r/api/v1/login\x12\xae\x01\n" +
+	"\aRefresh\x12B.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/api/v1/refreshB9Z7github.com/PechatnovVladimir/msa_big_tech/auth/pkg;authb\x06proto3"
 
 var (
 	file_api_auth_proto_rawDescOnce sync.Once
