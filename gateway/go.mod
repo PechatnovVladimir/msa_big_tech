@@ -7,7 +7,6 @@ require (
 	github.com/go-chi/chi/v5 v5.2.3
 	github.com/go-chi/cors v1.2.2
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
-	github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0.0
 	google.golang.org/grpc v1.75.1
 )
 
