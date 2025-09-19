@@ -1,6 +1,7 @@
-github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250918085724-6bf866ac2a61 h1:AbNjEA0puwwSyPqaefQ11//xuCXqDVyG9Ip7M5LNkmk=
-github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250918085724-6bf866ac2a61/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
-github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250918085724-6bf866ac2a61/go.mod h1:Ra9PAuFdPip2yXZrhI3VO+0hj0+1ZwzT8JhUoObQ2gU=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250919145040-9c47d1321138 h1:zduoWEe1RzK23h+R7c7j2pnBGlcsyGjh9GHpw3muJJI=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250919145040-9c47d1321138/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
+github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250919145040-9c47d1321138 h1:z8JpmOWYk+uvD8IHcgPaJZO4Pht9bRINviqr0vh5as0=
+github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250919145040-9c47d1321138/go.mod h1:Ra9PAuFdPip2yXZrhI3VO+0hj0+1ZwzT8JhUoObQ2gU=
 github.com/go-logr/logr v1.4.3 h1:CjnDlHq8ikf6E492q6eKboGOC0T8CDaOvkHCIg8idEI=
 github.com/go-logr/logr v1.4.3/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=
