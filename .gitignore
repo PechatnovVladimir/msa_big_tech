@@ -31,3 +31,4 @@ go.work.sum
 .idea/
 .vscode/
 /auth/vendor.protobuf/
+/chat/vendor.protobuf/

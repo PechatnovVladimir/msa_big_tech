@@ -7,6 +7,7 @@
 package chat
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -22,9 +23,10 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// а какие у него поля?
 type Chat struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,9 +61,24 @@ func (*Chat) Descriptor() ([]byte, []int) {
 	return file_api_chat_proto_rawDescGZIP(), []int{0}
 }
 
-// а какие у него поля?
+func (x *Chat) GetChatId() int64 {
+	if x != nil {
+		return x.ChatId
+	}
+	return 0
+}
+
+func (x *Chat) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
 type Message struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
+	MessageId     int64                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
+	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -94,6 +111,20 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
 	return file_api_chat_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Message) GetMessageId() int64 {
+	if x != nil {
+		return x.MessageId
+	}
+	return 0
+}
+
+func (x *Message) GetText() string {
+	if x != nil {
+		return x.Text
+	}
+	return ""
 }
 
 type CreateDirectChatRequest struct {
@@ -808,9 +839,14 @@ var File_api_chat_proto protoreflect.FileDescriptor
 
 const file_api_chat_proto_rawDesc = "" +
 	"\n" +
-	"\x0eapi/chat.proto\x122github.com.PechatnovVladimir.msa_big_tech.chat.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\x06\n" +
-	"\x04Chat\"\t\n" +
-	"\aMessage\"@\n" +
+	"\x0eapi/chat.proto\x122github.com.PechatnovVladimir.msa_big_tech.chat.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\"3\n" +
+	"\x04Chat\x12\x17\n" +
+	"\achat_id\x18\x01 \x01(\x03R\x06chatId\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\"<\n" +
+	"\aMessage\x12\x1d\n" +
+	"\n" +
+	"message_id\x18\x01 \x01(\x03R\tmessageId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text\"@\n" +
 	"\x17CreateDirectChatRequest\x12%\n" +
 	"\x0eparticipant_id\x18\x01 \x01(\x03R\rparticipantId\"3\n" +
 	"\x18CreateDirectChatResponse\x12\x17\n" +
@@ -851,10 +887,10 @@ const file_api_chat_proto_rawDesc = "" +
 	"\rsince_unix_ms\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\vsinceUnixMs\x88\x01\x01B\x10\n" +
 	"\x0e_since_unix_ms\"o\n" +
 	"\x16StreamMessagesResponse\x12U\n" +
-	"\amessage\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.MessageR\amessage2\xa5\t\n" +
-	"\vChatService\x12\xaf\x01\n" +
-	"\x10CreateDirectChat\x12K.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatRequest\x1aL.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatResponse\"\x00\x12\x94\x01\n" +
-	"\aGetChat\x12B.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatResponse\"\x00\x12\xa6\x01\n" +
+	"\amessage\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.MessageR\amessage2\xe1\t\n" +
+	"\vChatService\x12\xce\x01\n" +
+	"\x10CreateDirectChat\x12K.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatRequest\x1aL.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/createdirectchat\x12\xb1\x01\n" +
+	"\aGetChat\x12B.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/getchat/{chat_id}\x12\xa6\x01\n" +
 	"\rListUserChats\x12H.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsRequest\x1aI.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsResponse\"\x00\x12\xac\x01\n" +
 	"\x0fListChatMembers\x12J.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersRequest\x1aK.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersResponse\"\x00\x12\xa0\x01\n" +
 	"\vSendMessage\x12F.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageRequest\x1aG.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageResponse\"\x00\x12\xa3\x01\n" +

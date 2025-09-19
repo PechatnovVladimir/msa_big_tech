@@ -6,19 +6,30 @@ option go_package = "github.com/PechatnovVladimir/msa_big_tech/chat/pkg;chat";
 
 import "google/protobuf/timestamp.proto";
 
-//а какие у него поля?
 message Chat {
-
+  int64 chat_id = 1;
+  string name = 2;
 }
 
-//а какие у него поля?
 message Message {
-
+  int64 message_id = 1;
+  string text = 2;
 }
+import "google/api/annotations.proto";
+
 
 service ChatService {
-  rpc CreateDirectChat (CreateDirectChatRequest) returns (CreateDirectChatResponse) {}
-  rpc GetChat (GetChatRequest) returns (GetChatResponse) {}
+  rpc CreateDirectChat (CreateDirectChatRequest) returns (CreateDirectChatResponse) {
+    option (google.api.http) = {
+      post: "/v1/createdirectchat"
+      body: "*"
+    };
+  }
+  rpc GetChat (GetChatRequest) returns (GetChatResponse) {
+    option (google.api.http) = {
+      get: "/v1/getchat/{chat_id}"
+    };
+  }
   rpc ListUserChats (ListUserChatsRequest) returns (ListUserChatsResponse) {}
   rpc ListChatMembers (ListChatMembersRequest) returns (ListChatMembersResponse) {}
   rpc SendMessage (SendMessageRequest) returns (SendMessageResponse) {}

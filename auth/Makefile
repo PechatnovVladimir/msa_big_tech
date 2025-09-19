@@ -44,7 +44,14 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	find $(VENDOR_PROTO_PATH)/googleapis/google/api -maxdepth 1 -type f -exec mv {} $(VENDOR_PROTO_PATH)/google/api \;
 	rm -rf $(VENDOR_PROTO_PATH)/googleapis
 
+.ver-commit:
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/auth@HW1
 
 generate: .protoc-generate
 
-openapi: .vendor-protoc-gen-openapiv2 .vendor-googleapis
+vendor: .vendor-protoc-gen-openapiv2 .vendor-googleapis
+
+vercommit: .ver-commit
+
+run:
+	go run ./cmd/server/main.go

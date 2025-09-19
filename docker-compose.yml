@@ -70,6 +70,21 @@ services:
     # volumes:
     #   - ./social/configs:/root/configs:ro
 
+  api-gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+    environment:
+      - PORT=8080
+
 
 networks:
   msa-network:

@@ -19,7 +19,11 @@ func (s *ChatService) CreateDirectChat(ctx context.Context, request *chat.Create
 }
 
 func (s *ChatService) GetChat(ctx context.Context, request *chat.GetChatRequest) (*chat.GetChatResponse, error) {
-	return &chat.GetChatResponse{}, nil
+	c := &chat.Chat{
+		ChatId: request.ChatId,
+		Name:   "chat....",
+	}
+	return &chat.GetChatResponse{Chat: c}, nil
 }
 
 func (s *ChatService) ListUserChats(ctx context.Context, request *chat.ListUserChatsRequest) (*chat.ListUserChatsResponse, error) {
