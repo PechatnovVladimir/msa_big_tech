@@ -1,3 +1,5 @@
+SERVICE_NAME := auth
+
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
@@ -20,7 +22,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
 	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
-	$(PROTO_PATH)/auth.proto
+	$(PROTO_PATH)/$(SERVICE_NAME).proto
 
 
 .vendor-protoc-gen-openapiv2:
@@ -45,7 +47,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	rm -rf $(VENDOR_PROTO_PATH)/googleapis
 
 .ver-commit:
-	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/auth@HW1
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW1
 
 generate: .protoc-generate
 

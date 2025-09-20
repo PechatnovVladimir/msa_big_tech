@@ -9,14 +9,14 @@ import "google/api/annotations.proto";
 service AuthService {
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
-      post: "/api/v1/register"
+      post: "/v1/register"
       body: "*"
     };
   }
 
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
-      post: "/api/v1/login"
+      post: "/v1/login"
       body: "*"
     };
 
@@ -24,7 +24,7 @@ service AuthService {
 
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {
     option (google.api.http) = {
-      post: "/api/v1/refresh"
+      post: "/v1/refresh"
       body: "*"
     };
 

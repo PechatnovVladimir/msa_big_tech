@@ -32,3 +32,5 @@ go.work.sum
 .vscode/
 /auth/vendor.protobuf/
 /chat/vendor.protobuf/
+/social/vendor.protobuf/
+/users/vendor.protobuf/

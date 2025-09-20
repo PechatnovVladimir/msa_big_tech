@@ -21,10 +21,8 @@ func (s *UserService) CreateProfile(ctx context.Context, request *users.CreatePr
 	}
 
 	userProfile := users.UserProfile{
-		UserId:    request.UserId,
-		Nickname:  request.Nickname,
-		Bio:       request.Bio,
-		AvatarUrl: request.AvatarUrl,
+		UserId:   request.UserId,
+		Nickname: request.Nickname,
 	}
 
 	return &users.CreateProfileResponse{UserProfile: &userProfile}, nil

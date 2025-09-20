@@ -1,3 +1,5 @@
+SERVICE_NAME := chat
+
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
@@ -10,7 +12,8 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 .bin-deps:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
-
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
+	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
 
 # генерация .go файлов с помощью protoc
 .protoc-generate:
@@ -19,7 +22,8 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
 	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
-	$(PROTO_PATH)/chat.proto
+	$(PROTO_PATH)/$(SERVICE_NAME).proto
+
 
 .vendor-protoc-gen-openapiv2:
 	git clone -b main --single-branch -n --depth=1 --filter=tree:0 \
@@ -43,7 +47,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	rm -rf $(VENDOR_PROTO_PATH)/googleapis
 
 .ver-commit:
-	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/chat@HW1
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW1
 
 generate: .protoc-generate
 

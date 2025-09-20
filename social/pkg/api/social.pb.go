@@ -9,6 +9,7 @@ package social
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -557,18 +558,70 @@ func (*RemoveFriendResponse) Descriptor() ([]byte, []int) {
 	return file_api_social_proto_rawDescGZIP(), []int{10}
 }
 
+type Cursor struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Cursor) Reset() {
+	*x = Cursor{}
+	mi := &file_api_social_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Cursor) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Cursor) ProtoMessage() {}
+
+func (x *Cursor) ProtoReflect() protoreflect.Message {
+	mi := &file_api_social_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Cursor.ProtoReflect.Descriptor instead.
+func (*Cursor) Descriptor() ([]byte, []int) {
+	return file_api_social_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *Cursor) GetUserId() int64 {
+	if x != nil {
+		return x.UserId
+	}
+	return 0
+}
+
+func (x *Cursor) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
 type ListFriendsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Cursor        *string                `protobuf:"bytes,3,opt,name=cursor,proto3,oneof" json:"cursor,omitempty"`
+	Cursor        *Cursor                `protobuf:"bytes,3,opt,name=cursor,proto3,oneof" json:"cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListFriendsRequest) Reset() {
 	*x = ListFriendsRequest{}
-	mi := &file_api_social_proto_msgTypes[11]
+	mi := &file_api_social_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -580,7 +633,7 @@ func (x *ListFriendsRequest) String() string {
 func (*ListFriendsRequest) ProtoMessage() {}
 
 func (x *ListFriendsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_social_proto_msgTypes[11]
+	mi := &file_api_social_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -593,7 +646,7 @@ func (x *ListFriendsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFriendsRequest.ProtoReflect.Descriptor instead.
 func (*ListFriendsRequest) Descriptor() ([]byte, []int) {
-	return file_api_social_proto_rawDescGZIP(), []int{11}
+	return file_api_social_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *ListFriendsRequest) GetUserId() int64 {
@@ -610,24 +663,24 @@ func (x *ListFriendsRequest) GetLimit() int64 {
 	return 0
 }
 
-func (x *ListFriendsRequest) GetCursor() string {
-	if x != nil && x.Cursor != nil {
-		return *x.Cursor
+func (x *ListFriendsRequest) GetCursor() *Cursor {
+	if x != nil {
+		return x.Cursor
 	}
-	return ""
+	return nil
 }
 
 type ListFriendsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	FriendUserIds []int64                `protobuf:"varint,1,rep,packed,name=friend_user_ids,json=friendUserIds,proto3" json:"friend_user_ids,omitempty"`
-	NextCursor    *string                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
+	NextCursor    *Cursor                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *ListFriendsResponse) Reset() {
 	*x = ListFriendsResponse{}
-	mi := &file_api_social_proto_msgTypes[12]
+	mi := &file_api_social_proto_msgTypes[13]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -639,7 +692,7 @@ func (x *ListFriendsResponse) String() string {
 func (*ListFriendsResponse) ProtoMessage() {}
 
 func (x *ListFriendsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_social_proto_msgTypes[12]
+	mi := &file_api_social_proto_msgTypes[13]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -652,7 +705,7 @@ func (x *ListFriendsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListFriendsResponse.ProtoReflect.Descriptor instead.
 func (*ListFriendsResponse) Descriptor() ([]byte, []int) {
-	return file_api_social_proto_rawDescGZIP(), []int{12}
+	return file_api_social_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListFriendsResponse) GetFriendUserIds() []int64 {
@@ -662,18 +715,18 @@ func (x *ListFriendsResponse) GetFriendUserIds() []int64 {
 	return nil
 }
 
-func (x *ListFriendsResponse) GetNextCursor() string {
-	if x != nil && x.NextCursor != nil {
-		return *x.NextCursor
+func (x *ListFriendsResponse) GetNextCursor() *Cursor {
+	if x != nil {
+		return x.NextCursor
 	}
-	return ""
+	return nil
 }
 
 var File_api_social_proto protoreflect.FileDescriptor
 
 const file_api_social_proto_rawDesc = "" +
 	"\n" +
-	"\x10api/social.proto\x124github.com.PechatnovVladimir.msa_big_tech.social.api\"\x84\x01\n" +
+	"\x10api/social.proto\x124github.com.PechatnovVladimir.msa_big_tech.social.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\x03R\trequestId\x12T\n" +
@@ -698,15 +751,19 @@ const file_api_social_proto_rawDesc = "" +
 	"\rFriendRequest\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequestR\rFriendRequest\".\n" +
 	"\x13RemoveFriendRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x16\n" +
-	"\x14RemoveFriendResponse\"k\n" +
+	"\x14RemoveFriendResponse\"\\\n" +
+	"\x06Cursor\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\x03R\x06userId\x129\n" +
+	"\n" +
+	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xa9\x01\n" +
 	"\x12ListFriendsRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x03R\x05limit\x12\x1b\n" +
-	"\x06cursor\x18\x03 \x01(\tH\x00R\x06cursor\x88\x01\x01B\t\n" +
-	"\a_cursor\"s\n" +
+	"\x05limit\x18\x02 \x01(\x03R\x05limit\x12Y\n" +
+	"\x06cursor\x18\x03 \x01(\v2<.github.com.PechatnovVladimir.msa_big_tech.social.api.CursorH\x00R\x06cursor\x88\x01\x01B\t\n" +
+	"\a_cursor\"\xb1\x01\n" +
 	"\x13ListFriendsResponse\x12&\n" +
-	"\x0ffriend_user_ids\x18\x01 \x03(\x03R\rfriendUserIds\x12$\n" +
-	"\vnext_cursor\x18\x02 \x01(\tH\x00R\n" +
+	"\x0ffriend_user_ids\x18\x01 \x03(\x03R\rfriendUserIds\x12b\n" +
+	"\vnext_cursor\x18\x02 \x01(\v2<.github.com.PechatnovVladimir.msa_big_tech.social.api.CursorH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
 	"\f_next_cursor*>\n" +
 	"\x06Status\x12\v\n" +
@@ -735,7 +792,7 @@ func file_api_social_proto_rawDescGZIP() []byte {
 }
 
 var file_api_social_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_api_social_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_api_social_proto_msgTypes = make([]protoimpl.MessageInfo, 14)
 var file_api_social_proto_goTypes = []any{
 	(Status)(0),                          // 0: github.com.PechatnovVladimir.msa_big_tech.social.api.Status
 	(*FriendRequest)(nil),                // 1: github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequest
@@ -749,8 +806,10 @@ var file_api_social_proto_goTypes = []any{
 	(*DeclineFriendRequestResponse)(nil), // 9: github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse
 	(*RemoveFriendRequest)(nil),          // 10: github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendRequest
 	(*RemoveFriendResponse)(nil),         // 11: github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendResponse
-	(*ListFriendsRequest)(nil),           // 12: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest
-	(*ListFriendsResponse)(nil),          // 13: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse
+	(*Cursor)(nil),                       // 12: github.com.PechatnovVladimir.msa_big_tech.social.api.Cursor
+	(*ListFriendsRequest)(nil),           // 13: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest
+	(*ListFriendsResponse)(nil),          // 14: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse
+	(*timestamppb.Timestamp)(nil),        // 15: google.protobuf.Timestamp
 }
 var file_api_social_proto_depIdxs = []int32{
 	0,  // 0: github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequest.status:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.Status
@@ -758,23 +817,26 @@ var file_api_social_proto_depIdxs = []int32{
 	1,  // 2: github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsResponse.FriendRequest:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequest
 	1,  // 3: github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestResponse.FriendRequest:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequest
 	1,  // 4: github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse.FriendRequest:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.FriendRequest
-	2,  // 5: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.SendFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestRequest
-	4,  // 6: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListRequests:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsRequest
-	6,  // 7: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.AcceptFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestRequest
-	8,  // 8: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.DeclineFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestRequest
-	10, // 9: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.RemoveFriend:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendRequest
-	12, // 10: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListFriends:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest
-	3,  // 11: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.SendFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestResponse
-	5,  // 12: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListRequests:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsResponse
-	7,  // 13: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.AcceptFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestResponse
-	9,  // 14: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.DeclineFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse
-	11, // 15: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.RemoveFriend:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendResponse
-	13, // 16: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListFriends:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse
-	11, // [11:17] is the sub-list for method output_type
-	5,  // [5:11] is the sub-list for method input_type
-	5,  // [5:5] is the sub-list for extension type_name
-	5,  // [5:5] is the sub-list for extension extendee
-	0,  // [0:5] is the sub-list for field type_name
+	15, // 5: github.com.PechatnovVladimir.msa_big_tech.social.api.Cursor.created_at:type_name -> google.protobuf.Timestamp
+	12, // 6: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest.cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.Cursor
+	12, // 7: github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse.next_cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.social.api.Cursor
+	2,  // 8: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.SendFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestRequest
+	4,  // 9: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListRequests:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsRequest
+	6,  // 10: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.AcceptFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestRequest
+	8,  // 11: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.DeclineFriendRequest:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestRequest
+	10, // 12: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.RemoveFriend:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendRequest
+	13, // 13: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListFriends:input_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest
+	3,  // 14: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.SendFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestResponse
+	5,  // 15: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListRequests:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsResponse
+	7,  // 16: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.AcceptFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestResponse
+	9,  // 17: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.DeclineFriendRequest:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse
+	11, // 18: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.RemoveFriend:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendResponse
+	14, // 19: github.com.PechatnovVladimir.msa_big_tech.social.api.SocialService.ListFriends:output_type -> github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse
+	14, // [14:20] is the sub-list for method output_type
+	8,  // [8:14] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_api_social_proto_init() }
@@ -782,15 +844,15 @@ func file_api_social_proto_init() {
 	if File_api_social_proto != nil {
 		return
 	}
-	file_api_social_proto_msgTypes[11].OneofWrappers = []any{}
 	file_api_social_proto_msgTypes[12].OneofWrappers = []any{}
+	file_api_social_proto_msgTypes[13].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_social_proto_rawDesc), len(file_api_social_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   13,
+			NumMessages:   14,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
