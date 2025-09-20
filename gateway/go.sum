@@ -1,7 +1,11 @@
-github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250920111315-012c8c35be3f h1:Z5Vt//6R9UmOoVAHi3FtIgnek5nUW0YuMMjM9dUg43U=
-github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250920111315-012c8c35be3f/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
-github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250920111315-012c8c35be3f h1:9mXzM8LxCw8Ci049BcANu2lxsG9U5AXqy52xAxt93yw=
-github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250920111315-012c8c35be3f/go.mod h1:s6jOftO7YSRXxdSwq97+V6Tmh3BHGjRu9VptGM4umBk=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250920122254-7806f6c3d5b1 h1:ytPJxvuVHHcD5UBdOoZdeLPvSyzCv+lMctxmY/aN+qw=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250920122254-7806f6c3d5b1/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
+github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250920122254-7806f6c3d5b1 h1:33GUr17wsB+tefVv2k4uXiP/CXSQzK4QNJ0HbLiwlRw=
+github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250920122254-7806f6c3d5b1/go.mod h1:s6jOftO7YSRXxdSwq97+V6Tmh3BHGjRu9VptGM4umBk=
+github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20250920122254-7806f6c3d5b1 h1:F4eDPgUfsqrxygjHtMpVDj0WdP9MNWU0fiQKG/ggjrk=
+github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20250920122254-7806f6c3d5b1/go.mod h1:F2Or9uN0sR+ng2Bnkk9EC+oykAWBis5iQp5MXfp379Q=
+github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20250920122254-7806f6c3d5b1 h1:sawe5QaGO9Dm/HQnE8OE9wSNNPg0mXbA8U+rMrcvmmU=
+github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20250920122254-7806f6c3d5b1/go.mod h1:KsDjhKg/JSRYiXC+579+uKA2iZXeyBSCFjtGj/y4CCk=
 github.com/go-logr/logr v1.4.3 h1:CjnDlHq8ikf6E492q6eKboGOC0T8CDaOvkHCIg8idEI=
 github.com/go-logr/logr v1.4.3/go.mod h1:9T104GzyrTigFIr8wt5mBrctHMim0Nb2HLGrmQ40KvY=
 github.com/go-logr/stdr v1.2.2 h1:hSWxHoqTgW2S2qGc0LTAI563KZ5YKYRhT3MFKZMbjag=

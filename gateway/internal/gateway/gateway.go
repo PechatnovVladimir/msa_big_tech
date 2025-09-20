@@ -4,6 +4,8 @@ import (
 	"context"
 	authpb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
 	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
+	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
+	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -25,6 +27,15 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
+	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, mux, "social-service:50053", opts)
+	if err != nil {
+		panic(err)
+	}
+	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "users-service:50054", opts)
+	if err != nil {
+		panic(err)
+	}
+
 	log.Printf("server listening at 8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		panic(err)

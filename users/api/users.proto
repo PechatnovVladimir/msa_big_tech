@@ -48,7 +48,7 @@ service UserService {
   //поиск пользователей
   rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {
     option (google.api.http) = {
-      post: "/users/v1/GetProfileByNickname"
+      post: "/users/v1/SearchByNickname"
     };
   }
 }

@@ -13,4 +13,5 @@ logs:
 clean:
 	docker-compose down -v --rmi local
 
+
 .PHONY: build up
