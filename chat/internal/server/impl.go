@@ -4,6 +4,7 @@ import (
 	"context"
 	chat "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
 	"google.golang.org/grpc"
+	"log"
 )
 
 type ChatService struct {
@@ -30,7 +31,10 @@ func (s *ChatService) ListUserChats(ctx context.Context, request *chat.ListUserC
 	return &chat.ListUserChatsResponse{}, nil
 }
 func (s *ChatService) ListChatMembers(ctx context.Context, request *chat.ListChatMembersRequest) (*chat.ListChatMembersResponse, error) {
-	return &chat.ListChatMembersResponse{}, nil
+	log.Println("ListChatMembers called")
+	a := []int64{1, 2, 3, 4, 5}
+	return &chat.ListChatMembersResponse{UserIds: a}, nil
+	//return &chat.ListChatMembersResponse{}, nil
 }
 
 func (s *ChatService) SendMessage(ctx context.Context, request *chat.SendMessageRequest) (*chat.SendMessageResponse, error) {

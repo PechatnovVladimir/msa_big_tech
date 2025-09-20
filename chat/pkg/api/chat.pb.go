@@ -887,14 +887,15 @@ const file_api_chat_proto_rawDesc = "" +
 	"\rsince_unix_ms\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\vsinceUnixMs\x88\x01\x01B\x10\n" +
 	"\x0e_since_unix_ms\"o\n" +
 	"\x16StreamMessagesResponse\x12U\n" +
-	"\amessage\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.MessageR\amessage2\xe1\t\n" +
+	"\amessage\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.MessageR\amessage2\xe5\n" +
+	"\n" +
 	"\vChatService\x12\xce\x01\n" +
 	"\x10CreateDirectChat\x12K.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatRequest\x1aL.github.com.PechatnovVladimir.msa_big_tech.chat.api.CreateDirectChatResponse\"\x1f\x82\xd3\xe4\x93\x02\x19:\x01*\"\x14/v1/createdirectchat\x12\xb1\x01\n" +
-	"\aGetChat\x12B.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/getchat/{chat_id}\x12\xa6\x01\n" +
-	"\rListUserChats\x12H.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsRequest\x1aI.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsResponse\"\x00\x12\xac\x01\n" +
-	"\x0fListChatMembers\x12J.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersRequest\x1aK.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersResponse\"\x00\x12\xa0\x01\n" +
-	"\vSendMessage\x12F.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageRequest\x1aG.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageResponse\"\x00\x12\xa3\x01\n" +
-	"\fListMessages\x12G.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListMessagesRequest\x1aH.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListMessagesResponse\"\x00\x12\xab\x01\n" +
+	"\aGetChat\x12B.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.chat.api.GetChatResponse\"\x1d\x82\xd3\xe4\x93\x02\x17\x12\x15/v1/getchat/{chat_id}\x12\xc9\x01\n" +
+	"\rListUserChats\x12H.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsRequest\x1aI.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListUserChatsResponse\"#\x82\xd3\xe4\x93\x02\x1d\x12\x1b/v1/listuserchats/{user_id}\x12\xd1\x01\n" +
+	"\x0fListChatMembers\x12J.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersRequest\x1aK.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListChatMembersResponse\"%\x82\xd3\xe4\x93\x02\x1f\x12\x1d/v1/listchatmembers/{chat_id}\x12\xba\x01\n" +
+	"\vSendMessage\x12F.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageRequest\x1aG.github.com.PechatnovVladimir.msa_big_tech.chat.api.SendMessageResponse\"\x1a\x82\xd3\xe4\x93\x02\x14:\x01*\"\x0f/v1/sendmessage\x12\xc5\x01\n" +
+	"\fListMessages\x12G.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListMessagesRequest\x1aH.github.com.PechatnovVladimir.msa_big_tech.chat.api.ListMessagesResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/v1/listmessages/{chat_id}\x12\xab\x01\n" +
 	"\x0eStreamMessages\x12I.github.com.PechatnovVladimir.msa_big_tech.chat.api.StreamMessagesRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.chat.api.StreamMessagesResponse\"\x000\x01B9Z7github.com/PechatnovVladimir/msa_big_tech/chat/pkg;chatb\x06proto3"
 
 var (

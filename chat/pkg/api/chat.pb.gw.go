@@ -105,12 +105,18 @@ func request_ChatService_ListUserChats_0(ctx context.Context, marshaler runtime.
 	var (
 		protoReq ListUserChatsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["user_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	}
+	protoReq.UserId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 	msg, err := client.ListUserChats(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -120,9 +126,15 @@ func local_request_ChatService_ListUserChats_0(ctx context.Context, marshaler ru
 	var (
 		protoReq ListUserChatsRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["user_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "user_id")
+	}
+	protoReq.UserId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "user_id", err)
 	}
 	msg, err := server.ListUserChats(ctx, &protoReq)
 	return msg, metadata, err
@@ -132,12 +144,18 @@ func request_ChatService_ListChatMembers_0(ctx context.Context, marshaler runtim
 	var (
 		protoReq ListChatMembersRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
 	}
 	msg, err := client.ListChatMembers(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -147,9 +165,15 @@ func local_request_ChatService_ListChatMembers_0(ctx context.Context, marshaler 
 	var (
 		protoReq ListChatMembersRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
 	}
 	msg, err := server.ListChatMembers(ctx, &protoReq)
 	return msg, metadata, err
@@ -182,16 +206,30 @@ func local_request_ChatService_SendMessage_0(ctx context.Context, marshaler runt
 	return msg, metadata, err
 }
 
+var filter_ChatService_ListMessages_0 = &utilities.DoubleArray{Encoding: map[string]int{"chat_id": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+
 func request_ChatService_ListMessages_0(ctx context.Context, marshaler runtime.Marshaler, client ChatServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var (
 		protoReq ListMessagesRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
-	}
 	if req.Body != nil {
 		_, _ = io.Copy(io.Discard, req.Body)
+	}
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ChatService_ListMessages_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := client.ListMessages(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
@@ -201,8 +239,20 @@ func local_request_ChatService_ListMessages_0(ctx context.Context, marshaler run
 	var (
 		protoReq ListMessagesRequest
 		metadata runtime.ServerMetadata
+		err      error
 	)
-	if err := marshaler.NewDecoder(req.Body).Decode(&protoReq); err != nil && !errors.Is(err, io.EOF) {
+	val, ok := pathParams["chat_id"]
+	if !ok {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "chat_id")
+	}
+	protoReq.ChatId, err = runtime.Int64(val)
+	if err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "chat_id", err)
+	}
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_ChatService_ListMessages_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 	msg, err := server.ListMessages(ctx, &protoReq)
@@ -278,13 +328,13 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_GetChat_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListUserChats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListUserChats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats", runtime.WithHTTPPathPattern("/v1/listuserchats/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -298,13 +348,13 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_ListUserChats_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListChatMembers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListChatMembers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers", runtime.WithHTTPPathPattern("/v1/listchatmembers/{chat_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -324,7 +374,7 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage", runtime.WithHTTPPathPattern("/v1/sendmessage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -338,13 +388,13 @@ func RegisterChatServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_SendMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListMessages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListMessages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
 		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages"))
+		annotatedContext, err := runtime.AnnotateIncomingContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages", runtime.WithHTTPPathPattern("/v1/listmessages/{chat_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -439,11 +489,11 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_GetChat_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListUserChats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListUserChats_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListUserChats", runtime.WithHTTPPathPattern("/v1/listuserchats/{user_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -456,11 +506,11 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_ListUserChats_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListChatMembers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListChatMembers_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListChatMembers", runtime.WithHTTPPathPattern("/v1/listchatmembers/{chat_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -477,7 +527,7 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/SendMessage", runtime.WithHTTPPathPattern("/v1/sendmessage"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -490,11 +540,11 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 		}
 		forward_ChatService_SendMessage_0(annotatedContext, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 	})
-	mux.Handle(http.MethodPost, pattern_ChatService_ListMessages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle(http.MethodGet, pattern_ChatService_ListMessages_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
-		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages", runtime.WithHTTPPathPattern("/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages"))
+		annotatedContext, err := runtime.AnnotateContext(ctx, mux, req, "/github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService/ListMessages", runtime.WithHTTPPathPattern("/v1/listmessages/{chat_id}"))
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
@@ -530,10 +580,10 @@ func RegisterChatServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux
 var (
 	pattern_ChatService_CreateDirectChat_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "createdirectchat"}, ""))
 	pattern_ChatService_GetChat_0          = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "getchat", "chat_id"}, ""))
-	pattern_ChatService_ListUserChats_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService", "ListUserChats"}, ""))
-	pattern_ChatService_ListChatMembers_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService", "ListChatMembers"}, ""))
-	pattern_ChatService_SendMessage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService", "SendMessage"}, ""))
-	pattern_ChatService_ListMessages_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService", "ListMessages"}, ""))
+	pattern_ChatService_ListUserChats_0    = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "listuserchats", "user_id"}, ""))
+	pattern_ChatService_ListChatMembers_0  = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "listchatmembers", "chat_id"}, ""))
+	pattern_ChatService_SendMessage_0      = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "sendmessage"}, ""))
+	pattern_ChatService_ListMessages_0     = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "listmessages", "chat_id"}, ""))
 	pattern_ChatService_StreamMessages_0   = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"github.com.PechatnovVladimir.msa_big_tech.chat.api.ChatService", "StreamMessages"}, ""))
 )
 

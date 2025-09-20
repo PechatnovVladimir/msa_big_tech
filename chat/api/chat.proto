@@ -30,10 +30,29 @@ service ChatService {
       get: "/v1/getchat/{chat_id}"
     };
   }
-  rpc ListUserChats (ListUserChatsRequest) returns (ListUserChatsResponse) {}
-  rpc ListChatMembers (ListChatMembersRequest) returns (ListChatMembersResponse) {}
-  rpc SendMessage (SendMessageRequest) returns (SendMessageResponse) {}
-  rpc ListMessages (ListMessagesRequest) returns (ListMessagesResponse) {}
+  rpc ListUserChats (ListUserChatsRequest) returns (ListUserChatsResponse) {
+    option (google.api.http) = {
+      get: "/v1/listuserchats/{user_id}"
+    };
+
+  }
+  rpc ListChatMembers (ListChatMembersRequest) returns (ListChatMembersResponse) {
+    option (google.api.http) = {
+      get: "/v1/listchatmembers/{chat_id}"
+    };
+
+  }
+  rpc SendMessage (SendMessageRequest) returns (SendMessageResponse) {
+    option (google.api.http) = {
+      post: "/v1/sendmessage"
+      body: "*"
+    };
+  }
+  rpc ListMessages (ListMessagesRequest) returns (ListMessagesResponse) {
+    option (google.api.http) = {
+      get: "/v1/listmessages/{chat_id}"
+    };
+  }
   rpc StreamMessages (StreamMessagesRequest) returns (stream StreamMessagesResponse){}
 }
 
