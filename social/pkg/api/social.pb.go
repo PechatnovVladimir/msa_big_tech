@@ -7,6 +7,7 @@
 package social
 
 import (
+	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
@@ -726,7 +727,7 @@ var File_api_social_proto protoreflect.FileDescriptor
 
 const file_api_social_proto_rawDesc = "" +
 	"\n" +
-	"\x10api/social.proto\x124github.com.PechatnovVladimir.msa_big_tech.social.api\x1a\x1fgoogle/protobuf/timestamp.proto\"\x84\x01\n" +
+	"\x10api/social.proto\x124github.com.PechatnovVladimir.msa_big_tech.social.api\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\"\x84\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\x03R\trequestId\x12T\n" +
@@ -770,14 +771,15 @@ const file_api_social_proto_rawDesc = "" +
 	"\aUNKNOWN\x10\x00\x12\v\n" +
 	"\aPENDING\x10\x01\x12\f\n" +
 	"\bACCEPTED\x10\x02\x12\f\n" +
-	"\bDECLINED\x10\x032\xc4\b\n" +
-	"\rSocialService\x12\xb6\x01\n" +
-	"\x11SendFriendRequest\x12N.github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestRequest\x1aO.github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestResponse\"\x00\x12\xa7\x01\n" +
-	"\fListRequests\x12I.github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsResponse\"\x00\x12\xbc\x01\n" +
-	"\x13AcceptFriendRequest\x12P.github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestRequest\x1aQ.github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestResponse\"\x00\x12\xbf\x01\n" +
-	"\x14DeclineFriendRequest\x12Q.github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestRequest\x1aR.github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse\"\x00\x12\xa7\x01\n" +
-	"\fRemoveFriend\x12I.github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendResponse\"\x00\x12\xa4\x01\n" +
-	"\vListFriends\x12H.github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest\x1aI.github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse\"\x00B=Z;github.com/PechatnovVladimir/msa_big_tech/social/pkg;socialb\x06proto3"
+	"\bDECLINED\x10\x032\xb8\n" +
+	"\n" +
+	"\rSocialService\x12\xdd\x01\n" +
+	"\x11SendFriendRequest\x12N.github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestRequest\x1aO.github.com.PechatnovVladimir.msa_big_tech.social.api.SendFriendRequestResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/social/v1/SendFriendRequest\x12\xd0\x01\n" +
+	"\fListRequests\x12I.github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.social.api.ListRequestsResponse\")\x82\xd3\xe4\x93\x02#\x12!/social/v1/ListRequests/{user_id}\x12\xe5\x01\n" +
+	"\x13AcceptFriendRequest\x12P.github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestRequest\x1aQ.github.com.PechatnovVladimir.msa_big_tech.social.api.AcceptFriendRequestResponse\")\x82\xd3\xe4\x93\x02#:\x01*\"\x1e/social/v1/AcceptFriendRequest\x12\xe9\x01\n" +
+	"\x14DeclineFriendRequest\x12Q.github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestRequest\x1aR.github.com.PechatnovVladimir.msa_big_tech.social.api.DeclineFriendRequestResponse\"*\x82\xd3\xe4\x93\x02$:\x01*\"\x1f/social/v1/DeclineFriendRequest\x12\xd0\x01\n" +
+	"\fRemoveFriend\x12I.github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.social.api.RemoveFriendResponse\")\x82\xd3\xe4\x93\x02#*!/social/v1/RemoveFriend/{user_id}\x12\xcc\x01\n" +
+	"\vListFriends\x12H.github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsRequest\x1aI.github.com.PechatnovVladimir.msa_big_tech.social.api.ListFriendsResponse\"(\x82\xd3\xe4\x93\x02\"\x12 /social/v1/ListFriends/{user_id}B=Z;github.com/PechatnovVladimir/msa_big_tech/social/pkg;socialb\x06proto3"
 
 var (
 	file_api_social_proto_rawDescOnce sync.Once

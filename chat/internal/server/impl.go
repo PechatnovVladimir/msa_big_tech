@@ -16,10 +16,12 @@ func NewChatService() *ChatService {
 }
 
 func (s *ChatService) CreateDirectChat(ctx context.Context, request *chat.CreateDirectChatRequest) (*chat.CreateDirectChatResponse, error) {
+	log.Println("ChatService CreateDirectChat called")
 	return &chat.CreateDirectChatResponse{}, nil
 }
 
 func (s *ChatService) GetChat(ctx context.Context, request *chat.GetChatRequest) (*chat.GetChatResponse, error) {
+	log.Println("ChatService GetChat called")
 	c := &chat.Chat{
 		ChatId: request.ChatId,
 		Name:   "chat....",
@@ -28,20 +30,22 @@ func (s *ChatService) GetChat(ctx context.Context, request *chat.GetChatRequest)
 }
 
 func (s *ChatService) ListUserChats(ctx context.Context, request *chat.ListUserChatsRequest) (*chat.ListUserChatsResponse, error) {
+	log.Println("ChatService ListUserChats called")
+
 	return &chat.ListUserChatsResponse{}, nil
 }
 func (s *ChatService) ListChatMembers(ctx context.Context, request *chat.ListChatMembersRequest) (*chat.ListChatMembersResponse, error) {
-	log.Println("ListChatMembers called")
-	a := []int64{1, 2, 3, 4, 5}
-	return &chat.ListChatMembersResponse{UserIds: a}, nil
-	//return &chat.ListChatMembersResponse{}, nil
+	log.Println("ChatService ListChatMembers called")
+	return &chat.ListChatMembersResponse{UserIds: []int64{1, 2, 3, 4, 5}}, nil
 }
 
 func (s *ChatService) SendMessage(ctx context.Context, request *chat.SendMessageRequest) (*chat.SendMessageResponse, error) {
+	log.Println("ChatService SendMessage called")
 	return &chat.SendMessageResponse{}, nil
 }
 
 func (s *ChatService) ListMessages(ctx context.Context, request *chat.ListMessagesRequest) (*chat.ListMessagesResponse, error) {
+	log.Println("ChatService ListMessages called")
 	return &chat.ListMessagesResponse{}, nil
 }
 

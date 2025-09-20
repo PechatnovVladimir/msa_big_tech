@@ -356,11 +356,11 @@ const file_api_auth_proto_rawDesc = "" +
 	"\x0fRefreshResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\x03R\x06userId2\x90\x04\n" +
-	"\vAuthService\x12\xae\x01\n" +
-	"\bRegister\x12C.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterRequest\x1aD.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterResponse\"\x17\x82\xd3\xe4\x93\x02\x11:\x01*\"\f/v1/register\x12\xa2\x01\n" +
-	"\x05Login\x12@.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginRequest\x1aA.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginResponse\"\x14\x82\xd3\xe4\x93\x02\x0e:\x01*\"\t/v1/login\x12\xaa\x01\n" +
-	"\aRefresh\x12B.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshResponse\"\x16\x82\xd3\xe4\x93\x02\x10:\x01*\"\v/v1/refreshB9Z7github.com/PechatnovVladimir/msa_big_tech/auth/pkg;authb\x06proto3"
+	"\auser_id\x18\x03 \x01(\x03R\x06userId2\x9f\x04\n" +
+	"\vAuthService\x12\xb3\x01\n" +
+	"\bRegister\x12C.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterRequest\x1aD.github.com.PechatnovVladimir.msa_big_tech.auth.api.RegisterResponse\"\x1c\x82\xd3\xe4\x93\x02\x16:\x01*\"\x11/auth/v1/Register\x12\xa7\x01\n" +
+	"\x05Login\x12@.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginRequest\x1aA.github.com.PechatnovVladimir.msa_big_tech.auth.api.LoginResponse\"\x19\x82\xd3\xe4\x93\x02\x13:\x01*\"\x0e/auth/v1/Login\x12\xaf\x01\n" +
+	"\aRefresh\x12B.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshRequest\x1aC.github.com.PechatnovVladimir.msa_big_tech.auth.api.RefreshResponse\"\x1b\x82\xd3\xe4\x93\x02\x15:\x01*\"\x10/auth/v1/RefreshB9Z7github.com/PechatnovVladimir/msa_big_tech/auth/pkg;authb\x06proto3"
 
 var (
 	file_api_auth_proto_rawDescOnce sync.Once

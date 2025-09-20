@@ -4,6 +4,9 @@ package  github.com.PechatnovVladimir.msa_big_tech.users.api;
 
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg;users";
 
+import "google/api/annotations.proto";
+
+
 message UserProfile {
   int64 user_id = 1;
   string nickname = 2;
@@ -13,19 +16,41 @@ message UserProfile {
 
 service UserService {
   //создать профиль пользователя
-  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse) {}
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse) {
+    option (google.api.http) = {
+      post: "/users/v1/CreateProfile"
+      body: "*"
+    };
+  }
 
   //обновить профиль пользователя
-  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {}
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {
+    option (google.api.http) = {
+      patch: "/users/v1/UpdateProfile"
+      body: "*"
+    };
+  }
 
   //получить профиль по ID
-  rpc GetProfileByID(GetProfileByIDRequest) returns (GetProfileByIDResponse) {}
+  rpc GetProfileByID(GetProfileByIDRequest) returns (GetProfileByIDResponse) {
+    option (google.api.http) = {
+      get: "/users/v1/GetProfileByID/{user_id}"
+    };
+  }
 
   //поиск по нику
-  rpc GetProfileByNickname(GetProfileByNicknameRequest) returns (GetProfileByNicknameResponse) {}
+  rpc GetProfileByNickname(GetProfileByNicknameRequest) returns (GetProfileByNicknameResponse) {
+    option (google.api.http) = {
+      get: "/users/v1/GetProfileByNickname/{nickname}"
+    };
+  }
 
   //поиск пользователей
-  rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {}
+  rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {
+    option (google.api.http) = {
+      post: "/users/v1/GetProfileByNickname"
+    };
+  }
 }
 
 message CreateProfileRequest {

@@ -4,8 +4,7 @@ cloud.google.com/go/compute/metadata v0.7.0 h1:PBWF+iiAerVNe8UCHxdOt6eHLVc3ydFeO
 cloud.google.com/go/compute/metadata v0.7.0/go.mod h1:j5MvL9PprKL39t166CoB1uVHfQMs4tFQZZcKwksXUjo=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0 h1:UQUsRi8WTzhZntp5313l+CHIAT95ojUI2lpP/ExlZa4=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0/go.mod h1:Cz6ft6Dkn3Et6l2v2a9/RpN7epQ1GtDlO6lj8bEcOvw=
-github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250919145040-9c47d1321138/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
-github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20250919145040-9c47d1321138/go.mod h1:Ra9PAuFdPip2yXZrhI3VO+0hj0+1ZwzT8JhUoObQ2gU=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20250920111315-012c8c35be3f/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
 github.com/antihax/optional v1.0.0 h1:xK2lYat7ZLaVVcIuj82J8kIro4V6kDe0AUDFboUCwcg=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/cespare/xxhash/v2 v2.3.0 h1:UL815xU9SqsFlibzuggzjXhog7bL6oX9BbNZnL2UFvs=
