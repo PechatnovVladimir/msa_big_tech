@@ -4,6 +4,7 @@ import (
 	"context"
 	authpb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
 	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
+	"github.com/PechatnovVladimir/msa_big_tech/gateway/swagger"
 	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
 	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
@@ -17,24 +18,29 @@ func Rest() {
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
-	mux := runtime.NewServeMux()
+	muxGRPC := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithTransportCredentials(insecure.NewCredentials())}
-	err := authpb.RegisterAuthServiceHandlerFromEndpoint(ctx, mux, "auth-service:50051", opts)
+	err := authpb.RegisterAuthServiceHandlerFromEndpoint(ctx, muxGRPC, "auth-service:50051", opts)
 	if err != nil {
 		panic(err)
 	}
-	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, mux, "chat-service:50052", opts)
+	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "chat-service:50052", opts)
 	if err != nil {
 		panic(err)
 	}
-	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, mux, "social-service:50053", opts)
+	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "social-service:50053", opts)
 	if err != nil {
 		panic(err)
 	}
-	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, mux, "users-service:50054", opts)
+	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
 	if err != nil {
 		panic(err)
 	}
+
+	mux := http.NewServeMux()
+	swagger.SetupSwagger(mux)
+
+	mux.Handle("/v1/", muxGRPC)
 
 	log.Printf("server listening at 8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {

@@ -1,23 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auth API</title>
+  <title>API Documentation</title>
   <link rel="stylesheet" type="text/css" href="swagger-ui.css">
 </head>
 <body>
+<div>
+  <select id="api-select" onchange="loadSwaggerUI()">
+    <option value="/swagger/auth.json">Auth API</option>
+    <option value="/swagger/chat.json">Chat API</option>
+    <option value="/swagger/social.json">Social API</option>
+    <option value="/swagger/users.json">Users API</option>
+  </select>
+</div>
 <div id="swagger-ui"></div>
 <script src="swagger-ui-bundle.js"></script>
 <script>
-  window.onload = function() {
+  function loadSwaggerUI() {
+    const url = document.getElementById("api-select").value;
     SwaggerUIBundle({
-      url: "/swagger.json",
+      url: url,
       dom_id: '#swagger-ui',
       presets: [
         SwaggerUIBundle.presets.apis,
         SwaggerUIBundle.SwaggerUIStandalonePreset
       ]
     });
-  };
+  }
+  window.onload = loadSwaggerUI;
 </script>
 </body>
 </html>
