@@ -7,6 +7,7 @@
 package users
 
 import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
@@ -590,7 +591,7 @@ var File_api_users_proto protoreflect.FileDescriptor
 
 const file_api_users_proto_rawDesc = "" +
 	"\n" +
-	"\x0fapi/users.proto\x123github.com.PechatnovVladimir.msa_big_tech.users.api\x1a\x1cgoogle/api/annotations.proto\"s\n" +
+	"\x0fapi/users.proto\x123github.com.PechatnovVladimir.msa_big_tech.users.api\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"s\n" +
 	"\vUserProfile\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x1a\n" +
 	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
@@ -632,11 +633,12 @@ const file_api_users_proto_rawDesc = "" +
 	"\x18SearchByNicknameResponse\x12b\n" +
 	"\vUserProfile\x18\x01 \x03(\v2@.github.com.PechatnovVladimir.msa_big_tech.users.api.UserProfileR\vUserProfile2\xc6\b\n" +
 	"\vUserService\x12\xca\x01\n" +
-	"\rCreateProfile\x12I.github.com.PechatnovVladimir.msa_big_tech.users.api.CreateProfileRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.users.api.CreateProfileResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/users/v1/CreateProfile\x12\xca\x01\n" +
-	"\rUpdateProfile\x12I.github.com.PechatnovVladimir.msa_big_tech.users.api.UpdateProfileRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.users.api.UpdateProfileResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*2\x17/users/v1/UpdateProfile\x12\xd5\x01\n" +
-	"\x0eGetProfileByID\x12J.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByIDRequest\x1aK.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByIDResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/users/v1/GetProfileByID/{user_id}\x12\xee\x01\n" +
-	"\x14GetProfileByNickname\x12P.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByNicknameRequest\x1aQ.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByNicknameResponse\"1\x82\xd3\xe4\x93\x02+\x12)/users/v1/GetProfileByNickname/{nickname}\x12\xd3\x01\n" +
-	"\x10SearchByNickname\x12L.github.com.PechatnovVladimir.msa_big_tech.users.api.SearchByNicknameRequest\x1aM.github.com.PechatnovVladimir.msa_big_tech.users.api.SearchByNicknameResponse\"\"\x82\xd3\xe4\x93\x02\x1c\"\x1a/users/v1/SearchByNicknameB;Z9github.com/PechatnovVladimir/msa_big_tech/users/pkg;usersb\x06proto3"
+	"\rCreateProfile\x12I.github.com.PechatnovVladimir.msa_big_tech.users.api.CreateProfileRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.users.api.CreateProfileResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*\"\x17/v1/users/CreateProfile\x12\xca\x01\n" +
+	"\rUpdateProfile\x12I.github.com.PechatnovVladimir.msa_big_tech.users.api.UpdateProfileRequest\x1aJ.github.com.PechatnovVladimir.msa_big_tech.users.api.UpdateProfileResponse\"\"\x82\xd3\xe4\x93\x02\x1c:\x01*2\x17/v1/users/UpdateProfile\x12\xd5\x01\n" +
+	"\x0eGetProfileByID\x12J.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByIDRequest\x1aK.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByIDResponse\"*\x82\xd3\xe4\x93\x02$\x12\"/v1/users/GetProfileByID/{user_id}\x12\xee\x01\n" +
+	"\x14GetProfileByNickname\x12P.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByNicknameRequest\x1aQ.github.com.PechatnovVladimir.msa_big_tech.users.api.GetProfileByNicknameResponse\"1\x82\xd3\xe4\x93\x02+\x12)/v1/users/GetProfileByNickname/{nickname}\x12\xd3\x01\n" +
+	"\x10SearchByNickname\x12L.github.com.PechatnovVladimir.msa_big_tech.users.api.SearchByNicknameRequest\x1aM.github.com.PechatnovVladimir.msa_big_tech.users.api.SearchByNicknameResponse\"\"\x82\xd3\xe4\x93\x02\x1c\"\x1a/v1/users/SearchByNicknameBf\x92A(\x12#\n" +
+	"\tUsers API\x12\x11API users-service2\x031.0*\x01\x01Z9github.com/PechatnovVladimir/msa_big_tech/users/pkg;usersb\x06proto3"
 
 var (
 	file_api_users_proto_rawDescOnce sync.Once

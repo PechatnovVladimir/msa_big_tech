@@ -5,13 +5,24 @@ package  github.com.PechatnovVladimir.msa_big_tech.social.api;
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg;social";
 
 import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
 
 import "google/api/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Social API";
+    version: "1.0";
+    description: "API social-service";
+  };
+  schemes: HTTP;
+};
+
 
 service SocialService {
   rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse) {
     option (google.api.http) = {
-      post: "/social/v1/SendFriendRequest"
+      post: "/v1/social/SendFriendRequest"
       body: "*"
     };
 
@@ -19,33 +30,33 @@ service SocialService {
 
   rpc ListRequests (ListRequestsRequest) returns (ListRequestsResponse) {
     option (google.api.http) = {
-      get: "/social/v1/ListRequests/{user_id}"
+      get: "/v1/social/ListRequests/{user_id}"
     };
   }
 
   rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
     option (google.api.http) = {
-      post: "/social/v1/AcceptFriendRequest"
+      post: "/v1/social/AcceptFriendRequest"
       body: "*"
     };
   }
 
   rpc DeclineFriendRequest (DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {
     option (google.api.http) = {
-      post: "/social/v1/DeclineFriendRequest"
+      post: "/v1/social/DeclineFriendRequest"
       body: "*"
     };
   }
 
   rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendResponse) {
     option (google.api.http) = {
-      delete: "/social/v1/RemoveFriend/{user_id}"
+      delete: "/v1/social/RemoveFriend/{user_id}"
     };
   }
 
   rpc ListFriends (ListFriendsRequest) returns (ListFriendsResponse){
     option (google.api.http) = {
-      get: "/social/v1/ListFriends/{user_id}"
+      get: "/v1/social/ListFriends/{user_id}"
     };
   }
 }

@@ -7,6 +7,17 @@ option go_package = "github.com/PechatnovVladimir/msa_big_tech/chat/pkg;chat";
 import "google/protobuf/timestamp.proto";
 
 import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Chat API";
+    version: "1.0";
+    description: "API chat-service";
+  };
+  schemes: HTTP;
+};
+
 
 message Chat {
   int64 chat_id = 1;
@@ -22,36 +33,36 @@ message Message {
 service ChatService {
   rpc CreateDirectChat (CreateDirectChatRequest) returns (CreateDirectChatResponse) {
     option (google.api.http) = {
-      post: "/chat/v1/CreateDirectChat"
+      post: "/v1/chat/CreateDirectChat"
       body: "*"
     };
   }
   rpc GetChat (GetChatRequest) returns (GetChatResponse) {
     option (google.api.http) = {
-      get: "/chat/v1/GetChat/{chat_id}"
+      get: "/v1/chat/GetChat/{chat_id}"
     };
   }
   rpc ListUserChats (ListUserChatsRequest) returns (ListUserChatsResponse) {
     option (google.api.http) = {
-      get: "/chat/v1/ListUserChats/{user_id}"
+      get: "/v1/chat/ListUserChats/{user_id}"
     };
 
   }
   rpc ListChatMembers (ListChatMembersRequest) returns (ListChatMembersResponse) {
     option (google.api.http) = {
-      get: "/chat/v1/ListChatMembers/{chat_id}"
+      get: "/v1/chat/ListChatMembers/{chat_id}"
     };
 
   }
   rpc SendMessage (SendMessageRequest) returns (SendMessageResponse) {
     option (google.api.http) = {
-      post: "/chat/v1/SendMessage"
+      post: "/v1/chat/SendMessage"
       body: "*"
     };
   }
   rpc ListMessages (ListMessagesRequest) returns (ListMessagesResponse) {
     option (google.api.http) = {
-      get: "/chat/v1/ListMessages/{chat_id}"
+      get: "/v1/chat/ListMessages/{chat_id}"
     };
   }
   rpc StreamMessages (StreamMessagesRequest) returns (stream StreamMessagesResponse){}
