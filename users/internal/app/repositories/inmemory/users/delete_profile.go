@@ -5,7 +5,7 @@ import (
 	"log"
 )
 
-func (r *Repository) DeleteProfile(ctx context.Context, profileID string) error {
+func (r *RepositoryInMemory) DeleteProfile(ctx context.Context, profileID string) error {
 	_ = ctx
 	log.Println("Repository DeleteProfile called")
 	return nil

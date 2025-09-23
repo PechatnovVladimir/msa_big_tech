@@ -25,6 +25,6 @@ type UpdateProfileDTO struct {
 }
 
 type SearchByNicknameDTO struct {
-	query string
-	limit int64
+	Query string
+	Limit int64
 }

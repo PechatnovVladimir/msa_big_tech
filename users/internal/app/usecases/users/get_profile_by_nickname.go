@@ -6,5 +6,10 @@ import (
 )
 
 func (s *UserService) GetProfileByNickname(ctx context.Context, nickname string) (*users.UserProfile, error) {
-	return nil, nil
+	userProfile, err := s.userRepo.GetProfileByNickname(ctx, nickname)
+	if err != nil {
+		return nil, err
+	}
+
+	return userProfile, nil
 }

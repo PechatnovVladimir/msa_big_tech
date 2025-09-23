@@ -6,6 +6,29 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 )
 
-func (s *UserService) UpdateProfile(ctx context.Context, dto dto.UpdateProfileDTO) (*users.UserProfile, error) {
-	return nil, nil
+func (s *UserService) UpdateProfile(ctx context.Context, d dto.UpdateProfileDTO) (*users.UserProfile, error) {
+	userProfile, err := s.userRepo.GetProfileByID(ctx, d.ID)
+	if err != nil {
+		return nil, users.ErrUserNotFound
+	}
+
+	if d.Bio != "" {
+		userProfile.Bio = d.Bio
+	}
+
+	if d.Avatar != "" {
+		userProfile.Avatar = d.Avatar
+	}
+
+	if d.Password != "" {
+		psw := cachePassword(userProfile.Password)
+		userProfile.Password = psw
+	}
+
+	err = s.userRepo.UpdateProfile(ctx, userProfile)
+	if err != nil {
+		return nil, err
+	}
+
+	return userProfile, nil
 }
