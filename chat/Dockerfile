@@ -11,7 +11,7 @@ RUN go mod download
 COPY chat/ ./
 
 # Собираем сервис chat
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/chat-server ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/chat-server ./cmd/app
 
 # Final stage
 FROM alpine:3.18
