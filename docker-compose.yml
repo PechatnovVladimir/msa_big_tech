@@ -1,0 +1,91 @@
+version: '3.8'
+
+services:
+  auth-service:
+    build:
+      context: .
+      dockerfile: auth/Dockerfile
+    container_name: auth-service
+    ports:
+      - "50051:50051"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50051
+    # volumes:
+    #   - ./auth/configs:/root/configs:ro
+
+  chat-service:
+    build:
+      context: .
+      dockerfile: chat/Dockerfile
+    container_name: chat-service
+    ports:
+      - "50052:50052"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50052
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+    # volumes:
+    #   - ./chat/configs:/root/configs:ro
+
+  social-service:
+    build:
+      context: .
+      dockerfile: social/Dockerfile
+    container_name: social-service
+    ports:
+      - "50053:50053"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50053
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+    # volumes:
+    #   - ./social/configs:/root/configs:ro
+
+  users-service:
+    build:
+      context: .
+      dockerfile: users/Dockerfile
+    container_name: users-service
+    ports:
+      - "50054:50054"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    environment:
+      - GRPC_PORT=50054
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+    # volumes:
+    #   - ./social/configs:/root/configs:ro
+
+  api-gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    networks:
+      - msa-network
+    restart: unless-stopped
+    depends_on:
+      - auth-service
+    environment:
+      - PORT=8080
+
+
+networks:
+  msa-network:
+    driver: bridge
