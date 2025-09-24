@@ -4,7 +4,7 @@ SERVICE_NAME := users
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
 # Путь до protobuf файлов
-PROTO_PATH := $(CURDIR)/api
+PROTO_PATH := $(CURDIR)/proto/api/$(SERVICE_NAME)/v1
 
 # Путь до сгенеренных .pb.go файлов
 PKG_PROTO_PATH := $(CURDIR)/pkg
@@ -22,11 +22,13 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
 	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
-	$(PROTO_PATH)/$(SERVICE_NAME).proto
+	$(PROTO_PATH)/service.proto \
+	$(PROTO_PATH)/messages.proto
 
 	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--openapiv2_out=../gateway/swagger --openapiv2_opt logtostderr=true \
-	$(PROTO_PATH)/$(SERVICE_NAME).proto
+	$(PROTO_PATH)/service.proto \
+	$(PROTO_PATH)/messages.proto
 
 
 .vendor-protoc-gen-openapiv2:
@@ -60,4 +62,4 @@ vendor: .vendor-protoc-gen-openapiv2 .vendor-googleapis
 vercommit: .ver-commit
 
 run:
-	go run ./cmd/server/main.go
+	go run ./cmd/app/main.go

@@ -6,9 +6,9 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 )
 
-func (s *UserService) SearchByNickname(ctx context.Context, d dto.SearchByNicknameDTO) ([]*users.UserProfile, error) {
+func (s *Service) SearchByNickname(ctx context.Context, d dto.SearchByNicknameDTO) ([]*users.UserProfile, error) {
 	nickname := d.Query
-	userProfiles, err := s.userRepo.SearchByNickname(ctx, nickname)
+	userProfiles, err := s.repository.SearchByNickname(ctx, nickname)
 	if err != nil {
 		return nil, err
 	}

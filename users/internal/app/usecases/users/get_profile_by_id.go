@@ -5,8 +5,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 )
 
-func (s *UserService) GetProfileByID(ctx context.Context, profileID string) (*users.UserProfile, error) {
-	userProfile, err := s.userRepo.GetProfileByID(ctx, profileID)
+func (s *Service) GetProfileByID(ctx context.Context, profileID string) (*users.UserProfile, error) {
+	userProfile, err := s.repository.GetProfileByID(ctx, profileID)
 	if err != nil {
 		return nil, err
 	}

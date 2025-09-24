@@ -5,7 +5,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 )
 
-func (r *RepositoryInMemory) CreateProfile(ctx context.Context, p *users.UserProfile) error {
+func (r *InMemory) CreateProfile(ctx context.Context, p *users.UserProfile) error {
 	r.mx.Lock()
 	defer r.mx.Unlock()
 

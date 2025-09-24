@@ -1,0 +1,60 @@
+syntax = "proto3";
+
+package  github.com.PechatnovVladimir.msa_big_tech.users.api.v1;
+
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
+
+message UserProfile {
+  string user_id = 1;
+  string nickname = 2;
+  string bio = 3;
+  string avatar_url = 4;
+}
+
+message CreateProfileRequest {
+  string nickname = 1;
+  optional string bio = 2;
+  optional string avatar_url = 3;
+  string password = 4;
+}
+
+message CreateProfileResponse {
+  UserProfile UserProfile = 1;
+}
+
+message UpdateProfileRequest {
+  string user_id = 1;
+  optional string nickname = 2;
+  optional string bio = 3;
+  optional string avatar_url = 4;
+  optional string password = 5;
+}
+
+message UpdateProfileResponse {
+  UserProfile UserProfile = 1;
+}
+
+message GetProfileByIDRequest {
+  string user_id = 1;
+}
+
+message GetProfileByIDResponse {
+  UserProfile UserProfile = 1;
+}
+
+message GetProfileByNicknameRequest {
+  string nickname = 1;
+}
+
+message GetProfileByNicknameResponse {
+  UserProfile UserProfile = 1;
+}
+
+message SearchByNicknameRequest {
+  string query = 1;
+  int64 limit = 2;
+}
+
+message SearchByNicknameResponse{
+  repeated UserProfile UserProfile = 1;
+}

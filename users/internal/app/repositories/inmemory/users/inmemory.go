@@ -5,13 +5,13 @@ import (
 	"sync"
 )
 
-type RepositoryInMemory struct {
+type InMemory struct {
 	storage map[users.UserID]users.UserProfile
 	mx      sync.Mutex
 }
 
-func NewRepository(cap int) *RepositoryInMemory {
-	return &RepositoryInMemory{
+func New(cap int) *InMemory {
+	return &InMemory{
 		storage: make(map[users.UserID]users.UserProfile, cap),
 	}
 }

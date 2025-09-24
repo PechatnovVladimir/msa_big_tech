@@ -10,8 +10,8 @@ import (
 
 func TestUserService_CreateProfile(t *testing.T) {
 	ctx := context.Background()
-	usersRepo := uRepo.NewRepository(5)
-	usersService := NewUserService(usersRepo)
+	userRepo := uRepo.New(5)
+	userService := New(userRepo)
 
 	dtoProfile := dto.CreateProfileDTO{
 		Nickname: "pvv45",
@@ -20,7 +20,7 @@ func TestUserService_CreateProfile(t *testing.T) {
 		Password: "pvvPassword",
 	}
 
-	u, err := usersService.CreateProfile(ctx, dtoProfile)
+	u, err := userService.CreateProfile(ctx, dtoProfile)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -28,12 +28,12 @@ func TestUserService_CreateProfile(t *testing.T) {
 
 	fmt.Println(u)
 
-	_, err = usersService.CreateProfile(ctx, dtoProfile)
+	_, err = userService.CreateProfile(ctx, dtoProfile)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
 
-	u, err = usersService.GetProfileByID(ctx, u.ID.String())
+	u, err = userService.GetProfileByID(ctx, u.ID.String())
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -47,7 +47,7 @@ func TestUserService_CreateProfile(t *testing.T) {
 		Avatar: "pvvNEW.jpeg",
 	}
 
-	u, err = usersService.UpdateProfile(ctx, d)
+	u, err = userService.UpdateProfile(ctx, d)
 	if err != nil {
 		fmt.Println(err.Error())
 		return

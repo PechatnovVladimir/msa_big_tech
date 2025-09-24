@@ -5,7 +5,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 )
 
-func (r *RepositoryInMemory) SearchByNickname(ctx context.Context, nickname string) ([]*users.UserProfile, error) {
+func (r *InMemory) SearchByNickname(ctx context.Context, nickname string) ([]*users.UserProfile, error) {
 	for _, userProfile := range r.storage {
 		if userProfile.Nickname == nickname {
 			u := make([]*users.UserProfile, 1)

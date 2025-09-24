@@ -1,9 +1,10 @@
 syntax = "proto3";
 
-package  github.com.PechatnovVladimir.msa_big_tech.users.api;
+package  github.com.PechatnovVladimir.msa_big_tech.users.api.v1;
 
-option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg;users";
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
 
+import "proto/api/users/v1/messages.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -15,14 +16,6 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   };
   schemes: HTTP;
 };
-
-
-message UserProfile {
-  int64 user_id = 1;
-  string nickname = 2;
-  string bio = 3;
-  string avatar_url = 4;
-}
 
 service UserService {
   //создать профиль пользователя
@@ -61,51 +54,4 @@ service UserService {
       post: "/v1/users/SearchByNickname"
     };
   }
-}
-
-message CreateProfileRequest {
-  int64 user_id = 1;
-  string nickname = 2;
-  optional string bio = 3;
-  optional string avatar_url = 4;
-}
-
-message CreateProfileResponse {
-  UserProfile UserProfile = 1;
-}
-
-message UpdateProfileRequest {
-  int64 user_id = 1;
-  optional string nickname = 2;
-  optional string bio = 3;
-  optional string avatar_url = 4;
-}
-
-message UpdateProfileResponse {
-  UserProfile UserProfile = 1;
-}
-
-message GetProfileByIDRequest {
-  int64 user_id = 1;
-}
-
-message GetProfileByIDResponse {
-  UserProfile UserProfile = 1;
-}
-
-message GetProfileByNicknameRequest {
-  string nickname = 1;
-}
-
-message GetProfileByNicknameResponse {
-  UserProfile UserProfile = 1;
-}
-
-message SearchByNicknameRequest {
-  string query = 1;
-  int64 limit = 2;
-}
-
-message SearchByNicknameResponse{
-  repeated UserProfile UserProfile = 1;
 }

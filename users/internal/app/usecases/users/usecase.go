@@ -9,7 +9,7 @@ import (
 )
 
 type (
-	UserRepository interface {
+	Repository interface {
 		CreateProfile(ctx context.Context, userProfile *users.UserProfile) error
 		UpdateProfile(ctx context.Context, userProfile *users.UserProfile) error
 		DeleteProfile(ctx context.Context, profileID string) error
@@ -18,11 +18,11 @@ type (
 		SearchByNickname(ctx context.Context, nickname string) ([]*users.UserProfile, error)
 	}
 )
-type UserService struct {
-	userRepo UserRepository
+type Service struct {
+	repository Repository
 }
 
-type UserUsecase interface {
+type UseCase interface {
 	//CreateProfile создать профиль
 	CreateProfile(ctx context.Context, dto dto.CreateProfileDTO) (*users.UserProfile, error)
 	//UpdateProfile обновить профиль
@@ -35,11 +35,11 @@ type UserUsecase interface {
 	SearchByNickname(ctx context.Context, dto dto.SearchByNicknameDTO) ([]*users.UserProfile, error)
 }
 
-var _ UserUsecase = (*UserService)(nil)
+var _ UseCase = (*Service)(nil)
 
-func NewUserService(userRepo UserRepository) *UserService {
-	return &UserService{
-		userRepo: userRepo,
+func New(repository Repository) *Service {
+	return &Service{
+		repository: repository,
 	}
 }
 

@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.5.1
 // - protoc             v6.32.0
-// source: api/users.proto
+// source: proto/api/users/v1/service.proto
 
 package users
 
@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	UserService_CreateProfile_FullMethodName        = "/github.com.PechatnovVladimir.msa_big_tech.users.api.UserService/CreateProfile"
-	UserService_UpdateProfile_FullMethodName        = "/github.com.PechatnovVladimir.msa_big_tech.users.api.UserService/UpdateProfile"
-	UserService_GetProfileByID_FullMethodName       = "/github.com.PechatnovVladimir.msa_big_tech.users.api.UserService/GetProfileByID"
-	UserService_GetProfileByNickname_FullMethodName = "/github.com.PechatnovVladimir.msa_big_tech.users.api.UserService/GetProfileByNickname"
-	UserService_SearchByNickname_FullMethodName     = "/github.com.PechatnovVladimir.msa_big_tech.users.api.UserService/SearchByNickname"
+	UserService_CreateProfile_FullMethodName        = "/github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService/CreateProfile"
+	UserService_UpdateProfile_FullMethodName        = "/github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService/UpdateProfile"
+	UserService_GetProfileByID_FullMethodName       = "/github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService/GetProfileByID"
+	UserService_GetProfileByNickname_FullMethodName = "/github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService/GetProfileByNickname"
+	UserService_SearchByNickname_FullMethodName     = "/github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService/SearchByNickname"
 )
 
 // UserServiceClient is the client API for UserService service.
@@ -254,7 +254,7 @@ func _UserService_SearchByNickname_Handler(srv interface{}, ctx context.Context,
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var UserService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "github.com.PechatnovVladimir.msa_big_tech.users.api.UserService",
+	ServiceName: "github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserService",
 	HandlerType: (*UserServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -279,5 +279,5 @@ var UserService_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/users.proto",
+	Metadata: "proto/api/users/v1/service.proto",
 }
