@@ -15,9 +15,15 @@ func (s *Service) CreateProfile(ctx context.Context, request *userPB.CreateProfi
 
 	d := dto.CreateProfileDTO{
 		Nickname: request.Nickname,
-		Bio:      *request.Bio,
-		Avatar:   *request.AvatarUrl,
 		Password: request.Password,
+	}
+
+	if request.Bio != nil {
+		d.Bio = *request.Bio
+	}
+
+	if request.AvatarUrl != nil {
+		d.Avatar = *request.AvatarUrl
 	}
 
 	p, err := s.uc.CreateProfile(ctx, d)

@@ -6,7 +6,7 @@ import (
 	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
 	"github.com/PechatnovVladimir/msa_big_tech/gateway/swagger"
 	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
-	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api"
+	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -32,7 +32,8 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
-	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
+	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50054", opts)
+	//err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
 	if err != nil {
 		panic(err)
 	}

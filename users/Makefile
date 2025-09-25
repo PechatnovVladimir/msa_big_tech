@@ -1,3 +1,5 @@
+include vendor.proto.mk
+
 SERVICE_NAME := users
 
 # Путь до завендореных protobuf файлов
@@ -14,8 +16,10 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	go install github.com/bufbuild/buf/cmd/buf@latest
+	go install github.com/yoheimuta/protolint/cmd/protolint@latest
 
-# генерация .go файлов с помощью protoc
+# генерация .go файлов с помощью protoc (пока оставляю на всякий случай, основно способ через buf ниже)
 .protoc-generate:
 	mkdir -p $(PKG_PROTO_PATH)
 	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
@@ -30,36 +34,34 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	$(PROTO_PATH)/service.proto \
 	$(PROTO_PATH)/messages.proto
 
-
-.vendor-protoc-gen-openapiv2:
-	git clone -b main --single-branch -n --depth=1 --filter=tree:0 \
- 		https://github.com/grpc-ecosystem/grpc-gateway $(VENDOR_PROTO_PATH)/grpc-gateway && \
- 	cd $(VENDOR_PROTO_PATH)/grpc-gateway && \
-	git sparse-checkout set --no-cone protoc-gen-openapiv2/options && \
-	git checkout
-	mkdir -p $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
-	mv $(VENDOR_PROTO_PATH)/grpc-gateway/protoc-gen-openapiv2/options $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
-	rm -rf $(VENDOR_PROTO_PATH)/grpc-gateway
-
-# Устанавливаем proto описания google/api
-.vendor-googleapis:
-	git clone -b master --single-branch -n --depth=1 --filter=tree:0 \
-		https://github.com/googleapis/googleapis $(VENDOR_PROTO_PATH)/googleapis &&\
-	cd $(VENDOR_PROTO_PATH)/googleapis &&\
-	git sparse-checkout set --no-cone google/api &&\
-	git checkout
-	mkdir -p $(VENDOR_PROTO_PATH)/google/api
-	find $(VENDOR_PROTO_PATH)/googleapis/google/api -maxdepth 1 -type f -exec mv {} $(VENDOR_PROTO_PATH)/google/api \;
-	rm -rf $(VENDOR_PROTO_PATH)/googleapis
+# генерация .go файлов с помощью buf
+.buf-generate:
+	buf generate
 
 .ver-commit:
 	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW1
 
-generate: .protoc-generate
+#generate-protoc: .protoc-generate
+generate: .buf-generate
 
-vendor: .vendor-protoc-gen-openapiv2 .vendor-googleapis
+# Форматирование protobuf файлов
+proto-format:
+	$(info run buf format...)
+	buf format ./proto -w
 
 vercommit: .ver-commit
 
 run:
 	go run ./cmd/app/main.go
+
+.PHONY: \
+	.bin-deps \
+	.protoc-generate \
+	.tidy \
+	.proto-lint \
+	proto-format \
+	vendor \
+	vendor.protobuf \
+	generate \
+	build \
+	lint

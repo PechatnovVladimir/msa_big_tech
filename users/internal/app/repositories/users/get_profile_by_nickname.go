@@ -6,9 +6,9 @@ import (
 	"log"
 )
 
-func (r *Repository) GetProfileByNickname(ctx context.Context, nickname string) (users.UserProfile, error) {
+func (r *Repository) GetProfileByNickname(ctx context.Context, nickname string) (*users.UserProfile, error) {
 	_ = nickname
 	_ = ctx
 	log.Println("Repository GetUserProfileByNickname called")
-	return users.UserProfile{}, nil
+	return &users.UserProfile{}, nil
 }
