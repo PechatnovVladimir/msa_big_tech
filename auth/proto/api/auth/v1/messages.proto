@@ -4,17 +4,66 @@ package  github.com.PechatnovVladimir.msa_big_tech.auth.api.v1;
 
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api/auth/v1;auth";
 
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-
+//RegisterRequest - запрос Register
 message RegisterRequest {
-  string email = 1;
-  string password = 2;
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "RegisterRequest"
+      description: "RegisterRequest - запрос Register"
+      required: [
+        "nickname",
+        "email",
+        "password"
+      ]
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+
+  //nickname - никнейм пользователя
+  string nickname = 1 [
+    json_name = "nickname",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      min_len:  3,
+      max_len:  20,
+      pattern: "^[a-z0-9_]{3,20}$",
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //email - e-mail пользователя
+   string email = 2 [
+    json_name = "email",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+   //password - пароль пользователя длина от 8 до 128 символов
+  //хотя бы одна заглавна бука
+  //хотя бы одна строчная буква
+  //хотя бы одна цифра
+  //хотя бы один специальный символ
+  string password = 3 [
+    json_name = "email",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$",
+      min_len: 8,
+      max_len: 128
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
 message  RegisterResponse {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message LoginRequest {

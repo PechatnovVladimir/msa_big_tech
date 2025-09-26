@@ -24,17 +24,19 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// UserProfile - профиль пользовател
+// UserProfile - профиль пользователя
 type UserProfile struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// user_id уникальный идентификатор пользователя в формате UUID генерируется автоматически при создании профиля
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	// nickname никнейм пользователя
 	Nickname string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	// nickname никнейм пользователя
+	Email string `protobuf:"bytes,3,opt,name=email,proto3" json:"email,omitempty"`
 	// bio биография пользователя
-	Bio string `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
+	Bio string `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
 	// avatar_url ссылка на аватарку пользователя
-	AvatarUrl     string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	AvatarUrl     string `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -83,6 +85,13 @@ func (x *UserProfile) GetNickname() string {
 	return ""
 }
 
+func (x *UserProfile) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 func (x *UserProfile) GetBio() string {
 	if x != nil {
 		return x.Bio
@@ -102,12 +111,14 @@ type CreateProfileRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// nickname - никнейм пользователя
 	Nickname string `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	// nickname - никнейм пользователя
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	// bio биография пользователя
-	Bio *string `protobuf:"bytes,2,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	Bio *string `protobuf:"bytes,3,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
 	// avatar_url ссылка на аватарку пользователя
-	AvatarUrl *string `protobuf:"bytes,3,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
+	AvatarUrl *string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
 	// password пароль
-	Password      string `protobuf:"bytes,4,opt,name=password,proto3" json:"password,omitempty"`
+	Password      string `protobuf:"bytes,5,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -145,6 +156,13 @@ func (*CreateProfileRequest) Descriptor() ([]byte, []int) {
 func (x *CreateProfileRequest) GetNickname() string {
 	if x != nil {
 		return x.Nickname
+	}
+	return ""
+}
+
+func (x *CreateProfileRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
 	}
 	return ""
 }
@@ -220,9 +238,10 @@ type UpdateProfileRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	Nickname      *string                `protobuf:"bytes,2,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
-	Bio           *string                `protobuf:"bytes,3,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
-	AvatarUrl     *string                `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
-	Password      *string                `protobuf:"bytes,5,opt,name=password,proto3,oneof" json:"password,omitempty"`
+	Email         *string                `protobuf:"bytes,3,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Bio           *string                `protobuf:"bytes,4,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	AvatarUrl     *string                `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
+	Password      *string                `protobuf:"bytes,6,opt,name=password,proto3,oneof" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -267,6 +286,13 @@ func (x *UpdateProfileRequest) GetUserId() string {
 func (x *UpdateProfileRequest) GetNickname() string {
 	if x != nil && x.Nickname != nil {
 		return *x.Nickname
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
@@ -612,36 +638,40 @@ var File_api_users_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_users_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/users/v1/messages.proto\x126github.com.PechatnovVladimir.msa_big_tech.users.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x81\x03\n" +
+	"\x1bapi/users/v1/messages.proto\x126github.com.PechatnovVladimir.msa_big_tech.users.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc1\x03\n" +
 	"\vUserProfile\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
-	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
+	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x14\n" +
+	"\x05email\x18\x03 \x01(\tR\x05email\x12\x10\n" +
+	"\x03bio\x18\x04 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tR\tavatarUrl:\x8b\x02\x92A\x87\x02\n" +
-	"\xac\x01*\vUserProfile25UserProfile - профиль пользователяJD{\"nickname\": \"pvv\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}\xd2\x01\auser_id\xd2\x01\x15nicknamebioavatar_url*V\n" +
-	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\x98\x03\n" +
-	"\x14CreateProfileRequest\x12+\n" +
-	"\bnickname\x18\x01 \x01(\tB\x0f\xe0A\x02\xbaH\t\xc8\x01\x01r\x04\x10\x03\x18\n" +
-	"R\bnickname\x12 \n" +
-	"\x03bio\x18\x02 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x00R\x03bio\x88\x01\x01\x12-\n" +
+	"avatar_url\x18\x05 \x01(\tR\tavatarUrl:\xb5\x02\x92A\xb1\x02\n" +
+	"\xd6\x01*\vUserProfile25UserProfile - профиль пользователяJ`{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}\xd2\x01\auser_id\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\x03bio\xd2\x01\n" +
+	"avatar_url*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xd8\x03\n" +
+	"\x14CreateProfileRequest\x12>\n" +
+	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12#\n" +
+	"\x05email\x18\x02 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12 \n" +
+	"\x03bio\x18\x03 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x00R\x03bio\x88\x01\x01\x12-\n" +
 	"\n" +
-	"avatar_url\x18\x03 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01\x12+\n" +
-	"\bpassword\x18\x04 \x01(\tB\x0f\xe0A\x02\xbaH\t\xc8\x01\x01r\x04\x10\b\x18\x14R\bpassword:\xbd\x01\x92A\xb9\x01\n" +
-	"_*\x14CreateProfileRequest21CreateProfileRequest - запрос CreateProfile\xd2\x01\bnickname\xd2\x01\bpassword*V\n" +
+	"avatar_url\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01\x12+\n" +
+	"\bpassword\x18\x05 \x01(\tB\x0f\xe0A\x02\xbaH\t\xc8\x01\x01r\x04\x10\b\x18\x14R\bpassword:\xc5\x01\x92A\xc1\x01\n" +
+	"g*\x14CreateProfileRequest21CreateProfileRequest - запрос CreateProfile\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\bpassword*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_url\"~\n" +
 	"\x15CreateProfileResponse\x12e\n" +
-	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\xdd\x01\n" +
+	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\x82\x02\n" +
 	"\x14UpdateProfileRequest\x12\x17\n" +
 	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1f\n" +
-	"\bnickname\x18\x02 \x01(\tH\x00R\bnickname\x88\x01\x01\x12\x15\n" +
-	"\x03bio\x18\x03 \x01(\tH\x01R\x03bio\x88\x01\x01\x12\"\n" +
+	"\bnickname\x18\x02 \x01(\tH\x00R\bnickname\x88\x01\x01\x12\x19\n" +
+	"\x05email\x18\x03 \x01(\tH\x01R\x05email\x88\x01\x01\x12\x15\n" +
+	"\x03bio\x18\x04 \x01(\tH\x02R\x03bio\x88\x01\x01\x12\"\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tH\x02R\tavatarUrl\x88\x01\x01\x12\x1f\n" +
-	"\bpassword\x18\x05 \x01(\tH\x03R\bpassword\x88\x01\x01B\v\n" +
-	"\t_nicknameB\x06\n" +
+	"avatar_url\x18\x05 \x01(\tH\x03R\tavatarUrl\x88\x01\x01\x12\x1f\n" +
+	"\bpassword\x18\x06 \x01(\tH\x04R\bpassword\x88\x01\x01B\v\n" +
+	"\t_nicknameB\b\n" +
+	"\x06_emailB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_urlB\v\n" +
 	"\t_password\"~\n" +

@@ -1,64 +1,53 @@
 syntax = "proto3";
 
-package  github.com.PechatnovVladimir.msa_big_tech.social.api.v1;
-
-option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api/social/v1;social";
+package github.com.PechatnovVladimir.msa_big_tech.social.api.v1;
 
 import "api/social/v1/messages.proto";
+import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-import "google/api/annotations.proto";
-
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api/social/v1;social";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "Social API";
-    version: "1.0";
-    description: "API social-service";
-  };
-  schemes: HTTP;
+    title: "Social API"
+    version: "1.0"
+    description: "API social-service"
+  }
+  schemes: HTTP
 };
 
-
 service SocialService {
-  rpc SendFriendRequest (SendFriendRequestRequest) returns (SendFriendRequestResponse) {
+  rpc SendFriendRequest(SendFriendRequestRequest) returns (SendFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/SendFriendRequest"
       body: "*"
     };
-
   }
 
-  rpc ListRequests (ListRequestsRequest) returns (ListRequestsResponse) {
-    option (google.api.http) = {
-      get: "/v1/social/ListRequests/{user_id}"
-    };
+  rpc ListRequests(ListRequestsRequest) returns (ListRequestsResponse) {
+    option (google.api.http) = {get: "/v1/social/ListRequests/{user_id}"};
   }
 
-  rpc AcceptFriendRequest (AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
+  rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/AcceptFriendRequest"
       body: "*"
     };
   }
 
-  rpc DeclineFriendRequest (DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {
+  rpc DeclineFriendRequest(DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/DeclineFriendRequest"
       body: "*"
     };
   }
 
-  rpc RemoveFriend (RemoveFriendRequest) returns (RemoveFriendResponse) {
-    option (google.api.http) = {
-      delete: "/v1/social/RemoveFriend/{user_id}"
-    };
+  rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse) {
+    option (google.api.http) = {delete: "/v1/social/RemoveFriend/{user_id}"};
   }
 
-  rpc ListFriends (ListFriendsRequest) returns (ListFriendsResponse){
-    option (google.api.http) = {
-      get: "/v1/social/ListFriends/{user_id}"
-    };
+  rpc ListFriends(ListFriendsRequest) returns (ListFriendsResponse) {
+    option (google.api.http) = {get: "/v1/social/ListFriends/{user_id}"};
   }
 }
-

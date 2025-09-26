@@ -29,16 +29,18 @@ const (
 // UserServiceClient is the client API for UserService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// UserService - сервис пользователей
 type UserServiceClient interface {
-	// создать профиль пользователя
+	// CreateProfile - создать профиль пользователя
 	CreateProfile(ctx context.Context, in *CreateProfileRequest, opts ...grpc.CallOption) (*CreateProfileResponse, error)
-	// обновить профиль пользователя
+	// UpdateProfile - обновить профиль пользователя
 	UpdateProfile(ctx context.Context, in *UpdateProfileRequest, opts ...grpc.CallOption) (*UpdateProfileResponse, error)
-	// получить профиль по ID
+	// GetProfileByID - получить профиль по ID
 	GetProfileByID(ctx context.Context, in *GetProfileByIDRequest, opts ...grpc.CallOption) (*GetProfileByIDResponse, error)
-	// поиск по нику
+	// GetProfileByNickname - поиск пользователя по нику
 	GetProfileByNickname(ctx context.Context, in *GetProfileByNicknameRequest, opts ...grpc.CallOption) (*GetProfileByNicknameResponse, error)
-	// поиск пользователей
+	// SearchByNickname - поиск пользователей
 	SearchByNickname(ctx context.Context, in *SearchByNicknameRequest, opts ...grpc.CallOption) (*SearchByNicknameResponse, error)
 }
 
@@ -103,16 +105,18 @@ func (c *userServiceClient) SearchByNickname(ctx context.Context, in *SearchByNi
 // UserServiceServer is the server API for UserService service.
 // All implementations must embed UnimplementedUserServiceServer
 // for forward compatibility.
+//
+// UserService - сервис пользователей
 type UserServiceServer interface {
-	// создать профиль пользователя
+	// CreateProfile - создать профиль пользователя
 	CreateProfile(context.Context, *CreateProfileRequest) (*CreateProfileResponse, error)
-	// обновить профиль пользователя
+	// UpdateProfile - обновить профиль пользователя
 	UpdateProfile(context.Context, *UpdateProfileRequest) (*UpdateProfileResponse, error)
-	// получить профиль по ID
+	// GetProfileByID - получить профиль по ID
 	GetProfileByID(context.Context, *GetProfileByIDRequest) (*GetProfileByIDResponse, error)
-	// поиск по нику
+	// GetProfileByNickname - поиск пользователя по нику
 	GetProfileByNickname(context.Context, *GetProfileByNicknameRequest) (*GetProfileByNicknameResponse, error)
-	// поиск пользователей
+	// SearchByNickname - поиск пользователей
 	SearchByNickname(context.Context, *SearchByNicknameRequest) (*SearchByNicknameResponse, error)
 	mustEmbedUnimplementedUserServiceServer()
 }

@@ -8,7 +8,7 @@ import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
 
-//UserProfile - профиль пользовател
+//UserProfile - профиль пользователя
 message UserProfile {
   option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
     json_schema: {
@@ -16,11 +16,12 @@ message UserProfile {
       description: "UserProfile - профиль пользователя"
       required: [
         "user_id",
-        "nickname"
-        "bio"
+        "nickname",
+        "email",
+        "bio",
         "avatar_url"
       ]
-      example: "{\"nickname\": \"pvv\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}"
+      example: "{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}"
     }
     external_docs: {
       url: "https://github.com/grpc-ecosystem/grpc-gateway"
@@ -32,10 +33,12 @@ message UserProfile {
   string user_id = 1;
   //nickname никнейм пользователя
   string nickname = 2;
+  //nickname никнейм пользователя
+  string email = 3;
   //bio биография пользователя
-  string bio = 3;
+  string bio = 4;
   //avatar_url ссылка на аватарку пользователя
-  string avatar_url = 4;
+  string avatar_url = 5;
 }
 
 //CreateProfileRequest - запрос CreateProfile
@@ -46,6 +49,7 @@ message CreateProfileRequest {
       description: "CreateProfileRequest - запрос CreateProfile"
       required: [
         "nickname",
+        "email",
         "password"
       ]
     }
@@ -59,24 +63,34 @@ message CreateProfileRequest {
   string nickname = 1 [
     json_name = "nickname",
     (buf.validate.field).required = true,
-    (buf.validate.field).string.min_len = 3,
-    (buf.validate.field).string.max_len = 10,
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 20,
+      pattern: "^[a-z0-9_]{3,20}$",
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //nickname - никнейм пользователя
+  string email = 2 [
+    json_name = "email",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.email = true,
     (google.api.field_behavior) = REQUIRED
   ];
   //bio биография пользователя
-  optional string bio = 2 [
+  optional string bio = 3[
     json_name = "bio",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
   ];
   //avatar_url ссылка на аватарку пользователя
-  optional string avatar_url = 3 [
+  optional string avatar_url = 4 [
     json_name = "avatarUrl",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
   ];
   //password пароль
-  string password = 4 [
+  string password = 5 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 8,
     (buf.validate.field).string.max_len = 20,
@@ -93,9 +107,10 @@ message CreateProfileResponse {
 message UpdateProfileRequest {
   string user_id = 1;
   optional string nickname = 2;
-  optional string bio = 3;
-  optional string avatar_url = 4;
-  optional string password = 5;
+  optional string email = 3;
+  optional string bio = 4;
+  optional string avatar_url = 5;
+  optional string password = 6;
 }
 
 message UpdateProfileResponse {

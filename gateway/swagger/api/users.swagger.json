@@ -22,7 +22,7 @@
   "paths": {
     "/v1/users/CreateProfile": {
       "post": {
-        "summary": "создать профиль пользователя",
+        "summary": "CreateProfile - создать профиль пользователя",
         "operationId": "UserService_CreateProfile",
         "responses": {
           "200": {
@@ -56,7 +56,7 @@
     },
     "/v1/users/GetProfileByID/{userId}": {
       "get": {
-        "summary": "получить профиль по ID",
+        "summary": "GetProfileByID - получить профиль по ID",
         "operationId": "UserService_GetProfileByID",
         "responses": {
           "200": {
@@ -87,7 +87,7 @@
     },
     "/v1/users/GetProfileByNickname/{nickname}": {
       "get": {
-        "summary": "поиск по нику",
+        "summary": "GetProfileByNickname - поиск пользователя по нику",
         "operationId": "UserService_GetProfileByNickname",
         "responses": {
           "200": {
@@ -118,7 +118,7 @@
     },
     "/v1/users/SearchByNickname": {
       "post": {
-        "summary": "поиск пользователей",
+        "summary": "SearchByNickname - поиск пользователей",
         "operationId": "UserService_SearchByNickname",
         "responses": {
           "200": {
@@ -156,7 +156,7 @@
     },
     "/v1/users/UpdateProfile": {
       "patch": {
-        "summary": "обновить профиль пользователя",
+        "summary": "UpdateProfile - обновить профиль пользователя",
         "operationId": "UserService_UpdateProfile",
         "responses": {
           "200": {
@@ -224,6 +224,10 @@
           "type": "string",
           "title": "nickname - никнейм пользователя"
         },
+        "email": {
+          "type": "string",
+          "title": "nickname - никнейм пользователя"
+        },
         "bio": {
           "type": "string",
           "title": "bio биография пользователя"
@@ -245,6 +249,7 @@
       },
       "required": [
         "nickname",
+        "email",
         "password"
       ]
     },
@@ -295,6 +300,9 @@
         "nickname": {
           "type": "string"
         },
+        "email": {
+          "type": "string"
+        },
         "bio": {
           "type": "string"
         },
@@ -318,6 +326,7 @@
       "type": "object",
       "example": {
         "nickname": "pvv",
+        "email": "my-mail@mail.ru",
         "bio": "biography pvv",
         "avatar_url": "pvv.jpg"
       },
@@ -327,6 +336,10 @@
           "title": "user_id уникальный идентификатор пользователя в формате UUID генерируется автоматически при создании профиля"
         },
         "nickname": {
+          "type": "string",
+          "title": "nickname никнейм пользователя"
+        },
+        "email": {
           "type": "string",
           "title": "nickname никнейм пользователя"
         },
@@ -347,7 +360,10 @@
       },
       "required": [
         "userId",
-        "nicknamebioavatar_url"
+        "nickname",
+        "email",
+        "bio",
+        "avatarUrl"
       ]
     }
   }

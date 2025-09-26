@@ -1,20 +1,18 @@
 syntax = "proto3";
 
-package  github.com.PechatnovVladimir.msa_big_tech.social.api.v1;
+package github.com.PechatnovVladimir.msa_big_tech.social.api.v1;
 
-option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api/social/v1;social";
-
+import "google/api/annotations.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
-import "google/api/annotations.proto";
-
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api/social/v1;social";
 
 enum Status {
   UNKNOWN = 0;
   PENDING = 1;
   ACCEPTED = 2;
-  DECLINED  = 3;
+  DECLINED = 3;
 }
 
 message FriendRequest {
@@ -55,18 +53,15 @@ message DeclineFriendRequestResponse {
 }
 
 message RemoveFriendRequest {
-  int64 user_id =1;
+  int64 user_id = 1;
 }
 
-message RemoveFriendResponse {
-
-}
+message RemoveFriendResponse {}
 
 message Cursor {
   int64 user_id = 1;
   google.protobuf.Timestamp created_at = 2;
 }
-
 
 message ListFriendsRequest {
   int64 user_id = 1;
