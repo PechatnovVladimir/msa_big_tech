@@ -2,10 +2,10 @@ package gateway
 
 import (
 	"context"
-	authpb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
-	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
+	authpb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
+	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/gateway/swagger"
-	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
+	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
