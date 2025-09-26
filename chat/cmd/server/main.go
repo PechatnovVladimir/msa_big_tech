@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/server"
-	chat "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api"
+	chat "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	auth "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
+	auth "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
 	"log"
 )
 

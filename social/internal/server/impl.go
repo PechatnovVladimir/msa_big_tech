@@ -2,7 +2,7 @@ package server
 
 import (
 	"context"
-	social "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
+	social "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"log"
 )
 

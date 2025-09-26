@@ -24,7 +24,7 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// UserProfile - профиль пользователя
+// UserProfile - профиль пользовател
 type UserProfile struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// user_id уникальный идентификатор пользователя в формате UUID генерируется автоматически при создании профиля

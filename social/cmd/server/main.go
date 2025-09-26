@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/server"
-	social "github.com/PechatnovVladimir/msa_big_tech/social/pkg/api"
+	social "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

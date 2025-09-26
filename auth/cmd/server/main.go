@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/server"
-	auth "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api"
+	auth "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"log"

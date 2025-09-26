@@ -20,14 +20,23 @@
     "application/json"
   ],
   "paths": {
-    "/v1/chat/CreateDirectChat": {
+    "/github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatService/StreamMessages": {
       "post": {
-        "operationId": "ChatService_CreateDirectChat",
+        "operationId": "ChatService_StreamMessages",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/definitions/apiCreateDirectChatResponse"
+              "type": "object",
+              "properties": {
+                "result": {
+                  "$ref": "#/definitions/v1StreamMessagesResponse"
+                },
+                "error": {
+                  "$ref": "#/definitions/rpcStatus"
+                }
+              },
+              "title": "Stream result of v1StreamMessagesResponse"
             }
           },
           "default": {
@@ -43,7 +52,39 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiCreateDirectChatRequest"
+              "$ref": "#/definitions/v1StreamMessagesRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ChatService"
+        ]
+      }
+    },
+    "/v1/chat/CreateDirectChat": {
+      "post": {
+        "operationId": "ChatService_CreateDirectChat",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1CreateDirectChatResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/v1CreateDirectChatRequest"
             }
           }
         ],
@@ -59,7 +100,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiGetChatResponse"
+              "$ref": "#/definitions/v1GetChatResponse"
             }
           },
           "default": {
@@ -90,7 +131,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListChatMembersResponse"
+              "$ref": "#/definitions/v1ListChatMembersResponse"
             }
           },
           "default": {
@@ -121,7 +162,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListMessagesResponse"
+              "$ref": "#/definitions/v1ListMessagesResponse"
             }
           },
           "default": {
@@ -173,7 +214,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListUserChatsResponse"
+              "$ref": "#/definitions/v1ListUserChatsResponse"
             }
           },
           "default": {
@@ -204,7 +245,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiSendMessageResponse"
+              "$ref": "#/definitions/v1SendMessageResponse"
             }
           },
           "default": {
@@ -220,7 +261,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiSendMessageRequest"
+              "$ref": "#/definitions/v1SendMessageRequest"
             }
           }
         ],
@@ -231,136 +272,6 @@
     }
   },
   "definitions": {
-    "apiChat": {
-      "type": "object",
-      "properties": {
-        "chatId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "apiCreateDirectChatRequest": {
-      "type": "object",
-      "properties": {
-        "participantId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiCreateDirectChatResponse": {
-      "type": "object",
-      "properties": {
-        "chatId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiCursor": {
-      "type": "object",
-      "properties": {
-        "messageId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "apiGetChatResponse": {
-      "type": "object",
-      "properties": {
-        "chat": {
-          "$ref": "#/definitions/apiChat"
-        }
-      }
-    },
-    "apiListChatMembersResponse": {
-      "type": "object",
-      "properties": {
-        "userIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "int64"
-          }
-        }
-      }
-    },
-    "apiListMessagesResponse": {
-      "type": "object",
-      "properties": {
-        "messages": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/apiMessage"
-          }
-        },
-        "nextCursor": {
-          "$ref": "#/definitions/apiCursor"
-        }
-      }
-    },
-    "apiListUserChatsResponse": {
-      "type": "object",
-      "properties": {
-        "chats": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/apiChat"
-          }
-        }
-      }
-    },
-    "apiMessage": {
-      "type": "object",
-      "properties": {
-        "messageId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "text": {
-          "type": "string"
-        }
-      }
-    },
-    "apiSendMessageRequest": {
-      "type": "object",
-      "properties": {
-        "chatId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "text": {
-          "type": "string"
-        }
-      }
-    },
-    "apiSendMessageResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "$ref": "#/definitions/apiMessage"
-        }
-      }
-    },
-    "apiStreamMessagesResponse": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "$ref": "#/definitions/apiMessage"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -386,6 +297,149 @@
             "type": "object",
             "$ref": "#/definitions/protobufAny"
           }
+        }
+      }
+    },
+    "v1Chat": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "v1CreateDirectChatRequest": {
+      "type": "object",
+      "properties": {
+        "participantId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1CreateDirectChatResponse": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1Cursor": {
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1GetChatResponse": {
+      "type": "object",
+      "properties": {
+        "chat": {
+          "$ref": "#/definitions/v1Chat"
+        }
+      }
+    },
+    "v1ListChatMembersResponse": {
+      "type": "object",
+      "properties": {
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        }
+      }
+    },
+    "v1ListMessagesResponse": {
+      "type": "object",
+      "properties": {
+        "messages": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Message"
+          }
+        },
+        "nextCursor": {
+          "$ref": "#/definitions/v1Cursor"
+        }
+      }
+    },
+    "v1ListUserChatsResponse": {
+      "type": "object",
+      "properties": {
+        "chats": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1Chat"
+          }
+        }
+      }
+    },
+    "v1Message": {
+      "type": "object",
+      "properties": {
+        "messageId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SendMessageRequest": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "v1SendMessageResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "$ref": "#/definitions/v1Message"
+        }
+      }
+    },
+    "v1StreamMessagesRequest": {
+      "type": "object",
+      "properties": {
+        "chatId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sinceUnixMs": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1StreamMessagesResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "$ref": "#/definitions/v1Message"
         }
       }
     }

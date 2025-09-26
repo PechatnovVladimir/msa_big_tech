@@ -27,7 +27,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiAcceptFriendRequestResponse"
+              "$ref": "#/definitions/v1AcceptFriendRequestResponse"
             }
           },
           "default": {
@@ -43,7 +43,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiAcceptFriendRequestRequest"
+              "$ref": "#/definitions/v1AcceptFriendRequestRequest"
             }
           }
         ],
@@ -59,7 +59,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiDeclineFriendRequestResponse"
+              "$ref": "#/definitions/v1DeclineFriendRequestResponse"
             }
           },
           "default": {
@@ -75,7 +75,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiDeclineFriendRequestRequest"
+              "$ref": "#/definitions/v1DeclineFriendRequestRequest"
             }
           }
         ],
@@ -91,7 +91,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListFriendsResponse"
+              "$ref": "#/definitions/v1ListFriendsResponse"
             }
           },
           "default": {
@@ -143,7 +143,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListRequestsResponse"
+              "$ref": "#/definitions/v1ListRequestsResponse"
             }
           },
           "default": {
@@ -174,7 +174,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiRemoveFriendResponse"
+              "$ref": "#/definitions/v1RemoveFriendResponse"
             }
           },
           "default": {
@@ -205,7 +205,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiSendFriendRequestResponse"
+              "$ref": "#/definitions/v1SendFriendRequestResponse"
             }
           },
           "default": {
@@ -221,7 +221,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiSendFriendRequestRequest"
+              "$ref": "#/definitions/v1SendFriendRequestRequest"
             }
           }
         ],
@@ -232,111 +232,15 @@
     }
   },
   "definitions": {
-    "apiAcceptFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiAcceptFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
-    },
-    "apiCursor": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "apiDeclineFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiDeclineFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
-    },
-    "apiFriendRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "status": {
-          "$ref": "#/definitions/socialapiStatus"
-        }
-      }
-    },
-    "apiListFriendsResponse": {
-      "type": "object",
-      "properties": {
-        "friendUserIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "int64"
-          }
-        },
-        "nextCursor": {
-          "$ref": "#/definitions/apiCursor"
-        }
-      }
-    },
-    "apiListRequestsResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/apiFriendRequest"
-          }
-        }
-      }
-    },
-    "apiRemoveFriendResponse": {
-      "type": "object"
-    },
-    "apiSendFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiSendFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
+    "apiv1Status": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED"
+      ],
+      "default": "UNKNOWN"
     },
     "googlerpcStatus": {
       "type": "object",
@@ -366,15 +270,111 @@
       },
       "additionalProperties": {}
     },
-    "socialapiStatus": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN",
-        "PENDING",
-        "ACCEPTED",
-        "DECLINED"
-      ],
-      "default": "UNKNOWN"
+    "v1AcceptFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1AcceptFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest"
+        }
+      }
+    },
+    "v1Cursor": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "v1DeclineFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1DeclineFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest"
+        }
+      }
+    },
+    "v1FriendRequest": {
+      "type": "object",
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "$ref": "#/definitions/apiv1Status"
+        }
+      }
+    },
+    "v1ListFriendsResponse": {
+      "type": "object",
+      "properties": {
+        "friendUserIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "nextCursor": {
+          "$ref": "#/definitions/v1Cursor"
+        }
+      }
+    },
+    "v1ListRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FriendRequest"
+          }
+        }
+      }
+    },
+    "v1RemoveFriendResponse": {
+      "type": "object"
+    },
+    "v1SendFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "v1SendFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest"
+        }
+      }
     }
   }
 }
