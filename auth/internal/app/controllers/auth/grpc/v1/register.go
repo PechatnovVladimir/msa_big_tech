@@ -8,5 +8,5 @@ import (
 
 func (s *Service) Register(ctx context.Context, request *auth.RegisterRequest) (*auth.RegisterResponse, error) {
 	log.Println("Auth Service Register called")
-	return &auth.RegisterResponse{UserId: 999}, nil
+	return &auth.RegisterResponse{UserId: "999"}, nil
 }

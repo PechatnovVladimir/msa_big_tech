@@ -8,5 +8,5 @@ import (
 
 func (s *Service) Refresh(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
 	log.Println("Auth Service Refresh called")
-	return &auth.RefreshResponse{AccessToken: "AccessToken999", RefreshToken: "RefreshToken999", UserId: 999}, nil
+	return &auth.RefreshResponse{AccessToken: "AccessToken999", RefreshToken: "RefreshToken999", UserId: "999"}, nil
 }

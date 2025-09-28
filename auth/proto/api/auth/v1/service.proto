@@ -1,24 +1,24 @@
 syntax = "proto3";
 
-package  github.com.PechatnovVladimir.msa_big_tech.auth.api.v1;
-
-option go_package = "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api/auth/v1;auth";
+package github.com.PechatnovVladimir.msa_big_tech.auth.api.v1;
 
 import "api/auth/v1/messages.proto";
 import "google/api/annotations.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/api/auth/v1;auth";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "Auth API";
-    version: "1.0";
-    description: "API auth-service";
-  };
-  schemes: HTTP;
+    title: "Auth API"
+    version: "1.0"
+    description: "API auth-service"
+  }
+  schemes: HTTP
 };
 
-
+//AuthService - сервис авторизации
 service AuthService {
+  //Register - регистрация нового пользователя
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/auth/Register"
@@ -26,19 +26,19 @@ service AuthService {
     };
   }
 
+  //Login - вход пользователя
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/v1/auth/Login"
       body: "*"
     };
-
   }
 
+  //Refresh -
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {
     option (google.api.http) = {
       post: "/v1/auth/Refresh"
       body: "*"
     };
-
   }
 }

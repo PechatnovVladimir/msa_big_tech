@@ -27,9 +27,14 @@ const (
 // AuthServiceClient is the client API for AuthService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// AuthService - сервис авторизации
 type AuthServiceClient interface {
+	// Register - регистрация нового пользователя
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
+	// Login - вход пользователя
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	// Refresh -
 	Refresh(ctx context.Context, in *RefreshRequest, opts ...grpc.CallOption) (*RefreshResponse, error)
 }
 
@@ -74,9 +79,14 @@ func (c *authServiceClient) Refresh(ctx context.Context, in *RefreshRequest, opt
 // AuthServiceServer is the server API for AuthService service.
 // All implementations must embed UnimplementedAuthServiceServer
 // for forward compatibility.
+//
+// AuthService - сервис авторизации
 type AuthServiceServer interface {
+	// Register - регистрация нового пользователя
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
+	// Login - вход пользователя
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	// Refresh -
 	Refresh(context.Context, *RefreshRequest) (*RefreshResponse, error)
 	mustEmbedUnimplementedAuthServiceServer()
 }

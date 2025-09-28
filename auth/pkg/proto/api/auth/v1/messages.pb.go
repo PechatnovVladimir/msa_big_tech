@@ -7,6 +7,7 @@
 package auth
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -23,10 +24,15 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// RegisterRequest - запрос Register
 type RegisterRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// nickname - никнейм пользователя
+	Nickname string `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	// email - e-mail пользователя
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	// password - пароль пользователя длина от 8 до 128 символов
+	Password      string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -61,6 +67,13 @@ func (*RegisterRequest) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_messages_proto_rawDescGZIP(), []int{0}
 }
 
+func (x *RegisterRequest) GetNickname() string {
+	if x != nil {
+		return x.Nickname
+	}
+	return ""
+}
+
 func (x *RegisterRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
@@ -75,9 +88,11 @@ func (x *RegisterRequest) GetPassword() string {
 	return ""
 }
 
+// RegisterResponse - ответ Register
 type RegisterResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// user_id - ID пользователя
+	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -112,16 +127,17 @@ func (*RegisterResponse) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *RegisterResponse) GetUserId() int64 {
+func (x *RegisterResponse) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
+// LoginRequest - запрос Login
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
+	Nickname      string                 `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -157,9 +173,9 @@ func (*LoginRequest) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *LoginRequest) GetEmail() string {
+func (x *LoginRequest) GetNickname() string {
 	if x != nil {
-		return x.Email
+		return x.Nickname
 	}
 	return ""
 }
@@ -171,11 +187,15 @@ func (x *LoginRequest) GetPassword() string {
 	return ""
 }
 
+// LoginResponse - ответ Login
 type LoginResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
-	UserId        int64                  `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// access_token - Access token
+	AccessToken string `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	// refresh_token - Refresh token
+	RefreshToken string `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	// user_id - ID пользователя
+	UserId        string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -224,16 +244,18 @@ func (x *LoginResponse) GetRefreshToken() string {
 	return ""
 }
 
-func (x *LoginResponse) GetUserId() int64 {
+func (x *LoginResponse) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
+// RefreshRequest - запрос Refresh
 type RefreshRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	RefreshToken  string                 `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// refresh_token - Refresh token
+	RefreshToken  string `protobuf:"bytes,1,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -275,11 +297,15 @@ func (x *RefreshRequest) GetRefreshToken() string {
 	return ""
 }
 
+// RefreshResponse - ответ Refresh
 type RefreshResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	AccessToken   string                 `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
-	RefreshToken  string                 `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
-	UserId        int64                  `protobuf:"varint,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// access_token - Access token
+	AccessToken string `protobuf:"bytes,1,opt,name=access_token,json=accessToken,proto3" json:"access_token,omitempty"`
+	// refresh_token - Refresh token
+	RefreshToken string `protobuf:"bytes,2,opt,name=refresh_token,json=refreshToken,proto3" json:"refresh_token,omitempty"`
+	// user_id - ID пользователя
+	UserId        string `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -328,36 +354,39 @@ func (x *RefreshResponse) GetRefreshToken() string {
 	return ""
 }
 
-func (x *RefreshResponse) GetUserId() int64 {
+func (x *RefreshResponse) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 var File_api_auth_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/auth/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.auth.api.v1\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"C\n" +
-	"\x0fRegisterRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"+\n" +
+	"\x1aapi/auth/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.auth.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xfa\x02\n" +
+	"\x0fRegisterRequest\x12>\n" +
+	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12#\n" +
+	"\x05email\x18\x02 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12I\n" +
+	"\bpassword\x18\x03 \x01(\tB-\xe0A\x02\xbaH'\xc8\x01\x01r\"\x10\b\x18\x80\x012\x1b[A-Za-z0-9!@#$%^&*]{8,128}$R\bpassword:\xb6\x01\x92A\xb2\x01\n" +
+	"X*\x0fRegisterRequest2'RegisterRequest - запрос Register\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\bpassword*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"+\n" +
 	"\x10RegisterResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"@\n" +
-	"\fLoginRequest\x12\x14\n" +
-	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
-	"\bpassword\x18\x02 \x01(\tR\bpassword\"p\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x8e\x01\n" +
+	"\fLoginRequest\x12>\n" +
+	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12>\n" +
+	"\bpassword\x18\x02 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bpassword\"p\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\x03R\x06userId\"5\n" +
+	"\auser_id\x18\x03 \x01(\tR\x06userId\"5\n" +
 	"\x0eRefreshRequest\x12#\n" +
 	"\rrefresh_token\x18\x01 \x01(\tR\frefreshToken\"r\n" +
 	"\x0fRefreshResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
 	"\rrefresh_token\x18\x02 \x01(\tR\frefreshToken\x12\x17\n" +
-	"\auser_id\x18\x03 \x01(\x03R\x06userIdB\x84\x03\n" +
+	"\auser_id\x18\x03 \x01(\tR\x06userIdB\x84\x03\n" +
 	"9com.github.com.PechatnovVladimir.msa_big_tech.auth.api.v1B\rMessagesProtoP\x01ZCgithub.com/PechatnovVladimir/msa_big_tech/auth/pkg/api/auth/v1;auth\xa2\x02\x06GCPMAA\xaa\x023Github.Com.PechatnovVladimir.MsaBigTech.Auth.Api.V1\xca\x023Github\\Com\\PechatnovVladimir\\MsaBigTech\\Auth\\Api\\V1\xe2\x02?Github\\Com\\PechatnovVladimir\\MsaBigTech\\Auth\\Api\\V1\\GPBMetadata\xea\x029Github::Com::PechatnovVladimir::MsaBigTech::Auth::Api::V1b\x06proto3"
 
 var (

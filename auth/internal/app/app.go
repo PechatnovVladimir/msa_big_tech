@@ -3,7 +3,10 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/adapters/userservice"
 	authGPRS "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc"
+	v1 "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth"
 	"log"
 	"os"
 	"os/signal"
@@ -11,15 +14,19 @@ import (
 )
 
 func Run(ctx context.Context) (err error) {
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
 
-	//репозиторий
-	//repo := authRepo.New()
+	userAdapter := userservice.NewClient()
 
-	//юзкейс
-	//uc := authUC.New(repo)
+	authUseCase := auth.New(auth.Deps{
+		UserService: userAdapter,
+	})
 
 	//grpc
-	grpcServer, err := authGPRS.New()
+	grpcServer, err := authGPRS.New(v1.Deps{
+		AuthUseCase: authUseCase,
+	})
 	if err != nil {
 		return fmt.Errorf("authGRPC.New: %w", err)
 	}

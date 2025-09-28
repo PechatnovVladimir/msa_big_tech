@@ -22,6 +22,7 @@
   "paths": {
     "/v1/auth/Login": {
       "post": {
+        "summary": "Login - вход пользователя",
         "operationId": "AuthService_Login",
         "responses": {
           "200": {
@@ -54,6 +55,7 @@
     },
     "/v1/auth/Refresh": {
       "post": {
+        "summary": "Refresh -",
         "operationId": "AuthService_Refresh",
         "responses": {
           "200": {
@@ -86,6 +88,7 @@
     },
     "/v1/auth/Register": {
       "post": {
+        "summary": "Register - регистрация нового пользователя",
         "operationId": "AuthService_Register",
         "responses": {
           "200": {
@@ -104,6 +107,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "RegisterRequest - запрос Register",
             "in": "body",
             "required": true,
             "schema": {
@@ -149,71 +153,102 @@
     "v1LoginRequest": {
       "type": "object",
       "properties": {
-        "email": {
+        "nickname": {
           "type": "string"
         },
         "password": {
           "type": "string"
         }
-      }
+      },
+      "title": "LoginRequest - запрос Login",
+      "required": [
+        "nickname",
+        "password"
+      ]
     },
     "v1LoginResponse": {
       "type": "object",
       "properties": {
         "accessToken": {
-          "type": "string"
+          "type": "string",
+          "title": "access_token - Access token"
         },
         "refreshToken": {
-          "type": "string"
+          "type": "string",
+          "title": "refresh_token - Refresh token"
         },
         "userId": {
           "type": "string",
-          "format": "int64"
+          "title": "user_id - ID пользователя"
         }
-      }
+      },
+      "title": "LoginResponse - ответ Login"
     },
     "v1RefreshRequest": {
       "type": "object",
       "properties": {
         "refreshToken": {
-          "type": "string"
+          "type": "string",
+          "title": "refresh_token - Refresh token"
         }
-      }
+      },
+      "title": "RefreshRequest - запрос Refresh"
     },
     "v1RefreshResponse": {
       "type": "object",
       "properties": {
         "accessToken": {
-          "type": "string"
+          "type": "string",
+          "title": "access_token - Access token"
         },
         "refreshToken": {
-          "type": "string"
+          "type": "string",
+          "title": "refresh_token - Refresh token"
         },
         "userId": {
           "type": "string",
-          "format": "int64"
+          "title": "user_id - ID пользователя"
         }
-      }
+      },
+      "title": "RefreshResponse - ответ Refresh"
     },
     "v1RegisterRequest": {
       "type": "object",
       "properties": {
+        "nickname": {
+          "type": "string",
+          "title": "nickname - никнейм пользователя"
+        },
         "email": {
-          "type": "string"
+          "type": "string",
+          "title": "email - e-mail пользователя"
         },
         "password": {
-          "type": "string"
+          "type": "string",
+          "title": "password - пароль пользователя длина от 8 до 128 символов"
         }
-      }
+      },
+      "description": "RegisterRequest - запрос Register",
+      "title": "RegisterRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "nickname",
+        "email",
+        "password"
+      ]
     },
     "v1RegisterResponse": {
       "type": "object",
       "properties": {
         "userId": {
           "type": "string",
-          "format": "int64"
+          "title": "user_id - ID пользователя"
         }
-      }
+      },
+      "title": "RegisterResponse - ответ Register"
     }
   }
 }

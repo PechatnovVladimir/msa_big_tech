@@ -19,12 +19,12 @@ type Server struct {
 	server *grpc.Server
 }
 
-func New() (*Server, error) {
+func New(d authGPRS.Deps) (*Server, error) {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
 	)
 
-	authService := authGPRS.New()
+	authService := authGPRS.New(d)
 	authPB.RegisterAuthServiceServer(grpcServer, authService)
 
 	reflection.Register(grpcServer)
