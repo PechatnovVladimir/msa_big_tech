@@ -51,7 +51,7 @@ message RegisterRequest {
   //хотя бы одна цифра
   //хотя бы один специальный символ
   string password = 3 [
-    json_name = "email",
+    json_name = "password",
     (buf.validate.field).required = true,
     (buf.validate.field).string = {
       pattern: "^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z0-9!@#$%^&*]{8,}$",

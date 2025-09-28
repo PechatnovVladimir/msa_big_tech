@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"buf.build/go/protovalidate"
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 	userPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
@@ -9,12 +10,15 @@ import (
 )
 
 func (s *Service) CreateProfile(ctx context.Context, request *userPB.CreateProfileRequest) (*userPB.CreateProfileResponse, error) {
-	if request.Password == "" || request.Nickname == "" {
-		return nil, status.Error(codes.InvalidArgument, "nickname and password must be provided")
+	//валидация по proto описанию
+	err := protovalidate.Validate(request)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	d := dto.CreateProfileDTO{
 		Nickname: request.Nickname,
+		Email:    request.Email,
 		Password: request.Password,
 	}
 
@@ -34,6 +38,7 @@ func (s *Service) CreateProfile(ctx context.Context, request *userPB.CreateProfi
 	userProfile := &userPB.UserProfile{
 		UserId:    p.ID.String(),
 		Nickname:  p.Nickname,
+		Email:     p.Email,
 		Bio:       p.Bio,
 		AvatarUrl: p.Avatar,
 	}

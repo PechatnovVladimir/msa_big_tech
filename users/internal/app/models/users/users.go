@@ -13,6 +13,8 @@ type UserProfile struct {
 	ID UserID
 	//Никнейм пользователя
 	Nickname string
+	//Email пользователя
+	Email string
 	//Биография пользователя
 	Bio string
 	//Ссылка на аватарку пользователя

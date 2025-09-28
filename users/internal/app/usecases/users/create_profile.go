@@ -14,7 +14,8 @@ var (
 )
 
 func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*users.UserProfile, error) {
-	//валидация dto(?)
+	//валидация dto (?)
+	//валидацию сделали на уровне controllers, нужна ли еще дополнительная?
 
 	//проверяем соответствие nickname маске ^[a-z0-9_]{3,20}$
 	pattern := "^[a-z0-9_]{3,20}$"
@@ -39,6 +40,7 @@ func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*u
 	userProfile.Avatar = d.Avatar
 	userProfile.Password = psw
 
+	//сохраняем в репозиторий
 	err = s.repository.CreateProfile(ctx, userProfile)
 
 	if err != nil {

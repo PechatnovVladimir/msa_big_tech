@@ -54,7 +54,7 @@
         ]
       }
     },
-    "/v1/users/GetProfileByID/{userId}": {
+    "/v1/users/GetProfileByID/{userid}": {
       "get": {
         "summary": "GetProfileByID - получить профиль по ID",
         "operationId": "UserService_GetProfileByID",
@@ -74,7 +74,8 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "userid",
+            "description": "user_id - ID пользователя в формате UUID",
             "in": "path",
             "required": true,
             "type": "string"
@@ -175,6 +176,7 @@
         "parameters": [
           {
             "name": "body",
+            "description": "UpdateProfileRequest - запрос UpdateProfile",
             "in": "body",
             "required": true,
             "schema": {
@@ -267,9 +269,11 @@
       "type": "object",
       "properties": {
         "UserProfile": {
-          "$ref": "#/definitions/v1UserProfile"
+          "$ref": "#/definitions/v1UserProfile",
+          "title": "UserProfile - профиль пользователя"
         }
-      }
+      },
+      "title": "GetProfileByIDResponse - GetProfileByID ответ"
     },
     "v1GetProfileByNicknameResponse": {
       "type": "object",
@@ -294,8 +298,9 @@
     "v1UpdateProfileRequest": {
       "type": "object",
       "properties": {
-        "userId": {
-          "type": "string"
+        "userid": {
+          "type": "string",
+          "title": "user_id - ID пользователя в формате UUID"
         },
         "nickname": {
           "type": "string"
@@ -306,21 +311,32 @@
         "bio": {
           "type": "string"
         },
-        "avatarUrl": {
+        "avatarurl": {
           "type": "string"
         },
         "password": {
           "type": "string"
         }
-      }
+      },
+      "description": "UpdateProfileRequest - запрос UpdateProfile",
+      "title": "UpdateProfileRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "userid"
+      ]
     },
     "v1UpdateProfileResponse": {
       "type": "object",
       "properties": {
         "UserProfile": {
-          "$ref": "#/definitions/v1UserProfile"
+          "$ref": "#/definitions/v1UserProfile",
+          "title": "UserProfile - профайл пользователя"
         }
-      }
+      },
+      "title": "UpdateProfileResponse - UpdateProfile ответ"
     },
     "v1UserProfile": {
       "type": "object",

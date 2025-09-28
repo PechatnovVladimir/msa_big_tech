@@ -234,14 +234,16 @@ func (x *CreateProfileResponse) GetUserProfile() *UserProfile {
 	return nil
 }
 
+// UpdateProfileRequest - запрос UpdateProfile
 type UpdateProfileRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Nickname      *string                `protobuf:"bytes,2,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
-	Email         *string                `protobuf:"bytes,3,opt,name=email,proto3,oneof" json:"email,omitempty"`
-	Bio           *string                `protobuf:"bytes,4,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
-	AvatarUrl     *string                `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
-	Password      *string                `protobuf:"bytes,6,opt,name=password,proto3,oneof" json:"password,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// user_id - ID пользователя в формате UUID
+	UserId        string  `protobuf:"bytes,1,opt,name=user_id,json=userid,proto3" json:"user_id,omitempty"`
+	Nickname      *string `protobuf:"bytes,2,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
+	Email         *string `protobuf:"bytes,3,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Bio           *string `protobuf:"bytes,4,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	AvatarUrl     *string `protobuf:"bytes,5,opt,name=avatar_url,json=avatarurl,proto3,oneof" json:"avatar_url,omitempty"`
+	Password      *string `protobuf:"bytes,6,opt,name=password,proto3,oneof" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -318,9 +320,11 @@ func (x *UpdateProfileRequest) GetPassword() string {
 	return ""
 }
 
+// UpdateProfileResponse - UpdateProfile ответ
 type UpdateProfileResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserProfile   *UserProfile           `protobuf:"bytes,1,opt,name=UserProfile,proto3" json:"UserProfile,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UserProfile - профайл пользователя
+	UserProfile   *UserProfile `protobuf:"bytes,1,opt,name=UserProfile,proto3" json:"UserProfile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -362,9 +366,11 @@ func (x *UpdateProfileResponse) GetUserProfile() *UserProfile {
 	return nil
 }
 
+// GetProfileByIDRequest - GetProfileByID запрос
 type GetProfileByIDRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// user_id - ID пользователя в формате UUID
+	UserId        string `protobuf:"bytes,1,opt,name=user_id,json=userid,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -406,9 +412,11 @@ func (x *GetProfileByIDRequest) GetUserId() string {
 	return ""
 }
 
+// GetProfileByIDResponse - GetProfileByID ответ
 type GetProfileByIDResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserProfile   *UserProfile           `protobuf:"bytes,1,opt,name=UserProfile,proto3" json:"UserProfile,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// UserProfile - профиль пользователя
+	UserProfile   *UserProfile `protobuf:"bytes,1,opt,name=UserProfile,proto3" json:"UserProfile,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -648,37 +656,41 @@ const file_api_users_v1_messages_proto_rawDesc = "" +
 	"avatar_url\x18\x05 \x01(\tR\tavatarUrl:\xb5\x02\x92A\xb1\x02\n" +
 	"\xd6\x01*\vUserProfile25UserProfile - профиль пользователяJ`{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}\xd2\x01\auser_id\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\x03bio\xd2\x01\n" +
 	"avatar_url*V\n" +
-	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xd8\x03\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xf7\x03\n" +
 	"\x14CreateProfileRequest\x12>\n" +
 	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12#\n" +
 	"\x05email\x18\x02 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12 \n" +
 	"\x03bio\x18\x03 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x00R\x03bio\x88\x01\x01\x12-\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01\x12+\n" +
-	"\bpassword\x18\x05 \x01(\tB\x0f\xe0A\x02\xbaH\t\xc8\x01\x01r\x04\x10\b\x18\x14R\bpassword:\xc5\x01\x92A\xc1\x01\n" +
+	"avatar_url\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01\x12J\n" +
+	"\bpassword\x18\x05 \x01(\tB.\xe0A\x02\xbaH(\xc8\x01\x01r#\x10\b\x18\x80\x012\x1c^[A-Za-z0-9!@#$%^&*]{8,128}$R\bpassword:\xc5\x01\x92A\xc1\x01\n" +
 	"g*\x14CreateProfileRequest21CreateProfileRequest - запрос CreateProfile\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\bpassword*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_url\"~\n" +
 	"\x15CreateProfileResponse\x12e\n" +
-	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\x82\x02\n" +
-	"\x14UpdateProfileRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1f\n" +
-	"\bnickname\x18\x02 \x01(\tH\x00R\bnickname\x88\x01\x01\x12\x19\n" +
-	"\x05email\x18\x03 \x01(\tH\x01R\x05email\x88\x01\x01\x12\x15\n" +
-	"\x03bio\x18\x04 \x01(\tH\x02R\x03bio\x88\x01\x01\x12\"\n" +
+	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\xbf\x04\n" +
+	"\x14UpdateProfileRequest\x12'\n" +
+	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid\x12C\n" +
+	"\bnickname\x18\x02 \x01(\tB\"\xe0A\x01\xbaH\x1c\xc8\x01\x00r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$H\x00R\bnickname\x88\x01\x01\x12(\n" +
+	"\x05email\x18\x03 \x01(\tB\r\xe0A\x01\xbaH\a\xc8\x01\x00r\x02`\x01H\x01R\x05email\x88\x01\x01\x12 \n" +
+	"\x03bio\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x02R\x03bio\x88\x01\x01\x12-\n" +
 	"\n" +
-	"avatar_url\x18\x05 \x01(\tH\x03R\tavatarUrl\x88\x01\x01\x12\x1f\n" +
-	"\bpassword\x18\x06 \x01(\tH\x04R\bpassword\x88\x01\x01B\v\n" +
+	"avatar_url\x18\x05 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x03R\tavatarurl\x88\x01\x01\x12O\n" +
+	"\bpassword\x18\x06 \x01(\tB.\xe0A\x01\xbaH(\xc8\x01\x00r#\x10\b\x18\x80\x012\x1c^[A-Za-z0-9!@#$%^&*]{8,128}$H\x04R\bpassword\x88\x01\x01:\xb1\x01\x92A\xad\x01\n" +
+	"S*\x14UpdateProfileRequest21UpdateProfileRequest - запрос UpdateProfile\xd2\x01\auser_id*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\v\n" +
 	"\t_nicknameB\b\n" +
 	"\x06_emailB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_urlB\v\n" +
 	"\t_password\"~\n" +
 	"\x15UpdateProfileResponse\x12e\n" +
-	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"0\n" +
-	"\x15GetProfileByIDRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x7f\n" +
+	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\xf7\x01\n" +
+	"\x15GetProfileByIDRequest\x12'\n" +
+	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid:\xb4\x01\x92A\xb0\x01\n" +
+	"V*\x15GetProfileByIDRequest23GetProfileByIDRequest - запрос GetProfileByID\xd2\x01\auser_id*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\x7f\n" +
 	"\x16GetProfileByIDResponse\x12e\n" +
 	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"9\n" +
 	"\x1bGetProfileByNicknameRequest\x12\x1a\n" +

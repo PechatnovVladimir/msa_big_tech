@@ -3,6 +3,8 @@ package dto
 type CreateProfileDTO struct {
 	//Никнейм пользователя
 	Nickname string
+	//Email пользователя
+	Email string
 	//Биография пользователя
 	Bio string
 	//Ссылка на аватарку пользователя
@@ -16,6 +18,8 @@ type UpdateProfileDTO struct {
 	ID string
 	//Никнейм пользователя
 	Nickname string
+	//Email пользователя
+	Email string
 	//Биография пользователя
 	Bio string
 	//Ссылка на аватарку пользователя
