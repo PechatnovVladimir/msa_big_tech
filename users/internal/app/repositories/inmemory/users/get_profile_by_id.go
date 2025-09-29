@@ -9,7 +9,7 @@ func (r *InMemory) GetProfileByID(ctx context.Context, profileID string) (*users
 	r.mx.Lock()
 	defer r.mx.Unlock()
 
-	id := users.UserID(profileID)
+	id := profileID
 	userProfile, ok := r.storage[id]
 	if !ok {
 		return &users.UserProfile{}, users.ErrUserNotFound

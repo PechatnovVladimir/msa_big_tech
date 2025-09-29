@@ -20,13 +20,13 @@ type Repository interface {
 	SaveToken(ctx context.Context, userid string, accessToken string, refreshToken string) error
 	//RefreshToken - перезаписать
 	RefreshToken(ctx context.Context, userid string, accessToken string, refreshToken string) error
-	//GetUserIDbyRefreshToken - получить пользователя по refresh токену
-	GetUserIDbyRefreshToken(ctx context.Context, refreshToken string) (string, error)
+	//GetUserIDByRefreshToken - получить пользователя по refresh токену
+	GetUserIDByRefreshToken(ctx context.Context, refreshToken string) (string, error)
 }
 
 // UserService - интерфейс доступа к сервису пользователей
 type UserService interface {
-	//CreateUser - создать нового пользователя при регистрации
+	//CreateUserProfile - создать нового пользователя при регистрации
 	CreateUserProfile(ctx context.Context, in dto.CreateUserProfileInDTO) (out dto.CreateUserProfileOutDTO, err error)
 	//CheckUser - проверить наличие пользователя
 	//CheckUser(ctx context.Context, userID string) (err error)

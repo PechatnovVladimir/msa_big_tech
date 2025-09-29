@@ -20,6 +20,11 @@ func (s *Service) Login(ctx context.Context, in dto.LoginInDTO) (out dto.LoginOu
 	out.AccessToken, _ = generateRandomToken(32)
 	out.RefreshToken, _ = generateRandomToken(32)
 
+	err = s.AuthRepo.SaveToken(ctx, out.UserID, out.AccessToken, out.RefreshToken)
+	if err != nil {
+		return dto.LoginOutDTO{}, err
+	}
+
 	return out, nil
 
 }

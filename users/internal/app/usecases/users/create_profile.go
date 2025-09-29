@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
-	"regexp"
 )
 
 var (
@@ -17,28 +16,25 @@ func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*u
 	//валидация dto (?)
 	//валидацию сделали на уровне controllers, нужна ли еще дополнительная?
 
-	//проверяем соответствие nickname маске ^[a-z0-9_]{3,20}$
-	pattern := "^[a-z0-9_]{3,20}$"
-	re := regexp.MustCompile(pattern)
-	if !re.MatchString(d.Nickname) {
-		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserInvalidArgument.Error())
+	//проверяем уникальность ID
+	_, err := s.GetProfileByID(ctx, d.ID)
+	if err == nil {
+		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
 	}
 
 	//проверяем уникальность nickname
-	_, err := s.GetProfileByNickname(ctx, d.Nickname)
+	_, err = s.GetProfileByNickname(ctx, d.Nickname)
 	if err == nil {
 		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
 	}
 
 	//создаем профайл
 	userProfile := users.NewUserProfile()
-	//кеширование пароля
-	psw := cachePassword(d.Password)
 
+	userProfile.ID = d.ID
 	userProfile.Nickname = d.Nickname
 	userProfile.Bio = d.Bio
 	userProfile.Avatar = d.Avatar
-	userProfile.Password = psw
 
 	//сохраняем в репозиторий
 	err = s.repository.CreateProfile(ctx, userProfile)

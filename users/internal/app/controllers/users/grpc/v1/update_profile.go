@@ -24,10 +24,6 @@ func (s *Service) UpdateProfile(ctx context.Context, request *userPB.UpdateProfi
 		d.Nickname = *request.Nickname
 	}
 
-	if request.Email != nil {
-		d.Email = *request.Email
-	}
-
 	if request.Bio != nil {
 		d.Bio = *request.Bio
 	}
@@ -36,19 +32,14 @@ func (s *Service) UpdateProfile(ctx context.Context, request *userPB.UpdateProfi
 		d.Avatar = *request.AvatarUrl
 	}
 
-	if request.Password != nil {
-		d.Password = *request.Password
-	}
-
 	p, err := s.uc.UpdateProfile(ctx, d)
 	if err != nil {
 		return nil, err
 	}
 
 	userProfile := &userPB.UserProfile{
-		UserId:    p.ID.String(),
+		UserId:    p.ID,
 		Nickname:  p.Nickname,
-		Email:     p.Email,
 		Bio:       p.Bio,
 		AvatarUrl: p.Avatar,
 	}

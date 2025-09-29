@@ -20,11 +20,6 @@ func (s *Service) UpdateProfile(ctx context.Context, d dto.UpdateProfileDTO) (*u
 		userProfile.Avatar = d.Avatar
 	}
 
-	if d.Password != "" {
-		psw := cachePassword(userProfile.Password)
-		userProfile.Password = psw
-	}
-
 	err = s.repository.UpdateProfile(ctx, userProfile)
 	if err != nil {
 		return nil, err

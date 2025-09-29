@@ -9,8 +9,6 @@ type UserProfile struct {
 	Bio string
 	//Ссылка на аватарку пользователя
 	Avatar string
-	//Пароль
-	Password string
 }
 
 func NewUserProfile() *UserProfile {

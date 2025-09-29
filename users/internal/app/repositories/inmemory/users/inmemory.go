@@ -6,12 +6,12 @@ import (
 )
 
 type InMemory struct {
-	storage map[users.UserID]users.UserProfile
+	storage map[string]users.UserProfile
 	mx      sync.Mutex
 }
 
 func New(cap int) *InMemory {
 	return &InMemory{
-		storage: make(map[users.UserID]users.UserProfile, cap),
+		storage: make(map[string]users.UserProfile, cap),
 	}
 }

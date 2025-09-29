@@ -1,8 +1,11 @@
 package inmemory
 
-import "errors"
+import (
+	"context"
+	"errors"
+)
 
-func (r *InMemory) GetUserIDByRefreshToken(refreshToken string) (string, error) {
+func (r *InMemory) GetUserIDByRefreshToken(ctx context.Context, refreshToken string) (string, error) {
 	r.mx.RLock()
 	defer r.mx.RUnlock()
 

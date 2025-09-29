@@ -18,5 +18,6 @@ func (s *InMemory) RefreshToken(ctx context.Context, userID string, accessToken 
 	}
 
 	s.tokenStorage[refreshToken] = t
+
 	return nil
 }

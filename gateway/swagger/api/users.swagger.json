@@ -222,25 +222,21 @@
     "v1CreateProfileRequest": {
       "type": "object",
       "properties": {
-        "nickname": {
+        "userid": {
           "type": "string",
-          "title": "nickname - никнейм пользователя"
+          "title": "user_id - ID пользователя"
         },
-        "email": {
+        "nickname": {
           "type": "string",
           "title": "nickname - никнейм пользователя"
         },
         "bio": {
           "type": "string",
-          "title": "bio биография пользователя"
+          "title": "nickname - никнейм пользователя\nbio биография пользователя"
         },
         "avatarUrl": {
           "type": "string",
           "title": "avatar_url ссылка на аватарку пользователя"
-        },
-        "password": {
-          "type": "string",
-          "title": "password пароль"
         }
       },
       "description": "CreateProfileRequest - запрос CreateProfile",
@@ -250,9 +246,8 @@
         "url": "https://github.com/grpc-ecosystem/grpc-gateway"
       },
       "required": [
-        "nickname",
-        "email",
-        "password"
+        "userid",
+        "nickname"
       ]
     },
     "v1CreateProfileResponse": {
@@ -305,16 +300,10 @@
         "nickname": {
           "type": "string"
         },
-        "email": {
-          "type": "string"
-        },
         "bio": {
           "type": "string"
         },
         "avatarurl": {
-          "type": "string"
-        },
-        "password": {
           "type": "string"
         }
       },
@@ -355,10 +344,6 @@
           "type": "string",
           "title": "nickname никнейм пользователя"
         },
-        "email": {
-          "type": "string",
-          "title": "nickname никнейм пользователя"
-        },
         "bio": {
           "type": "string",
           "title": "bio биография пользователя"
@@ -377,7 +362,6 @@
       "required": [
         "userId",
         "nickname",
-        "email",
         "bio",
         "avatarUrl"
       ]

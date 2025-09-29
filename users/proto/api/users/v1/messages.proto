@@ -17,7 +17,6 @@ message UserProfile {
       required: [
         "user_id",
         "nickname",
-        "email",
         "bio",
         "avatar_url"
       ]
@@ -33,12 +32,10 @@ message UserProfile {
   string user_id = 1;
   //nickname никнейм пользователя
   string nickname = 2;
-  //nickname никнейм пользователя
-  string email = 3;
   //bio биография пользователя
-  string bio = 4;
+  string bio = 3;
   //avatar_url ссылка на аватарку пользователя
-  string avatar_url = 5;
+  string avatar_url = 4;
 }
 
 //CreateProfileRequest - запрос CreateProfile
@@ -48,9 +45,7 @@ message CreateProfileRequest {
       title: "CreateProfileRequest"
       description: "CreateProfileRequest - запрос CreateProfile"
       required: [
-        "nickname",
-        "email",
-        "password"
+        "nickname"
       ]
     }
     external_docs: {
@@ -59,8 +54,16 @@ message CreateProfileRequest {
     }
   };
 
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "userid",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+
+  ];
   //nickname - никнейм пользователя
-  string nickname = 1 [
+  string nickname = 2 [
     json_name = "nickname",
     (buf.validate.field).required = true,
     (buf.validate.field).string = {
@@ -71,12 +74,6 @@ message CreateProfileRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   //nickname - никнейм пользователя
-  string email = 2 [
-    json_name = "email",
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.email = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
   //bio биография пользователя
   optional string bio = 3[
     json_name = "bio",
@@ -88,16 +85,6 @@ message CreateProfileRequest {
     json_name = "avatarUrl",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
-  ];
-  //password пароль
-  string password = 5 [
-    (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      pattern: "^[A-Za-z0-9!@#$%^&*]{8,128}$",
-      min_len: 8,
-      max_len: 128
-    },
-    (google.api.field_behavior) = REQUIRED
   ];
 }
 
@@ -140,30 +127,14 @@ message UpdateProfileRequest {
     },
     (google.api.field_behavior) = OPTIONAL
   ];
-  optional string email = 3 [
-    json_name = "email",
-    (buf.validate.field).required = false,
-    (buf.validate.field).string.email = true,
-    (google.api.field_behavior) = OPTIONAL
-  ];
-  optional string bio = 4 [
+  optional string bio = 3 [
     json_name = "bio",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
   ];
-  optional string avatar_url = 5 [
+  optional string avatar_url = 4 [
     json_name = "avatarurl",
     (buf.validate.field).required = false,
-    (google.api.field_behavior) = OPTIONAL
-  ];
-  optional string password = 6 [
-    json_name = "password",
-    (buf.validate.field).required = false,
-    (buf.validate.field).string = {
-      pattern: "^[A-Za-z0-9!@#$%^&*]{8,128}$",
-      min_len: 8,
-      max_len: 128
-    },
     (google.api.field_behavior) = OPTIONAL
   ];
 }

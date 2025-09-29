@@ -22,7 +22,7 @@ func (s *Service) SearchByNickname(ctx context.Context, request *userPB.SearchBy
 
 	for i, _ := range p {
 		userProfiles[i] = &userPB.UserProfile{
-			UserId:    p[i].ID.String(),
+			UserId:    p[i].ID,
 			Nickname:  p[i].Nickname,
 			AvatarUrl: p[i].Avatar,
 			Bio:       p[i].Bio,

@@ -2,8 +2,6 @@ package users
 
 import (
 	"context"
-	"crypto/md5"
-	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 )
@@ -41,8 +39,4 @@ func New(repository Repository) *Service {
 	return &Service{
 		repository: repository,
 	}
-}
-
-func cachePassword(password string) string {
-	return fmt.Sprintf("%x", md5.Sum([]byte(password)))
 }

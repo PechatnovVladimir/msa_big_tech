@@ -14,7 +14,6 @@ func (r *InMemory) CreateProfile(ctx context.Context, p *users.UserProfile) erro
 		Nickname: p.Nickname,
 		Avatar:   p.Avatar,
 		Bio:      p.Bio,
-		Password: p.Password,
 	}
 	return nil
 }

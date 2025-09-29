@@ -5,6 +5,7 @@ import (
 	"fmt"
 	uRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/inmemory/users"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
+	"github.com/google/uuid"
 	"testing"
 )
 
@@ -14,10 +15,10 @@ func TestUserService_CreateProfile(t *testing.T) {
 	userService := New(userRepo)
 
 	dtoProfile := dto.CreateProfileDTO{
+		ID:       uuid.New().String(),
 		Nickname: "pvv45",
 		Bio:      "pvvBiography",
 		Avatar:   "pvv.jpeg",
-		Password: "pvvPassword",
 	}
 
 	u, err := userService.CreateProfile(ctx, dtoProfile)
@@ -33,7 +34,7 @@ func TestUserService_CreateProfile(t *testing.T) {
 		fmt.Println(err.Error())
 	}
 
-	u, err = userService.GetProfileByID(ctx, u.ID.String())
+	u, err = userService.GetProfileByID(ctx, u.ID)
 	if err != nil {
 		fmt.Println(err.Error())
 		return
@@ -42,7 +43,7 @@ func TestUserService_CreateProfile(t *testing.T) {
 	fmt.Println(u)
 
 	d := dto.UpdateProfileDTO{
-		ID:     u.ID.String(),
+		ID:     u.ID,
 		Bio:    "pvvBiographyNEW",
 		Avatar: "pvvNEW.jpeg",
 	}
