@@ -153,7 +153,7 @@
     "v1LoginRequest": {
       "type": "object",
       "properties": {
-        "nickname": {
+        "email": {
           "type": "string"
         },
         "password": {
@@ -162,7 +162,7 @@
       },
       "title": "LoginRequest - запрос Login",
       "required": [
-        "nickname",
+        "email",
         "password"
       ]
     },
@@ -215,10 +215,6 @@
     "v1RegisterRequest": {
       "type": "object",
       "properties": {
-        "nickname": {
-          "type": "string",
-          "title": "nickname - никнейм пользователя"
-        },
         "email": {
           "type": "string",
           "title": "email - e-mail пользователя"
@@ -235,7 +231,6 @@
         "url": "https://github.com/grpc-ecosystem/grpc-gateway"
       },
       "required": [
-        "nickname",
         "email",
         "password"
       ]

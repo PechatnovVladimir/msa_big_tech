@@ -16,7 +16,6 @@ message RegisterRequest {
       title: "RegisterRequest"
       description: "RegisterRequest - запрос Register"
       required: [
-        "nickname",
         "email",
         "password"
       ]
@@ -27,26 +26,15 @@ message RegisterRequest {
     }
   };
 
-  //nickname - никнейм пользователя
-  string nickname = 1 [
-    json_name = "nickname",
-    (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      min_len: 3
-      max_len: 20
-      pattern: "^[a-z0-9_]{3,20}$"
-    },
-    (google.api.field_behavior) = REQUIRED
-  ];
   //email - e-mail пользователя
-  string email = 2 [
+  string email = 1 [
     json_name = "email",
     (buf.validate.field).required = true,
     (buf.validate.field).string.email = true,
     (google.api.field_behavior) = REQUIRED
   ];
   //password - пароль пользователя длина от 8 до 128 символов
-  string password = 3 [
+  string password = 2 [
     json_name = "password",
     (buf.validate.field).required = true,
     (buf.validate.field).string = {
@@ -66,14 +54,10 @@ message RegisterResponse {
 
 //LoginRequest - запрос Login
 message LoginRequest {
-  string nickname = 1 [
-    json_name = "nickname",
+  string email = 1 [
+    json_name = "email",
     (buf.validate.field).required = true,
-    (buf.validate.field).string = {
-      min_len: 3
-      max_len: 20
-      pattern: "^[a-z0-9_]{3,20}$"
-    },
+    (buf.validate.field).string.email = true,
     (google.api.field_behavior) = REQUIRED
   ];
   string password = 2 [

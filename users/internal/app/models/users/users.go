@@ -1,20 +1,10 @@
 package users
 
-import "github.com/google/uuid"
-
-type UserID string
-
-func (id UserID) String() string {
-	return string(id)
-}
-
 type UserProfile struct {
 	//Идентификатор пользователя
-	ID UserID
+	ID string
 	//Никнейм пользователя
 	Nickname string
-	//Email пользователя
-	Email string
 	//Биография пользователя
 	Bio string
 	//Ссылка на аватарку пользователя
@@ -24,7 +14,5 @@ type UserProfile struct {
 }
 
 func NewUserProfile() *UserProfile {
-	return &UserProfile{
-		ID: UserID(uuid.New().String()),
-	}
+	return &UserProfile{}
 }

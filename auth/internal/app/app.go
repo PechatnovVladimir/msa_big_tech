@@ -6,6 +6,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/adapters/userservice"
 	authGPRS "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth/inmemory"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth"
 	"log"
 	"os"
@@ -19,8 +20,11 @@ func Run(ctx context.Context) (err error) {
 
 	userAdapter := userservice.NewClient()
 
+	authRepository := inmemory.NewInMemory()
+
 	authUseCase := auth.New(auth.Deps{
 		UserService: userAdapter,
+		AuthRepo:    authRepository,
 	})
 
 	//grpc

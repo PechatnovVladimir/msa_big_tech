@@ -27,12 +27,10 @@ const (
 // RegisterRequest - запрос Register
 type RegisterRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// nickname - никнейм пользователя
-	Nickname string `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	// email - e-mail пользователя
-	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
+	Email string `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	// password - пароль пользователя длина от 8 до 128 символов
-	Password      string `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
+	Password      string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -65,13 +63,6 @@ func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
 // Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
 func (*RegisterRequest) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_messages_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *RegisterRequest) GetNickname() string {
-	if x != nil {
-		return x.Nickname
-	}
-	return ""
 }
 
 func (x *RegisterRequest) GetEmail() string {
@@ -137,7 +128,7 @@ func (x *RegisterResponse) GetUserId() string {
 // LoginRequest - запрос Login
 type LoginRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Nickname      string                 `protobuf:"bytes,1,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
 	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -173,9 +164,9 @@ func (*LoginRequest) Descriptor() ([]byte, []int) {
 	return file_api_auth_v1_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *LoginRequest) GetNickname() string {
+func (x *LoginRequest) GetEmail() string {
 	if x != nil {
-		return x.Nickname
+		return x.Email
 	}
 	return ""
 }
@@ -365,17 +356,16 @@ var File_api_auth_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_auth_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/auth/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.auth.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xfa\x02\n" +
-	"\x0fRegisterRequest\x12>\n" +
-	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12#\n" +
-	"\x05email\x18\x02 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12I\n" +
-	"\bpassword\x18\x03 \x01(\tB-\xe0A\x02\xbaH'\xc8\x01\x01r\"\x10\b\x18\x80\x012\x1b[A-Za-z0-9!@#$%^&*]{8,128}$R\bpassword:\xb6\x01\x92A\xb2\x01\n" +
-	"X*\x0fRegisterRequest2'RegisterRequest - запрос Register\xd2\x01\bnickname\xd2\x01\x05email\xd2\x01\bpassword*V\n" +
+	"\x1aapi/auth/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.auth.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xaf\x02\n" +
+	"\x0fRegisterRequest\x12#\n" +
+	"\x05email\x18\x01 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12I\n" +
+	"\bpassword\x18\x02 \x01(\tB-\xe0A\x02\xbaH'\xc8\x01\x01r\"\x10\b\x18\x80\x012\x1b[A-Za-z0-9!@#$%^&*]{8,128}$R\bpassword:\xab\x01\x92A\xa7\x01\n" +
+	"M*\x0fRegisterRequest2'RegisterRequest - запрос Register\xd2\x01\x05email\xd2\x01\bpassword*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"+\n" +
 	"\x10RegisterResponse\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x8e\x01\n" +
-	"\fLoginRequest\x12>\n" +
-	"\bnickname\x18\x01 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12>\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"s\n" +
+	"\fLoginRequest\x12#\n" +
+	"\x05email\x18\x01 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12>\n" +
 	"\bpassword\x18\x02 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bpassword\"p\n" +
 	"\rLoginResponse\x12!\n" +
 	"\faccess_token\x18\x01 \x01(\tR\vaccessToken\x12#\n" +
