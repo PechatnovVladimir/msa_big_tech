@@ -106,22 +106,20 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
             "type": "string",
-            "format": "int64"
+            "format": "uint64"
           },
           {
             "name": "cursor.userId",
             "in": "query",
             "required": false,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           },
           {
             "name": "cursor.createdAt",
@@ -158,8 +156,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -189,8 +186,7 @@
             "name": "userId",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -274,8 +270,7 @@
       "type": "object",
       "properties": {
         "requestId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -291,8 +286,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "createdAt": {
           "type": "string",
@@ -304,8 +298,7 @@
       "type": "object",
       "properties": {
         "requestId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         }
       }
     },
@@ -321,8 +314,7 @@
       "type": "object",
       "properties": {
         "requestId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "status": {
           "$ref": "#/definitions/apiv1Status"
@@ -335,8 +327,7 @@
         "friendUserIds": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         },
         "nextCursor": {
@@ -363,8 +354,7 @@
       "type": "object",
       "properties": {
         "userId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         }
       }
     },

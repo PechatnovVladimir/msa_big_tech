@@ -16,12 +16,12 @@ enum Status {
 }
 
 message FriendRequest {
-  int64 request_id = 1;
+  string request_id = 1;
   Status status = 2;
 }
 
 message SendFriendRequestRequest {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message SendFriendRequestResponse {
@@ -29,7 +29,7 @@ message SendFriendRequestResponse {
 }
 
 message ListRequestsRequest {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message ListRequestsResponse {
@@ -37,7 +37,7 @@ message ListRequestsResponse {
 }
 
 message AcceptFriendRequestRequest {
-  int64 request_id = 1;
+  string request_id = 1;
 }
 
 message AcceptFriendRequestResponse {
@@ -45,7 +45,7 @@ message AcceptFriendRequestResponse {
 }
 
 message DeclineFriendRequestRequest {
-  int64 request_id = 1;
+  string request_id = 1;
 }
 
 message DeclineFriendRequestResponse {
@@ -53,23 +53,23 @@ message DeclineFriendRequestResponse {
 }
 
 message RemoveFriendRequest {
-  int64 user_id = 1;
+  string user_id = 1;
 }
 
 message RemoveFriendResponse {}
 
 message Cursor {
-  int64 user_id = 1;
+  string user_id = 1;
   google.protobuf.Timestamp created_at = 2;
 }
 
 message ListFriendsRequest {
-  int64 user_id = 1;
-  int64 limit = 2;
+  string user_id = 1;
+  uint64 limit = 2;
   optional Cursor cursor = 3;
 }
 
 message ListFriendsResponse {
-  repeated int64 friend_user_ids = 1;
+  repeated string friend_user_ids = 1;
   optional Cursor next_cursor = 2;
 }

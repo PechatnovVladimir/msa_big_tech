@@ -78,7 +78,7 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 
 type FriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     int64                  `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status        Status                 `protobuf:"varint,2,opt,name=status,proto3,enum=github.com.PechatnovVladimir.msa_big_tech.social.api.v1.Status" json:"status,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -114,11 +114,11 @@ func (*FriendRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *FriendRequest) GetRequestId() int64 {
+func (x *FriendRequest) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
-	return 0
+	return ""
 }
 
 func (x *FriendRequest) GetStatus() Status {
@@ -130,7 +130,7 @@ func (x *FriendRequest) GetStatus() Status {
 
 type SendFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -165,11 +165,11 @@ func (*SendFriendRequestRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *SendFriendRequestRequest) GetUserId() int64 {
+func (x *SendFriendRequestRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type SendFriendRequestResponse struct {
@@ -218,7 +218,7 @@ func (x *SendFriendRequestResponse) GetFriendRequest() *FriendRequest {
 
 type ListRequestsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -253,11 +253,11 @@ func (*ListRequestsRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *ListRequestsRequest) GetUserId() int64 {
+func (x *ListRequestsRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type ListRequestsResponse struct {
@@ -306,7 +306,7 @@ func (x *ListRequestsResponse) GetFriendRequest() []*FriendRequest {
 
 type AcceptFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     int64                  `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -341,11 +341,11 @@ func (*AcceptFriendRequestRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *AcceptFriendRequestRequest) GetRequestId() int64 {
+func (x *AcceptFriendRequestRequest) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
-	return 0
+	return ""
 }
 
 type AcceptFriendRequestResponse struct {
@@ -394,7 +394,7 @@ func (x *AcceptFriendRequestResponse) GetFriendRequest() *FriendRequest {
 
 type DeclineFriendRequestRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RequestId     int64                  `protobuf:"varint,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -429,11 +429,11 @@ func (*DeclineFriendRequestRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{7}
 }
 
-func (x *DeclineFriendRequestRequest) GetRequestId() int64 {
+func (x *DeclineFriendRequestRequest) GetRequestId() string {
 	if x != nil {
 		return x.RequestId
 	}
-	return 0
+	return ""
 }
 
 type DeclineFriendRequestResponse struct {
@@ -482,7 +482,7 @@ func (x *DeclineFriendRequestResponse) GetFriendRequest() *FriendRequest {
 
 type RemoveFriendRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -517,11 +517,11 @@ func (*RemoveFriendRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *RemoveFriendRequest) GetUserId() int64 {
+func (x *RemoveFriendRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 type RemoveFriendResponse struct {
@@ -562,7 +562,7 @@ func (*RemoveFriendResponse) Descriptor() ([]byte, []int) {
 
 type Cursor struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -598,11 +598,11 @@ func (*Cursor) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{11}
 }
 
-func (x *Cursor) GetUserId() int64 {
+func (x *Cursor) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
 func (x *Cursor) GetCreatedAt() *timestamppb.Timestamp {
@@ -614,8 +614,8 @@ func (x *Cursor) GetCreatedAt() *timestamppb.Timestamp {
 
 type ListFriendsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	Cursor        *Cursor                `protobuf:"bytes,3,opt,name=cursor,proto3,oneof" json:"cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -651,14 +651,14 @@ func (*ListFriendsRequest) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *ListFriendsRequest) GetUserId() int64 {
+func (x *ListFriendsRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
-func (x *ListFriendsRequest) GetLimit() int64 {
+func (x *ListFriendsRequest) GetLimit() uint64 {
 	if x != nil {
 		return x.Limit
 	}
@@ -674,7 +674,7 @@ func (x *ListFriendsRequest) GetCursor() *Cursor {
 
 type ListFriendsResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	FriendUserIds []int64                `protobuf:"varint,1,rep,packed,name=friend_user_ids,json=friendUserIds,proto3" json:"friend_user_ids,omitempty"`
+	FriendUserIds []string               `protobuf:"bytes,1,rep,name=friend_user_ids,json=friendUserIds,proto3" json:"friend_user_ids,omitempty"`
 	NextCursor    *Cursor                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -710,7 +710,7 @@ func (*ListFriendsResponse) Descriptor() ([]byte, []int) {
 	return file_api_social_v1_messages_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ListFriendsResponse) GetFriendUserIds() []int64 {
+func (x *ListFriendsResponse) GetFriendUserIds() []string {
 	if x != nil {
 		return x.FriendUserIds
 	}
@@ -728,43 +728,43 @@ var File_api_social_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_social_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1capi/social/v1/messages.proto\x127github.com.PechatnovVladimir.msa_big_tech.social.api.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1cgoogle/api/annotations.proto\"\x87\x01\n" +
+	"\x1capi/social/v1/messages.proto\x127github.com.PechatnovVladimir.msa_big_tech.social.api.v1\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\x87\x01\n" +
 	"\rFriendRequest\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\x03R\trequestId\x12W\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12W\n" +
 	"\x06status\x18\x02 \x01(\x0e2?.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.StatusR\x06status\"3\n" +
 	"\x18SendFriendRequestRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x89\x01\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x89\x01\n" +
 	"\x19SendFriendRequestResponse\x12l\n" +
 	"\rFriendRequest\x18\x01 \x01(\v2F.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.FriendRequestR\rFriendRequest\".\n" +
 	"\x13ListRequestsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x84\x01\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x84\x01\n" +
 	"\x14ListRequestsResponse\x12l\n" +
 	"\rFriendRequest\x18\x01 \x03(\v2F.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.FriendRequestR\rFriendRequest\";\n" +
 	"\x1aAcceptFriendRequestRequest\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\x03R\trequestId\"\x8b\x01\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"\x8b\x01\n" +
 	"\x1bAcceptFriendRequestResponse\x12l\n" +
 	"\rFriendRequest\x18\x01 \x01(\v2F.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.FriendRequestR\rFriendRequest\"<\n" +
 	"\x1bDeclineFriendRequestRequest\x12\x1d\n" +
 	"\n" +
-	"request_id\x18\x01 \x01(\x03R\trequestId\"\x8c\x01\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\"\x8c\x01\n" +
 	"\x1cDeclineFriendRequestResponse\x12l\n" +
 	"\rFriendRequest\x18\x01 \x01(\v2F.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.FriendRequestR\rFriendRequest\".\n" +
 	"\x13RemoveFriendRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"\x16\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\"\x16\n" +
 	"\x14RemoveFriendResponse\"\\\n" +
 	"\x06Cursor\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\x129\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x129\n" +
 	"\n" +
 	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xac\x01\n" +
 	"\x12ListFriendsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x03R\x05limit\x12\\\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x04R\x05limit\x12\\\n" +
 	"\x06cursor\x18\x03 \x01(\v2?.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.CursorH\x00R\x06cursor\x88\x01\x01B\t\n" +
 	"\a_cursor\"\xb4\x01\n" +
 	"\x13ListFriendsResponse\x12&\n" +
-	"\x0ffriend_user_ids\x18\x01 \x03(\x03R\rfriendUserIds\x12e\n" +
+	"\x0ffriend_user_ids\x18\x01 \x03(\tR\rfriendUserIds\x12e\n" +
 	"\vnext_cursor\x18\x02 \x01(\v2?.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.CursorH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
 	"\f_next_cursor*>\n" +

@@ -52,7 +52,7 @@ proto-format:
 vercommit: .ver-commit
 
 run:
-	go run ./cmd/server/main.go
+	go run ./cmd/app/main.go
 
 .PHONY: \
 	.bin-deps \

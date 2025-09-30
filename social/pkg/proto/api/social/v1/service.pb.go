@@ -27,7 +27,7 @@ var File_api_social_v1_service_proto protoreflect.FileDescriptor
 
 const file_api_social_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/social/v1/service.proto\x127github.com.PechatnovVladimir.msa_big_tech.social.api.v1\x1a\x1capi/social/v1/messages.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\x1a\x1cgoogle/api/annotations.proto2\xdc\n" +
+	"\x1bapi/social/v1/service.proto\x127github.com.PechatnovVladimir.msa_big_tech.social.api.v1\x1a\x1capi/social/v1/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xdc\n" +
 	"\n" +
 	"\rSocialService\x12\xe3\x01\n" +
 	"\x11SendFriendRequest\x12Q.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.SendFriendRequestRequest\x1aR.github.com.PechatnovVladimir.msa_big_tech.social.api.v1.SendFriendRequestResponse\"'\x82\xd3\xe4\x93\x02!:\x01*\"\x1c/v1/social/SendFriendRequest\x12\xd6\x01\n" +
