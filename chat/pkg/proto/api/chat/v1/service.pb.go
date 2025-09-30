@@ -27,7 +27,7 @@ var File_api_chat_v1_service_proto protoreflect.FileDescriptor
 
 const file_api_chat_v1_service_proto_rawDesc = "" +
 	"\n" +
-	"\x19api/chat/v1/service.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1aapi/chat/v1/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xad\v\n" +
+	"\x19api/chat/v1/service.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1aapi/chat/v1/messages.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto2\xad\v\n" +
 	"\vChatService\x12\xd9\x01\n" +
 	"\x10CreateDirectChat\x12N.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CreateDirectChatRequest\x1aO.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CreateDirectChatResponse\"$\x82\xd3\xe4\x93\x02\x1e:\x01*\"\x19/v1/chat/CreateDirectChat\x12\xbc\x01\n" +
 	"\aGetChat\x12E.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.GetChatRequest\x1aF.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.GetChatResponse\"\"\x82\xd3\xe4\x93\x02\x1c\x12\x1a/v1/chat/GetChat/{chat_id}\x12\xd4\x01\n" +

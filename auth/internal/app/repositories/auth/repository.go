@@ -3,6 +3,6 @@ package auth
 type Repository struct {
 }
 
-func NewRepository() *Repository {
+func New() *Repository {
 	return &Repository{}
 }

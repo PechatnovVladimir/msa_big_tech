@@ -7,6 +7,7 @@
 package chat
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2/options"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
@@ -24,10 +25,13 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+// Chat - информация о чате
 type Chat struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата в формате UUID
+	ChatId string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	// name - описание чата
+	Description   string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,24 +66,27 @@ func (*Chat) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *Chat) GetChatId() int64 {
+func (x *Chat) GetChatId() string {
 	if x != nil {
 		return x.ChatId
-	}
-	return 0
-}
-
-func (x *Chat) GetName() string {
-	if x != nil {
-		return x.Name
 	}
 	return ""
 }
 
+func (x *Chat) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+// Message - информация о сообщении
 type Message struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	MessageId     int64                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
-	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// message_id - ID сообщения
+	MessageId string `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
+	// text - текст сообщения
+	Text          string `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -114,11 +121,11 @@ func (*Message) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *Message) GetMessageId() int64 {
+func (x *Message) GetMessageId() string {
 	if x != nil {
 		return x.MessageId
 	}
-	return 0
+	return ""
 }
 
 func (x *Message) GetText() string {
@@ -128,9 +135,11 @@ func (x *Message) GetText() string {
 	return ""
 }
 
+// CreateDirectChatRequest - запрос CreateDirectChat
 type CreateDirectChatRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ParticipantId int64                  `protobuf:"varint,1,opt,name=participant_id,json=participantId,proto3" json:"participant_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// participant_id - ID собеседника
+	ParticipantId string `protobuf:"bytes,1,opt,name=participant_id,proto3" json:"participant_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -165,16 +174,18 @@ func (*CreateDirectChatRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *CreateDirectChatRequest) GetParticipantId() int64 {
+func (x *CreateDirectChatRequest) GetParticipantId() string {
 	if x != nil {
 		return x.ParticipantId
 	}
-	return 0
+	return ""
 }
 
+// CreateDirectChatResponse - ответ CreateDirectChat
 type CreateDirectChatResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId        string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -209,16 +220,18 @@ func (*CreateDirectChatResponse) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *CreateDirectChatResponse) GetChatId() int64 {
+func (x *CreateDirectChatResponse) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
+// GetChatRequest - запрос GetChat
 type GetChatRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId        string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -253,16 +266,18 @@ func (*GetChatRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *GetChatRequest) GetChatId() int64 {
+func (x *GetChatRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
+// GetChatResponse - ответ GetChat
 type GetChatResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chat          *Chat                  `protobuf:"bytes,1,opt,name=chat,proto3" json:"chat,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat - информация о чате
+	Chat          *Chat `protobuf:"bytes,1,opt,name=chat,proto3" json:"chat,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -304,9 +319,11 @@ func (x *GetChatResponse) GetChat() *Chat {
 	return nil
 }
 
+// ListUserChatsRequest - запрос ListUserChats
 type ListUserChatsRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        int64                  `protobuf:"varint,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// user_id - ID пользователя
+	UserId        string `protobuf:"bytes,1,opt,name=user_id,proto3" json:"user_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -341,16 +358,18 @@ func (*ListUserChatsRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *ListUserChatsRequest) GetUserId() int64 {
+func (x *ListUserChatsRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
 	}
-	return 0
+	return ""
 }
 
+// ListUserChatsResponse - ответ ListUserChats
 type ListUserChatsResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Chats         []*Chat                `protobuf:"bytes,1,rep,name=chats,proto3" json:"chats,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chats - список чатов
+	Chats         []*Chat `protobuf:"bytes,1,rep,name=chats,proto3" json:"chats,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -392,9 +411,11 @@ func (x *ListUserChatsResponse) GetChats() []*Chat {
 	return nil
 }
 
+// ListChatMembersRequest - запрос ListChatMembers
 type ListChatMembersRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId        string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -429,16 +450,18 @@ func (*ListChatMembersRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *ListChatMembersRequest) GetChatId() int64 {
+func (x *ListChatMembersRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
+// ListChatMembersResponse - ответ ListChatMembers
 type ListChatMembersResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserIds       []int64                `protobuf:"varint,1,rep,packed,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// user_ids - список пользователей
+	UserIds       []string `protobuf:"bytes,1,rep,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -473,17 +496,20 @@ func (*ListChatMembersResponse) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ListChatMembersResponse) GetUserIds() []int64 {
+func (x *ListChatMembersResponse) GetUserIds() []string {
 	if x != nil {
 		return x.UserIds
 	}
 	return nil
 }
 
+// SendMessageRequest - запрос SendMessage
 type SendMessageRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	Text          string                 `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
+	// text - текст отправляемого сообщения
+	Text          string `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -518,11 +544,11 @@ func (*SendMessageRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *SendMessageRequest) GetChatId() int64 {
+func (x *SendMessageRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 func (x *SendMessageRequest) GetText() string {
@@ -532,9 +558,11 @@ func (x *SendMessageRequest) GetText() string {
 	return ""
 }
 
+// SendMessageResponse - ответ SendMessage
 type SendMessageResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       *Message               `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// message - информация о сообщении
+	Message       *Message `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -576,9 +604,10 @@ func (x *SendMessageResponse) GetMessage() *Message {
 	return nil
 }
 
+// Cursor - cursor для пагинации маркер начала следующей страницы
 type Cursor struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	MessageId     int64                  `protobuf:"varint,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
+	MessageId     string                 `protobuf:"bytes,1,opt,name=message_id,json=messageId,proto3" json:"message_id,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -614,11 +643,11 @@ func (*Cursor) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{12}
 }
 
-func (x *Cursor) GetMessageId() int64 {
+func (x *Cursor) GetMessageId() string {
 	if x != nil {
 		return x.MessageId
 	}
-	return 0
+	return ""
 }
 
 func (x *Cursor) GetCreatedAt() *timestamppb.Timestamp {
@@ -628,11 +657,14 @@ func (x *Cursor) GetCreatedAt() *timestamppb.Timestamp {
 	return nil
 }
 
+// ListMessagesRequest - запрос ListMessages
 type ListMessagesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
-	Cursor        *Cursor                `protobuf:"bytes,3,opt,name=cursor,proto3" json:"cursor,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
+	Limit  uint64 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	// cursor - cursor для пагинации
+	Cursor        *Cursor `protobuf:"bytes,3,opt,name=cursor,proto3,oneof" json:"cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -667,14 +699,14 @@ func (*ListMessagesRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{13}
 }
 
-func (x *ListMessagesRequest) GetChatId() int64 {
+func (x *ListMessagesRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
-func (x *ListMessagesRequest) GetLimit() int64 {
+func (x *ListMessagesRequest) GetLimit() uint64 {
 	if x != nil {
 		return x.Limit
 	}
@@ -688,10 +720,13 @@ func (x *ListMessagesRequest) GetCursor() *Cursor {
 	return nil
 }
 
+// ListMessagesResponse - ответ ListMessages
 type ListMessagesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Messages      []*Message             `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
-	NextCursor    *Cursor                `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// messages - список сообщений
+	Messages []*Message `protobuf:"bytes,1,rep,name=messages,proto3" json:"messages,omitempty"`
+	// next_cursor - курсов для пагинации
+	NextCursor    *Cursor `protobuf:"bytes,2,opt,name=next_cursor,json=nextCursor,proto3,oneof" json:"next_cursor,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -740,9 +775,12 @@ func (x *ListMessagesResponse) GetNextCursor() *Cursor {
 	return nil
 }
 
+// StreamMessagesRequest - запрос StreamMessages
 type StreamMessagesRequest struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	ChatId        int64                  `protobuf:"varint,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// chat_id - ID чата
+	ChatId string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
+	// since_unix_ms - время начала стрима
 	SinceUnixMs   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=since_unix_ms,json=sinceUnixMs,proto3,oneof" json:"since_unix_ms,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -778,11 +816,11 @@ func (*StreamMessagesRequest) Descriptor() ([]byte, []int) {
 	return file_api_chat_v1_messages_proto_rawDescGZIP(), []int{15}
 }
 
-func (x *StreamMessagesRequest) GetChatId() int64 {
+func (x *StreamMessagesRequest) GetChatId() string {
 	if x != nil {
 		return x.ChatId
 	}
-	return 0
+	return ""
 }
 
 func (x *StreamMessagesRequest) GetSinceUnixMs() *timestamppb.Timestamp {
@@ -792,9 +830,11 @@ func (x *StreamMessagesRequest) GetSinceUnixMs() *timestamppb.Timestamp {
 	return nil
 }
 
+// StreamMessagesResponse - ответ StreamMessages
 type StreamMessagesResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       *Message               `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// message - информация о сообщении
+	Message       *Message `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -840,51 +880,57 @@ var File_api_chat_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_chat_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1cgoogle/api/annotations.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"3\n" +
+	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc2\x02\n" +
 	"\x04Chat\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\"<\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription:\xfe\x01\x92A\xfa\x01\n" +
+	"\x9f\x01*\x04Chat2'Chat - информация о чатеJV{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"description\": \"chat description\"}\xd2\x01\achat_id\xd2\x01\vdescription*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xc1\x02\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x03R\tmessageId\x12\x12\n" +
-	"\x04text\x18\x02 \x01(\tR\x04text\"@\n" +
-	"\x17CreateDirectChatRequest\x12%\n" +
-	"\x0eparticipant_id\x18\x01 \x01(\x03R\rparticipantId\"3\n" +
+	"message_id\x18\x01 \x01(\tR\tmessageId\x12\x12\n" +
+	"\x04text\x18\x02 \x01(\tR\x04text:\x82\x02\x92A\xfe\x01\n" +
+	"\xa3\x01*\aMessage24Message - информация о сообщенииJN{\"message_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"text\": \"text message\"}\xd2\x01\n" +
+	"message_id\xd2\x01\x04text*V\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"Q\n" +
+	"\x17CreateDirectChatRequest\x126\n" +
+	"\x0eparticipant_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x0eparticipant_id\"3\n" +
 	"\x18CreateDirectChatResponse\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\")\n" +
-	"\x0eGetChatRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\"b\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\":\n" +
+	"\x0eGetChatRequest\x12(\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\"b\n" +
 	"\x0fGetChatResponse\x12O\n" +
-	"\x04chat\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatR\x04chat\"/\n" +
-	"\x14ListUserChatsRequest\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\x03R\x06userId\"j\n" +
+	"\x04chat\x18\x01 \x01(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatR\x04chat\"@\n" +
+	"\x14ListUserChatsRequest\x12(\n" +
+	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\auser_id\"j\n" +
 	"\x15ListUserChatsResponse\x12Q\n" +
-	"\x05chats\x18\x01 \x03(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatR\x05chats\"1\n" +
-	"\x16ListChatMembersRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\"4\n" +
+	"\x05chats\x18\x01 \x03(\v2;.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatR\x05chats\"B\n" +
+	"\x16ListChatMembersRequest\x12(\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\"4\n" +
 	"\x17ListChatMembersResponse\x12\x19\n" +
-	"\buser_ids\x18\x01 \x03(\x03R\auserIds\"A\n" +
-	"\x12SendMessageRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\x12\x12\n" +
+	"\buser_ids\x18\x01 \x03(\tR\auserIds\"R\n" +
+	"\x12SendMessageRequest\x12(\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\x12\x12\n" +
 	"\x04text\x18\x02 \x01(\tR\x04text\"o\n" +
 	"\x13SendMessageResponse\x12X\n" +
 	"\amessage\x18\x01 \x01(\v2>.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.MessageR\amessage\"b\n" +
 	"\x06Cursor\x12\x1d\n" +
 	"\n" +
-	"message_id\x18\x01 \x01(\x03R\tmessageId\x129\n" +
+	"message_id\x18\x01 \x01(\tR\tmessageId\x129\n" +
 	"\n" +
-	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\x9b\x01\n" +
-	"\x13ListMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x03R\x05limit\x12U\n" +
-	"\x06cursor\x18\x03 \x01(\v2=.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CursorR\x06cursor\"\xe7\x01\n" +
+	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"\xcd\x01\n" +
+	"\x13ListMessagesRequest\x12(\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\x12%\n" +
+	"\x05limit\x18\x02 \x01(\x04B\x0f\xe0A\x02\xbaH\t\xc8\x01\x012\x04\x18d(\x05R\x05limit\x12Z\n" +
+	"\x06cursor\x18\x03 \x01(\v2=.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CursorH\x00R\x06cursor\x88\x01\x01B\t\n" +
+	"\a_cursor\"\xe7\x01\n" +
 	"\x14ListMessagesResponse\x12Z\n" +
 	"\bmessages\x18\x01 \x03(\v2>.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.MessageR\bmessages\x12c\n" +
 	"\vnext_cursor\x18\x02 \x01(\v2=.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CursorH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\x87\x01\n" +
-	"\x15StreamMessagesRequest\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\x03R\x06chatId\x12C\n" +
+	"\f_next_cursor\"\x98\x01\n" +
+	"\x15StreamMessagesRequest\x12(\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\x12C\n" +
 	"\rsince_unix_ms\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\vsinceUnixMs\x88\x01\x01B\x10\n" +
 	"\x0e_since_unix_ms\"r\n" +
 	"\x16StreamMessagesResponse\x12X\n" +
@@ -946,6 +992,7 @@ func file_api_chat_v1_messages_proto_init() {
 	if File_api_chat_v1_messages_proto != nil {
 		return
 	}
+	file_api_chat_v1_messages_proto_msgTypes[13].OneofWrappers = []any{}
 	file_api_chat_v1_messages_proto_msgTypes[14].OneofWrappers = []any{}
 	file_api_chat_v1_messages_proto_msgTypes[15].OneofWrappers = []any{}
 	type x struct{}

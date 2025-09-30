@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"errors"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/models/auth"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth/dto"
 	"github.com/google/uuid"
@@ -27,7 +28,18 @@ func (s *Service) Register(ctx context.Context, in dto.RegisterInDTO) (out dto.R
 
 	out.UserID = userID
 
+	createProfileIN := dto.CreateUserProfileInDTO{
+		UserID: out.UserID,
+		//где вот тут мы возьмем значение nickname
+		Nickname: "empty",
+	}
+
 	//надо создать профиль пользователя в сервисе пользователей
+	_, err = s.UserService.CreateUserProfile(ctx, createProfileIN)
+	if err != nil {
+		log.Println("[ERROR] creating user: ")
+		return dto.RegisterOutDTO{}, errors.New("error creating UserProfile in User Service")
+	}
 
 	return out, nil
 }

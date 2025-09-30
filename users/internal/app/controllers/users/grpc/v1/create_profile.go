@@ -17,6 +17,7 @@ func (s *Service) CreateProfile(ctx context.Context, request *userPB.CreateProfi
 	}
 
 	d := dto.CreateProfileDTO{
+		ID:       request.UserId,
 		Nickname: request.Nickname,
 	}
 

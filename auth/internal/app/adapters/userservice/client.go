@@ -10,6 +10,6 @@ var (
 	_ auth.UserService = (*Client)(nil)
 )
 
-func NewClient( /**/ ) *Client {
+func New() *Client {
 	return &Client{}
 }

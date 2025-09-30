@@ -22,6 +22,7 @@
   "paths": {
     "/github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ChatService/StreamMessages": {
       "post": {
+        "summary": "StreamMessages - серверный стрим новых сообщений",
         "operationId": "ChatService_StreamMessages",
         "responses": {
           "200": {
@@ -63,6 +64,7 @@
     },
     "/v1/chat/CreateDirectChat": {
       "post": {
+        "summary": "CreateDirectChat - создать личный чат",
         "operationId": "ChatService_CreateDirectChat",
         "responses": {
           "200": {
@@ -93,8 +95,9 @@
         ]
       }
     },
-    "/v1/chat/GetChat/{chatId}": {
+    "/v1/chat/GetChat/{chat_id}": {
       "get": {
+        "summary": "GetChat - получить информацию о чате",
         "operationId": "ChatService_GetChat",
         "responses": {
           "200": {
@@ -112,11 +115,11 @@
         },
         "parameters": [
           {
-            "name": "chatId",
+            "name": "chat_id",
+            "description": "chat_id - ID чата",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -124,8 +127,9 @@
         ]
       }
     },
-    "/v1/chat/ListChatMembers/{chatId}": {
+    "/v1/chat/ListChatMembers/{chat_id}": {
       "get": {
+        "summary": "ListChatMembers - получить участников чата",
         "operationId": "ChatService_ListChatMembers",
         "responses": {
           "200": {
@@ -143,11 +147,11 @@
         },
         "parameters": [
           {
-            "name": "chatId",
+            "name": "chat_id",
+            "description": "chat_id - ID чата",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -155,8 +159,9 @@
         ]
       }
     },
-    "/v1/chat/ListMessages/{chatId}": {
+    "/v1/chat/ListMessages/{chat_id}": {
       "get": {
+        "summary": "ListMessages- история сообщений чата",
         "operationId": "ChatService_ListMessages",
         "responses": {
           "200": {
@@ -174,25 +179,24 @@
         },
         "parameters": [
           {
-            "name": "chatId",
+            "name": "chat_id",
+            "description": "chat_id - ID чата",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           },
           {
             "name": "limit",
             "in": "query",
-            "required": false,
+            "required": true,
             "type": "string",
-            "format": "int64"
+            "format": "uint64"
           },
           {
             "name": "cursor.messageId",
             "in": "query",
             "required": false,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           },
           {
             "name": "cursor.createdAt",
@@ -207,8 +211,9 @@
         ]
       }
     },
-    "/v1/chat/ListUserChats/{userId}": {
+    "/v1/chat/ListUserChats/{user_id}": {
       "get": {
+        "summary": "ListUserChats - получить список чатов",
         "operationId": "ChatService_ListUserChats",
         "responses": {
           "200": {
@@ -226,11 +231,11 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "user_id",
+            "description": "user_id - ID пользователя",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -240,6 +245,7 @@
     },
     "/v1/chat/SendMessage": {
       "post": {
+        "summary": "SendMessage - отправить сообщение в чат",
         "operationId": "ChatService_SendMessage",
         "responses": {
           "200": {
@@ -302,54 +308,76 @@
     },
     "v1Chat": {
       "type": "object",
+      "example": {
+        "chat_id": "CD0F7430-FDDA-4E27-8C95-001E18E9CF50",
+        "description": "chat description"
+      },
       "properties": {
         "chatId": {
           "type": "string",
-          "format": "int64"
+          "title": "chat_id - ID чата в формате UUID"
         },
-        "name": {
-          "type": "string"
+        "description": {
+          "type": "string",
+          "title": "name - описание чата"
         }
-      }
+      },
+      "description": "Chat - информация о чате",
+      "title": "Chat",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "chatId",
+        "description"
+      ]
     },
     "v1CreateDirectChatRequest": {
       "type": "object",
       "properties": {
-        "participantId": {
+        "participant_id": {
           "type": "string",
-          "format": "int64"
+          "title": "participant_id - ID собеседника"
         }
-      }
+      },
+      "title": "CreateDirectChatRequest - запрос CreateDirectChat",
+      "required": [
+        "participant_id"
+      ]
     },
     "v1CreateDirectChatResponse": {
       "type": "object",
       "properties": {
         "chatId": {
           "type": "string",
-          "format": "int64"
+          "title": "chat_id - ID чата"
         }
-      }
+      },
+      "title": "CreateDirectChatResponse - ответ CreateDirectChat"
     },
     "v1Cursor": {
       "type": "object",
       "properties": {
         "messageId": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "createdAt": {
           "type": "string",
           "format": "date-time"
         }
-      }
+      },
+      "title": "Cursor - cursor для пагинации маркер начала следующей страницы"
     },
     "v1GetChatResponse": {
       "type": "object",
       "properties": {
         "chat": {
-          "$ref": "#/definitions/v1Chat"
+          "$ref": "#/definitions/v1Chat",
+          "title": "chat - информация о чате"
         }
-      }
+      },
+      "title": "GetChatResponse - ответ GetChat"
     },
     "v1ListChatMembersResponse": {
       "type": "object",
@@ -357,11 +385,12 @@
         "userIds": {
           "type": "array",
           "items": {
-            "type": "string",
-            "format": "int64"
-          }
+            "type": "string"
+          },
+          "title": "user_ids - список пользователей"
         }
-      }
+      },
+      "title": "ListChatMembersResponse - ответ ListChatMembers"
     },
     "v1ListMessagesResponse": {
       "type": "object",
@@ -371,12 +400,15 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Message"
-          }
+          },
+          "title": "messages - список сообщений"
         },
         "nextCursor": {
-          "$ref": "#/definitions/v1Cursor"
+          "$ref": "#/definitions/v1Cursor",
+          "title": "next_cursor - курсов для пагинации"
         }
-      }
+      },
+      "title": "ListMessagesResponse - ответ ListMessages"
     },
     "v1ListUserChatsResponse": {
       "type": "object",
@@ -386,62 +418,93 @@
           "items": {
             "type": "object",
             "$ref": "#/definitions/v1Chat"
-          }
+          },
+          "title": "chats - список чатов"
         }
-      }
+      },
+      "title": "ListUserChatsResponse - ответ ListUserChats"
     },
     "v1Message": {
       "type": "object",
+      "example": {
+        "message_id": "CD0F7430-FDDA-4E27-8C95-001E18E9CF50",
+        "text": "text message"
+      },
       "properties": {
         "messageId": {
           "type": "string",
-          "format": "int64"
+          "title": "message_id - ID сообщения"
         },
         "text": {
-          "type": "string"
+          "type": "string",
+          "title": "text - текст сообщения"
         }
-      }
+      },
+      "description": "Message - информация о сообщении",
+      "title": "Message",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "messageId",
+        "text"
+      ]
     },
     "v1SendMessageRequest": {
       "type": "object",
       "properties": {
-        "chatId": {
+        "chat_id": {
           "type": "string",
-          "format": "int64"
+          "title": "chat_id - ID чата"
         },
         "text": {
-          "type": "string"
+          "type": "string",
+          "title": "text - текст отправляемого сообщения"
         }
-      }
+      },
+      "title": "SendMessageRequest - запрос SendMessage",
+      "required": [
+        "chat_id"
+      ]
     },
     "v1SendMessageResponse": {
       "type": "object",
       "properties": {
         "message": {
-          "$ref": "#/definitions/v1Message"
+          "$ref": "#/definitions/v1Message",
+          "title": "message - информация о сообщении"
         }
-      }
+      },
+      "title": "SendMessageResponse - ответ SendMessage"
     },
     "v1StreamMessagesRequest": {
       "type": "object",
       "properties": {
-        "chatId": {
+        "chat_id": {
           "type": "string",
-          "format": "int64"
+          "title": "chat_id - ID чата"
         },
         "sinceUnixMs": {
           "type": "string",
-          "format": "date-time"
+          "format": "date-time",
+          "title": "since_unix_ms - время начала стрима"
         }
-      }
+      },
+      "title": "StreamMessagesRequest - запрос StreamMessages",
+      "required": [
+        "chat_id"
+      ]
     },
     "v1StreamMessagesResponse": {
       "type": "object",
       "properties": {
         "message": {
-          "$ref": "#/definitions/v1Message"
+          "$ref": "#/definitions/v1Message",
+          "title": "message - информация о сообщении"
         }
-      }
+      },
+      "title": "StreamMessagesResponse - ответ StreamMessages"
     }
   }
 }

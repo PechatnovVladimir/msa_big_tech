@@ -26,7 +26,7 @@ service AuthService {
     };
   }
 
-  //Login - вход пользователя
+  //Login - выдать JWT токены
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/v1/auth/Login"
@@ -34,7 +34,7 @@ service AuthService {
     };
   }
 
-  //Refresh -
+  //Refresh - перевыпустить JWT токены
   rpc Refresh(RefreshRequest) returns (RefreshResponse) {
     option (google.api.http) = {
       post: "/v1/auth/Refresh"

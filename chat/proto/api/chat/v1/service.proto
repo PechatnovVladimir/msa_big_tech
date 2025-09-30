@@ -1,60 +1,54 @@
 syntax = "proto3";
 
-package  github.com.PechatnovVladimir.msa_big_tech.chat.api.v1;
-
-option go_package = "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api/chat/v1;chat";
-
-import "google/protobuf/timestamp.proto";
+package github.com.PechatnovVladimir.msa_big_tech.chat.api.v1;
 
 import "api/chat/v1/messages.proto";
 import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api/chat/v1;chat";
 option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   info: {
-    title: "Chat API";
-    version: "1.0";
-    description: "API chat-service";
-  };
-  schemes: HTTP;
+    title: "Chat API"
+    version: "1.0"
+    description: "API chat-service"
+  }
+  schemes: HTTP
 };
 
-
+//ChatService - сервис чатов
 service ChatService {
-  rpc CreateDirectChat (CreateDirectChatRequest) returns (CreateDirectChatResponse) {
+  //CreateDirectChat - создать личный чат
+  rpc CreateDirectChat(CreateDirectChatRequest) returns (CreateDirectChatResponse) {
     option (google.api.http) = {
       post: "/v1/chat/CreateDirectChat"
       body: "*"
     };
   }
-  rpc GetChat (GetChatRequest) returns (GetChatResponse) {
-    option (google.api.http) = {
-      get: "/v1/chat/GetChat/{chat_id}"
-    };
+  //GetChat - получить информацию о чате
+  rpc GetChat(GetChatRequest) returns (GetChatResponse) {
+    option (google.api.http) = {get: "/v1/chat/GetChat/{chat_id}"};
   }
-  rpc ListUserChats (ListUserChatsRequest) returns (ListUserChatsResponse) {
-    option (google.api.http) = {
-      get: "/v1/chat/ListUserChats/{user_id}"
-    };
-
+  //ListUserChats - получить список чатов
+  rpc ListUserChats(ListUserChatsRequest) returns (ListUserChatsResponse) {
+    option (google.api.http) = {get: "/v1/chat/ListUserChats/{user_id}"};
   }
-  rpc ListChatMembers (ListChatMembersRequest) returns (ListChatMembersResponse) {
-    option (google.api.http) = {
-      get: "/v1/chat/ListChatMembers/{chat_id}"
-    };
-
+  //ListChatMembers - получить участников чата
+  rpc ListChatMembers(ListChatMembersRequest) returns (ListChatMembersResponse) {
+    option (google.api.http) = {get: "/v1/chat/ListChatMembers/{chat_id}"};
   }
-  rpc SendMessage (SendMessageRequest) returns (SendMessageResponse) {
+  //SendMessage - отправить сообщение в чат
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {
     option (google.api.http) = {
       post: "/v1/chat/SendMessage"
       body: "*"
     };
   }
-  rpc ListMessages (ListMessagesRequest) returns (ListMessagesResponse) {
-    option (google.api.http) = {
-      get: "/v1/chat/ListMessages/{chat_id}"
-    };
+  //ListMessages- история сообщений чата
+  rpc ListMessages(ListMessagesRequest) returns (ListMessagesResponse) {
+    option (google.api.http) = {get: "/v1/chat/ListMessages/{chat_id}"};
   }
-  rpc StreamMessages (StreamMessagesRequest) returns (stream StreamMessagesResponse){}
+  //StreamMessages - серверный стрим новых сообщений
+  rpc StreamMessages(StreamMessagesRequest) returns (stream StreamMessagesResponse) {}
 }
-

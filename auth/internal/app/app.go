@@ -6,7 +6,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/adapters/userservice"
 	authGPRS "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc/v1"
-	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth/inmemory"
+	//authRepo "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth/inmemory"
+	authRepo "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth"
 	"log"
 	"os"
@@ -18,12 +19,12 @@ func Run(ctx context.Context) (err error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	userAdapter := userservice.NewClient()
+	userServiceAdapter := userservice.New()
 
-	authRepository := inmemory.NewInMemory()
+	authRepository := authRepo.New()
 
 	authUseCase := auth.New(auth.Deps{
-		UserService: userAdapter,
+		UserService: userServiceAdapter,
 		AuthRepo:    authRepository,
 	})
 
