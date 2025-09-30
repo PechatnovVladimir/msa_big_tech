@@ -7,6 +7,8 @@ import (
 
 // Repository - интерфейс репозитория чата
 type Repository interface {
+	//получить чат по user_id и participant_id между собеседниками
+	GetChatByUserAndParticipant(ctx context.Context, userID string, participantID string) (chatID string, ok bool)
 	Test() error
 }
 

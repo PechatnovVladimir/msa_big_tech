@@ -10,6 +10,7 @@ import (
 	"log"
 )
 
+// CreateDirectChat - delivery создать личный чат
 func (s *Service) CreateDirectChat(ctx context.Context, request *chat.CreateDirectChatRequest) (*chat.CreateDirectChatResponse, error) {
 	log.Println("grps ChatService CreateDirectChat called")
 
@@ -19,7 +20,30 @@ func (s *Service) CreateDirectChat(ctx context.Context, request *chat.CreateDire
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	//тестовый вызов usecase
-	_, _ = s.ChatUseCase.CreateDirectChat(ctx, dto.CreateDirectChatIN{})
-	return &chat.CreateDirectChatResponse{}, nil
+	inUC := grpc2dto(request)
+
+	//вызов бизнес-логики
+	outUC, err := s.ChatUseCase.CreateDirectChat(ctx, inUC)
+	if err != nil {
+		return nil, err
+	}
+
+	out := dto2grpc(outUC)
+
+	return out, nil
+}
+
+// конвертация request в dto
+func grpc2dto(request *chat.CreateDirectChatRequest) dto.CreateDirectChatIN {
+	out := dto.CreateDirectChatIN{}
+	out.ParticipantID = request.ParticipantId
+	return out
+}
+
+// конвертация dto в response
+func dto2grpc(in dto.CreateDirectChatOUT) *chat.CreateDirectChatResponse {
+	out := chat.CreateDirectChatResponse{
+		ChatId: in.ChatID,
+	}
+	return &out
 }
