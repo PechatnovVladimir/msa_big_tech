@@ -30,12 +30,20 @@ const (
 // SocialServiceClient is the client API for SocialService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// SocialService - сервис "социальная" сеть
 type SocialServiceClient interface {
+	// SendFriendRequest - отправить заявку в друзья
 	SendFriendRequest(ctx context.Context, in *SendFriendRequestRequest, opts ...grpc.CallOption) (*SendFriendRequestResponse, error)
+	// ListRequests - получить список входящих заявок
 	ListRequests(ctx context.Context, in *ListRequestsRequest, opts ...grpc.CallOption) (*ListRequestsResponse, error)
+	// AcceptFriendRequest - принять заявку
 	AcceptFriendRequest(ctx context.Context, in *AcceptFriendRequestRequest, opts ...grpc.CallOption) (*AcceptFriendRequestResponse, error)
+	// DeclineFriendRequest - отклонить заявку
 	DeclineFriendRequest(ctx context.Context, in *DeclineFriendRequestRequest, opts ...grpc.CallOption) (*DeclineFriendRequestResponse, error)
+	// RemoveFriend - удалить из друзей
 	RemoveFriend(ctx context.Context, in *RemoveFriendRequest, opts ...grpc.CallOption) (*RemoveFriendResponse, error)
+	// ListFriends - получить список друзей
 	ListFriends(ctx context.Context, in *ListFriendsRequest, opts ...grpc.CallOption) (*ListFriendsResponse, error)
 }
 
@@ -110,12 +118,20 @@ func (c *socialServiceClient) ListFriends(ctx context.Context, in *ListFriendsRe
 // SocialServiceServer is the server API for SocialService service.
 // All implementations must embed UnimplementedSocialServiceServer
 // for forward compatibility.
+//
+// SocialService - сервис "социальная" сеть
 type SocialServiceServer interface {
+	// SendFriendRequest - отправить заявку в друзья
 	SendFriendRequest(context.Context, *SendFriendRequestRequest) (*SendFriendRequestResponse, error)
+	// ListRequests - получить список входящих заявок
 	ListRequests(context.Context, *ListRequestsRequest) (*ListRequestsResponse, error)
+	// AcceptFriendRequest - принять заявку
 	AcceptFriendRequest(context.Context, *AcceptFriendRequestRequest) (*AcceptFriendRequestResponse, error)
+	// DeclineFriendRequest - отклонить заявку
 	DeclineFriendRequest(context.Context, *DeclineFriendRequestRequest) (*DeclineFriendRequestResponse, error)
+	// RemoveFriend - удалить из друзей
 	RemoveFriend(context.Context, *RemoveFriendRequest) (*RemoveFriendResponse, error)
+	// ListFriends - получить список друзей
 	ListFriends(context.Context, *ListFriendsRequest) (*ListFriendsResponse, error)
 	mustEmbedUnimplementedSocialServiceServer()
 }

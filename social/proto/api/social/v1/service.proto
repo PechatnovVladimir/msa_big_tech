@@ -17,7 +17,9 @@ option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
   schemes: HTTP
 };
 
+//SocialService - сервис "социальная" сеть
 service SocialService {
+  //SendFriendRequest - отправить заявку в друзья
   rpc SendFriendRequest(SendFriendRequestRequest) returns (SendFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/SendFriendRequest"
@@ -25,10 +27,12 @@ service SocialService {
     };
   }
 
+  //ListRequests - получить список входящих заявок
   rpc ListRequests(ListRequestsRequest) returns (ListRequestsResponse) {
     option (google.api.http) = {get: "/v1/social/ListRequests/{user_id}"};
   }
 
+  //AcceptFriendRequest - принять заявку
   rpc AcceptFriendRequest(AcceptFriendRequestRequest) returns (AcceptFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/AcceptFriendRequest"
@@ -36,6 +40,7 @@ service SocialService {
     };
   }
 
+  //DeclineFriendRequest - отклонить заявку
   rpc DeclineFriendRequest(DeclineFriendRequestRequest) returns (DeclineFriendRequestResponse) {
     option (google.api.http) = {
       post: "/v1/social/DeclineFriendRequest"
@@ -43,10 +48,12 @@ service SocialService {
     };
   }
 
+  //RemoveFriend - удалить из друзей
   rpc RemoveFriend(RemoveFriendRequest) returns (RemoveFriendResponse) {
     option (google.api.http) = {delete: "/v1/social/RemoveFriend/{user_id}"};
   }
 
+  //ListFriends - получить список друзей
   rpc ListFriends(ListFriendsRequest) returns (ListFriendsResponse) {
     option (google.api.http) = {get: "/v1/social/ListFriends/{user_id}"};
   }

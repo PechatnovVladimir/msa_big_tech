@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package github.com.PechatnovVladimir.msa_big_tech.social.api.v1;
 
+import "buf/validate/validate.proto";
 import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
 import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
@@ -15,61 +17,143 @@ enum Status {
   DECLINED = 3;
 }
 
+//FriendRequest - заявка в друзья
 message FriendRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "FriendRequest"
+      description: "FriendRequest - информация о заявке в друзья"
+      required: [
+        "request_id",
+        "status"
+      ]
+      example: "{\"request_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"status\": \"PENDING|ACCEPTED|DECLINED\"}"
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+  //request_id - ID заявки
   string request_id = 1;
+  //status - статус заявки
   Status status = 2;
 }
 
+//SendFriendRequestRequest - запрос SendFriendRequest
 message SendFriendRequestRequest {
-  string user_id = 1;
+  //user_id - ID пользователя, который приглашается в друзья
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+//SendFriendRequestResponse - ответ SendFriendRequest
 message SendFriendRequestResponse {
+  //FriendRequest - заявка в друзья со статусом PENDING
   FriendRequest FriendRequest = 1;
 }
 
+//ListRequestsRequest - запрос ListRequests
 message ListRequestsRequest {
-  string user_id = 1;
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+//ListRequestsResponse - ответ ListRequests
 message ListRequestsResponse {
+  //FriendRequest - список входящих заявок
   repeated FriendRequest FriendRequest = 1;
 }
 
+//AcceptFriendRequestRequest - запрос AcceptFriendRequest
 message AcceptFriendRequestRequest {
-  string request_id = 1;
+  //request_id - ID заявки
+  string request_id = 1 [
+    json_name = "request_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+//AcceptFriendRequestResponse - ответ AcceptFriendRequest
 message AcceptFriendRequestResponse {
+  //FriendRequest - принятая заявки со статусом ACCEPTED
   FriendRequest FriendRequest = 1;
 }
 
+//DeclineFriendRequestRequest - запрос DeclineFriendRequest
 message DeclineFriendRequestRequest {
-  string request_id = 1;
+  //request_id - ID заявки
+  string request_id = 1 [
+    json_name = "request_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+//DeclineFriendRequestResponse - ответ DeclineFriendRequest
 message DeclineFriendRequestResponse {
+  //FriendRequest - отклоненная заявка со статусом DECLINED
   FriendRequest FriendRequest = 1;
 }
 
+//RemoveFriendRequest - запрос RemoveFriend
 message RemoveFriendRequest {
-  string user_id = 1;
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
 }
 
+//RemoveFriendResponse - ответ RemoveFriendResponse
 message RemoveFriendResponse {}
 
+//Cursor - курсор для пагинации
 message Cursor {
-  string user_id = 1;
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //created_at - время с которого начинаем
   google.protobuf.Timestamp created_at = 2;
 }
 
+//ListFriendsRequest - запрос ListFriends
 message ListFriendsRequest {
-  string user_id = 1;
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //limit - количество вывода при пагинации
   uint64 limit = 2;
+  //cursor - курсов пагинации
   optional Cursor cursor = 3;
 }
 
+//ListFriendsResponse - ответ ListFriends
 message ListFriendsResponse {
+  //friend_user_ids - список друзей
   repeated string friend_user_ids = 1;
+  //next_cursor - курсор пагинации
   optional Cursor next_cursor = 2;
 }
