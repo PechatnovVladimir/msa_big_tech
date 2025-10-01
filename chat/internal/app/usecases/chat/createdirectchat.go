@@ -2,7 +2,9 @@ package chat
 
 import (
 	"context"
+	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
+	"github.com/google/uuid"
 	"log"
 )
 
@@ -16,22 +18,28 @@ func (s *Service) CreateDirectChat(ctx context.Context, in dto.CreateDirectChatI
 	}
 
 	//проверяем наличие чата между currentUser и participant_id - поход в репозиторий
-	_, ok = s.ChatRepo.GetChatByUserAndParticipant(ctx, currentUser, in.ParticipantID)
+	_, ok = s.ChatRepo.GetChatByUserAndParticipant(ctx, dtoRepo.GetChatByUserAndParticipantIN{
+		UserId:        currentUser,
+		ParticipantId: in.ParticipantID,
+	})
 	if ok {
 		return dto.CreateDirectChatOUT{}, dto.ErrChatAlreadyExists
 	}
 
-	//chat := models.Chat{
-	//	ChatID:        uuid.New().String(),
-	//	UserID:        currentUser,
-	//	ParticipantID: in.ParticipantID,
-	//}
+	chatDTO := dtoRepo.CreateDirectChatIN{
+		ChatID:        uuid.New().String(),
+		UserID:        currentUser,
+		ParticipantID: in.ParticipantID,
+	}
 
-	return dto.CreateDirectChatOUT{}, nil
-}
+	//запись в репозиторий
+	err := s.ChatRepo.CreateDirectChat(ctx, chatDTO)
+	if err != nil {
+		return dto.CreateDirectChatOUT{}, err
+	}
 
-func getCurrentUser(ctx context.Context) (string, bool) {
-	//берем из контекста или ...
-	out, ok := ctx.Value("current_user").(string)
-	return out, ok
+	//возвращаем ID созданного чата
+	return dto.CreateDirectChatOUT{
+		ChatID: chatDTO.ChatID,
+	}, nil
 }

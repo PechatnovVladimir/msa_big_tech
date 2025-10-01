@@ -19,8 +19,19 @@ func (s *Service) GetChat(ctx context.Context, request *chat.GetChatRequest) (*c
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	//тестовый вызов usecase
-	_, _ = s.ChatUseCase.GetChat(ctx, dto.GetChatIN{})
+	out, err := s.ChatUseCase.GetChat(ctx, dto.GetChatIN{
+		ChatID: request.ChatId,
+	})
+	if err != nil {
+		return nil, err
+	}
 
-	return &chat.GetChatResponse{}, nil
+	chatOut := chat.Chat{
+		ChatId:      out.ChatID,
+		Description: "description",
+	}
+
+	return &chat.GetChatResponse{
+		Chat: &chatOut,
+	}, nil
 }
