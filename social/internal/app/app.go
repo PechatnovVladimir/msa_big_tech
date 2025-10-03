@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authservice"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userservice"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
@@ -18,10 +19,12 @@ func Run(ctx context.Context) (err error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	authServiceAdapter := authservice.New()
 	userServiceAdapter := userservice.New()
 	socialRepository := socialRepo.New()
 
 	socialUseCase := social.New(social.Deps{
+		AuthService: authServiceAdapter,
 		UserService: userServiceAdapter,
 		SocialRepo:  socialRepository,
 	})

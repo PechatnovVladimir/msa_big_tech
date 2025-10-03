@@ -6,7 +6,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
 
-func ToSendFriendRequestDTO(in *social.SendFriendRequestRequest) (dto.SendFriendRequestIN, error) {
+func SendFriendRequestRequestProtoToDto(in *social.SendFriendRequestRequest) (dto.SendFriendRequestIN, error) {
 	if in == nil {
 		return dto.SendFriendRequestIN{}, errors.New("grpc SendFriendRequestRequest is nil")
 	}
@@ -17,7 +17,7 @@ func ToSendFriendRequestDTO(in *social.SendFriendRequestRequest) (dto.SendFriend
 	return out, nil
 }
 
-func FromSendFriendResponseDTO(in dto.SendFriendRequestOUT) (*social.SendFriendRequestResponse, error) {
+func SendFriendRequestResponseDtoToProto(in dto.SendFriendRequestOUT) (*social.SendFriendRequestResponse, error) {
 	if in.RequestID == "" {
 		return nil, errors.New("RequestID is empty")
 	}

@@ -6,7 +6,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
 
-func ToListRequestsRequestDTO(in *social.ListRequestsRequest) (dto.ListRequestsIN, error) {
+func ListRequestsRequestProtoToDto(in *social.ListRequestsRequest) (dto.ListRequestsIN, error) {
 	if in == nil {
 		return dto.ListRequestsIN{}, errors.New("grpc SendFriendRequestRequest is nil")
 	}
@@ -18,9 +18,9 @@ func ToListRequestsRequestDTO(in *social.ListRequestsRequest) (dto.ListRequestsI
 	return out, nil
 }
 
-func FromListRequestsRequestDTO(in *dto.ListRequestsOUT) (*social.ListRequestsResponse, error) {
+func ListRequestsResponseDtoToProto(in *dto.ListRequestsOUT) (*social.ListRequestsResponse, error) {
 	if in == nil {
-		return nil, errors.New("grpc istRequestsRequestDTO is nil")
+		return nil, errors.New("grpc is RequestsRequestDTO is nil")
 	}
 
 	out := make([]*social.FriendRequest, len(in.Requests))

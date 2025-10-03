@@ -5,4 +5,5 @@ type SendFriendRequestIN struct {
 }
 type SendFriendRequestOUT struct {
 	RequestID string
+	Status    StatusRequest
 }

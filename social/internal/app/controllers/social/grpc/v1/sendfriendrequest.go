@@ -18,7 +18,7 @@ func (s *Service) SendFriendRequest(ctx context.Context, request *social.SendFri
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	inUC, err := converter.ToSendFriendRequestDTO(request)
+	inUC, err := converter.SendFriendRequestRequestProtoToDto(request)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
@@ -28,7 +28,7 @@ func (s *Service) SendFriendRequest(ctx context.Context, request *social.SendFri
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	out, err := converter.FromSendFriendResponseDTO(outUC)
+	out, err := converter.SendFriendRequestResponseDtoToProto(outUC)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
