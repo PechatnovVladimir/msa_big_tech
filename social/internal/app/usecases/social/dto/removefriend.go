@@ -1,4 +1,6 @@
 package dto
 
-type RemoveFriendIN struct{}
+type RemoveFriendIN struct {
+	UserID string
+}
 type RemoveFriendOUT struct{}

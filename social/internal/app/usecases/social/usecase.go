@@ -12,7 +12,8 @@ type Repository interface {
 	ListRequests(ctx context.Context, in dtoRepo.ListRequestsIN) (dtoRepo.ListRequestsOUT, error)
 	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
 	UpdateFriendRequest(ctx context.Context, in dtoRepo.FriendRequest) error
-	Test() error
+	ListFriends(ctx context.Context, in dtoRepo.ListFriendsIN) (dtoRepo.ListFriendsOUT, error)
+	DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
 }
 
 // UserService - интерфейс доступа к сервису пользователей
@@ -43,7 +44,7 @@ type UseCase interface {
 	DeclineFriendRequest(ctx context.Context, in dto.DeclineFriendRequestIN) (dto.DeclineFriendRequestOUT, error)
 	ListFriends(ctx context.Context, in dto.ListFriendsIN) (dto.ListFriendsOUT, error)
 	ListRequests(ctx context.Context, in dto.ListRequestsIN) (dto.ListRequestsOUT, error)
-	RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) (dto.RemoveFriendOUT, error)
+	RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) error
 	SendFriendRequest(ctx context.Context, in dto.SendFriendRequestIN) (dto.SendFriendRequestOUT, error)
 }
 

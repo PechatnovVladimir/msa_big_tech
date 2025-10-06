@@ -18,6 +18,6 @@ func (s *Service) RemoveFriend(ctx context.Context, request *social.RemoveFriend
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	_, _ = s.SocialUseCase.RemoveFriend(ctx, dto.RemoveFriendIN{})
+	_ = s.SocialUseCase.RemoveFriend(ctx, dto.RemoveFriendIN{})
 	return nil, nil
 }
