@@ -4,6 +4,10 @@ cloud.google.com/go/compute/metadata v0.7.0 h1:PBWF+iiAerVNe8UCHxdOt6eHLVc3ydFeO
 cloud.google.com/go/compute/metadata v0.7.0/go.mod h1:j5MvL9PprKL39t166CoB1uVHfQMs4tFQZZcKwksXUjo=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0 h1:UQUsRi8WTzhZntp5313l+CHIAT95ojUI2lpP/ExlZa4=
 github.com/GoogleCloudPlatform/opentelemetry-operations-go/detectors/gcp v1.29.0/go.mod h1:Cz6ft6Dkn3Et6l2v2a9/RpN7epQ1GtDlO6lj8bEcOvw=
+github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20251003084003-ceb9ce48a944/go.mod h1:QwK2+4TeRMxArIMFFXszKdshYGGvU8c2aYUiHL9HajU=
+github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20251003084003-ceb9ce48a944/go.mod h1:7xcV46ac+I1Fuy6XjJIce9Ntquzw8GWWFIintbhWJOc=
+github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20251003084003-ceb9ce48a944/go.mod h1:F2Or9uN0sR+ng2Bnkk9EC+oykAWBis5iQp5MXfp379Q=
+github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20251003084003-ceb9ce48a944/go.mod h1:CY8KRoH+BCsgDucmPm6XzAR5oh+mFo9jRc0EhG8wt6g=
 github.com/antihax/optional v1.0.0 h1:xK2lYat7ZLaVVcIuj82J8kIro4V6kDe0AUDFboUCwcg=
 github.com/antihax/optional v1.0.0/go.mod h1:uupD/76wgC+ih3iEmQUL+0Ugr19nfwCT1kdvxnR2qWY=
 github.com/bufbuild/protovalidate-go v0.6.1 h1:uzW8r0CDvqApUChNj87VzZVoQSKhcVdw5UWOE605UIw=

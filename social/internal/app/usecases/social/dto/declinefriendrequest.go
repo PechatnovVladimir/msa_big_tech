@@ -1,4 +1,9 @@
 package dto
 
-type DeclineFriendRequestIN struct{}
-type DeclineFriendRequestOUT struct{}
+type DeclineFriendRequestIN struct {
+	RequestID string
+}
+type DeclineFriendRequestOUT struct {
+	RequestID string
+	Status    StatusRequest
+}

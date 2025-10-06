@@ -30,3 +30,11 @@ func NewFriendRequest(fromUserID string, toUserID string) FriendRequest {
 		Status:     PENDING,
 	}
 }
+
+func (fr *FriendRequest) Accept() {
+	fr.Status = ACCEPTED
+}
+
+func (fr *FriendRequest) Decline() {
+	fr.Status = DECLINED
+}

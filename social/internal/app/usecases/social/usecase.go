@@ -10,6 +10,8 @@ import (
 type Repository interface {
 	SendFriendRequest(ctx context.Context, in dtoRepo.SendFriendRequestIN) error
 	ListRequests(ctx context.Context, in dtoRepo.ListRequestsIN) (dtoRepo.ListRequestsOUT, error)
+	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
+	UpdateFriendRequest(ctx context.Context, in dtoRepo.FriendRequest) error
 	Test() error
 }
 
