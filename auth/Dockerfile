@@ -11,7 +11,7 @@ RUN go mod download
 COPY auth/ ./
 
 # Собираем сервис auth
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/auth-server ./cmd/server
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/auth-server ./cmd/app
 
 # Final stage
 FROM alpine:3.18

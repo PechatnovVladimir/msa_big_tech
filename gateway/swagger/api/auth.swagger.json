@@ -22,12 +22,13 @@
   "paths": {
     "/v1/auth/Login": {
       "post": {
+        "summary": "Login - вход пользователя",
         "operationId": "AuthService_Login",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiLoginResponse"
+              "$ref": "#/definitions/v1LoginResponse"
             }
           },
           "default": {
@@ -43,7 +44,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiLoginRequest"
+              "$ref": "#/definitions/v1LoginRequest"
             }
           }
         ],
@@ -54,12 +55,13 @@
     },
     "/v1/auth/Refresh": {
       "post": {
+        "summary": "Refresh -",
         "operationId": "AuthService_Refresh",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiRefreshResponse"
+              "$ref": "#/definitions/v1RefreshResponse"
             }
           },
           "default": {
@@ -75,7 +77,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiRefreshRequest"
+              "$ref": "#/definitions/v1RefreshRequest"
             }
           }
         ],
@@ -86,12 +88,13 @@
     },
     "/v1/auth/Register": {
       "post": {
+        "summary": "Register - регистрация нового пользователя",
         "operationId": "AuthService_Register",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiRegisterResponse"
+              "$ref": "#/definitions/v1RegisterResponse"
             }
           },
           "default": {
@@ -104,10 +107,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "RegisterRequest - запрос Register",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiRegisterRequest"
+              "$ref": "#/definitions/v1RegisterRequest"
             }
           }
         ],
@@ -118,75 +122,6 @@
     }
   },
   "definitions": {
-    "apiLoginRequest": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "apiLoginResponse": {
-      "type": "object",
-      "properties": {
-        "accessToken": {
-          "type": "string"
-        },
-        "refreshToken": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiRefreshRequest": {
-      "type": "object",
-      "properties": {
-        "refreshToken": {
-          "type": "string"
-        }
-      }
-    },
-    "apiRefreshResponse": {
-      "type": "object",
-      "properties": {
-        "accessToken": {
-          "type": "string"
-        },
-        "refreshToken": {
-          "type": "string"
-        },
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiRegisterRequest": {
-      "type": "object",
-      "properties": {
-        "email": {
-          "type": "string"
-        },
-        "password": {
-          "type": "string"
-        }
-      }
-    },
-    "apiRegisterResponse": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -214,6 +149,101 @@
           }
         }
       }
+    },
+    "v1LoginRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "title": "LoginRequest - запрос Login",
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "v1LoginResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "title": "access_token - Access token"
+        },
+        "refreshToken": {
+          "type": "string",
+          "title": "refresh_token - Refresh token"
+        },
+        "userId": {
+          "type": "string",
+          "title": "user_id - ID пользователя"
+        }
+      },
+      "title": "LoginResponse - ответ Login"
+    },
+    "v1RefreshRequest": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "title": "refresh_token - Refresh token"
+        }
+      },
+      "title": "RefreshRequest - запрос Refresh"
+    },
+    "v1RefreshResponse": {
+      "type": "object",
+      "properties": {
+        "accessToken": {
+          "type": "string",
+          "title": "access_token - Access token"
+        },
+        "refreshToken": {
+          "type": "string",
+          "title": "refresh_token - Refresh token"
+        },
+        "userId": {
+          "type": "string",
+          "title": "user_id - ID пользователя"
+        }
+      },
+      "title": "RefreshResponse - ответ Refresh"
+    },
+    "v1RegisterRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "title": "email - e-mail пользователя"
+        },
+        "password": {
+          "type": "string",
+          "title": "password - пароль пользователя длина от 8 до 128 символов"
+        }
+      },
+      "description": "RegisterRequest - запрос Register",
+      "title": "RegisterRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "email",
+        "password"
+      ]
+    },
+    "v1RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "user_id - ID пользователя"
+        }
+      },
+      "title": "RegisterResponse - ответ Register"
     }
   }
 }
