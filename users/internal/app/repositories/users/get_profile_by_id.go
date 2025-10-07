@@ -6,9 +6,9 @@ import (
 	"log"
 )
 
-func (r *Repository) GetProfileByID(ctx context.Context, profileID string) (users.UserProfile, error) {
+func (r *Repository) GetProfileByID(ctx context.Context, profileID string) (*users.UserProfile, error) {
 	_ = profileID
 	_ = ctx
 	log.Println("Repository GetUserProfileByID called")
-	return users.UserProfile{}, nil
+	return &users.UserProfile{}, nil
 }

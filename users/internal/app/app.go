@@ -4,18 +4,30 @@ import (
 	"context"
 	"fmt"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc"
-	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/inmemory/users"
+	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
+	"github.com/PechatnovVladimir/msa_big_tech/users/pkg/postgres/users"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func Run(ctx context.Context) (err error) {
 
+	conn, err := users.NewConnectionPool(ctx, DSN(),
+		users.WithMaxConnIdleTime(time.Minute),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
+
+	txMngr := users.NewTxManager(conn)
+
 	//репозиторий
-	repo := userRepo.New(5)
+	repo := userRepo.NewRepository(txMngr)
 
 	//юзкейс
 	uc := usersUC.New(repo)
