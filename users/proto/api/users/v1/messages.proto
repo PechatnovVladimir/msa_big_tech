@@ -1,0 +1,194 @@
+syntax = "proto3";
+
+package github.com.PechatnovVladimir.msa_big_tech.users.api.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/field_behavior.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
+
+//UserProfile - профиль пользователя
+message UserProfile {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "UserProfile"
+      description: "UserProfile - профиль пользователя"
+      required: [
+        "user_id",
+        "nickname",
+        "bio",
+        "avatar_url"
+      ]
+      example: "{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}"
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+
+  //user_id уникальный идентификатор пользователя в формате UUID
+  string user_id = 1;
+  //nickname никнейм пользователя
+  string nickname = 2;
+  //bio биография пользователя
+  string bio = 3;
+  //avatar_url ссылка на аватарку пользователя
+  string avatar_url = 4;
+}
+
+//CreateProfileRequest - запрос CreateProfile
+message CreateProfileRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "CreateProfileRequest"
+      description: "CreateProfileRequest - запрос CreateProfile"
+      required: [
+        "nickname"
+      ]
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "userid",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+
+  ];
+  //nickname - никнейм пользователя
+  string nickname = 2 [
+    json_name = "nickname",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 20,
+      pattern: "^[a-z0-9_]{3,20}$",
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //nickname - никнейм пользователя
+  //bio биография пользователя
+  optional string bio = 3[
+    json_name = "bio",
+    (buf.validate.field).required = false,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  //avatar_url ссылка на аватарку пользователя
+  optional string avatar_url = 4 [
+    json_name = "avatarUrl",
+    (buf.validate.field).required = false,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+//CreateProfileResponse - ответ CreateProfile
+message CreateProfileResponse {
+  //UserProfile - полный профайл пользователя
+  UserProfile UserProfile = 1;
+}
+
+//UpdateProfileRequest - запрос UpdateProfile
+message UpdateProfileRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "UpdateProfileRequest"
+      description: "UpdateProfileRequest - запрос UpdateProfile"
+      required: [
+        "user_id"
+      ]
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+
+  //user_id - ID пользователя в формате UUID
+  string user_id = 1 [
+    json_name = "userid",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  optional string nickname = 2 [
+    json_name = "nickname",
+    (buf.validate.field).required = false,
+    (buf.validate.field).string = {
+      min_len: 3,
+      max_len: 20,
+      pattern: "^[a-z0-9_]{3,20}$",
+    },
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional string bio = 3 [
+    json_name = "bio",
+    (buf.validate.field).required = false,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+  optional string avatar_url = 4 [
+    json_name = "avatarurl",
+    (buf.validate.field).required = false,
+    (google.api.field_behavior) = OPTIONAL
+  ];
+}
+
+//UpdateProfileResponse - UpdateProfile ответ
+message UpdateProfileResponse {
+  //UserProfile - профайл пользователя
+  UserProfile UserProfile = 1;
+}
+
+//GetProfileByIDRequest - GetProfileByID запрос
+message GetProfileByIDRequest {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "GetProfileByIDRequest"
+      description: "GetProfileByIDRequest - запрос GetProfileByID"
+      required: [
+        "user_id"
+      ]
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+
+  //user_id - ID пользователя в формате UUID
+  string user_id = 1 [
+    json_name = "userid",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+//GetProfileByIDResponse - GetProfileByID ответ
+message GetProfileByIDResponse {
+  //UserProfile - профиль пользователя
+  UserProfile UserProfile = 1;
+}
+
+message GetProfileByNicknameRequest {
+  string nickname = 1;
+}
+
+message GetProfileByNicknameResponse {
+  UserProfile UserProfile = 1;
+}
+
+message SearchByNicknameRequest {
+  string query = 1;
+  int64 limit = 2;
+}
+
+message SearchByNicknameResponse {
+  repeated UserProfile UserProfile = 1;
+}

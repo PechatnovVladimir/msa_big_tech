@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package github.com.PechatnovVladimir.msa_big_tech.users.api.v1;
+
+import "api/users/v1/messages.proto";
+import "google/api/annotations.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+    title: "Users API"
+    version: "1.0"
+    description: "API users-service"
+  }
+  schemes: HTTP
+};
+
+//UserService - сервис пользователей
+service UserService {
+  //CreateProfile - создать профиль пользователя
+  rpc CreateProfile(CreateProfileRequest) returns (CreateProfileResponse) {
+    option (google.api.http) = {
+      post: "/v1/users/CreateProfile"
+      body: "*"
+    };
+  }
+
+  //UpdateProfile - обновить профиль пользователя
+  rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {
+    option (google.api.http) = {
+      patch: "/v1/users/UpdateProfile"
+      body: "*"
+    };
+  }
+
+  //GetProfileByID - получить профиль по ID
+  rpc GetProfileByID(GetProfileByIDRequest) returns (GetProfileByIDResponse) {
+    option (google.api.http) = {get: "/v1/users/GetProfileByID/{user_id}"};
+  }
+
+  //GetProfileByNickname - поиск пользователя по нику
+  rpc GetProfileByNickname(GetProfileByNicknameRequest) returns (GetProfileByNicknameResponse) {
+    option (google.api.http) = {get: "/v1/users/GetProfileByNickname/{nickname}"};
+  }
+
+  //SearchByNickname - поиск пользователей
+  rpc SearchByNickname(SearchByNicknameRequest) returns (SearchByNicknameResponse) {
+    option (google.api.http) = {post: "/v1/users/SearchByNickname"};
+  }
+}
