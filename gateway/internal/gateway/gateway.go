@@ -35,8 +35,8 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
-	//err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50054", opts)
-	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
+	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50054", opts)
+	//err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
 	if err != nil {
 		panic(err)
 	}

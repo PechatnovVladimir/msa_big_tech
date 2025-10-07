@@ -2,15 +2,15 @@ package users
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/users/pkg/postgres/users"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 )
 
 type Repository struct {
-	db users.TransactionManagerAPI
+	db postgres.TransactionManagerAPI
 	sb squirrel.StatementBuilderType
 }
 
-func NewRepository(txManager users.TransactionManagerAPI) *Repository {
+func NewRepository(txManager postgres.TransactionManagerAPI) *Repository {
 	return &Repository{
 		db: txManager,
 		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),

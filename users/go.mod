@@ -6,7 +6,9 @@ require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/georgysavva/scany/v2 v2.1.4
+	github.com/PechatnovVladimir/msa_big_tech/pkg v0.0.0
+	github.com/brianvoe/gofakeit/v7 v7.7.3
+	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	github.com/jackc/pgx/v5 v5.7.6
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c
@@ -14,9 +16,12 @@ require (
 	google.golang.org/protobuf v1.36.9
 )
 
+replace github.com/PechatnovVladimir/msa_big_tech/pkg => ../pkg
+
 require (
 	cel.dev/expr v0.24.0 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
+	github.com/georgysavva/scany/v2 v2.1.4 // indirect
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect

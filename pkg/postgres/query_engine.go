@@ -1,4 +1,4 @@
-package users
+package postgres
 
 import (
 	"github.com/jackc/pgx/v5"

@@ -3,10 +3,10 @@ package app
 import (
 	"context"
 	"fmt"
+	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc"
 	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
-	"github.com/PechatnovVladimir/msa_big_tech/users/pkg/postgres/users"
 	"log"
 	"os"
 	"os/signal"
@@ -16,18 +16,22 @@ import (
 
 func Run(ctx context.Context) (err error) {
 
-	conn, err := users.NewConnectionPool(ctx, DSN(),
-		users.WithMaxConnIdleTime(time.Minute),
+	//соединение
+	conn, err := connection.NewConnectionPool(ctx, DSN(),
+		connection.WithMaxConnIdleTime(time.Minute),
+		connection.WithMinConnectionsCount(3),
+		connection.WithMaxConnectionsCount(10),
 	)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer conn.Close()
 
-	txMngr := users.NewTxManager(conn)
+	//менеджер транзакций
+	txManager := connection.NewTxManager(conn)
 
 	//репозиторий
-	repo := userRepo.NewRepository(txMngr)
+	repo := userRepo.NewRepository(txManager)
 
 	//юзкейс
 	uc := usersUC.New(repo)
