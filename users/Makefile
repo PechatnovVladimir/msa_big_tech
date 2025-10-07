@@ -1,5 +1,9 @@
 include vendor.proto.mk
 
+POSTGRES_DB := postgres-users
+POSTGRES_USER := postgres-users-user
+POSTGRES_PASSWORD := postgres-users-psw
+
 SERVICE_NAME := users
 
 # Путь до завендореных protobuf файлов
@@ -53,6 +57,21 @@ vercommit: .ver-commit
 
 run:
 	go run ./cmd/app/main.go
+
+pg-up:
+	docker-compose up -d
+
+pg-down:
+	docker-compose down
+
+migration-status:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" status -dir ./migrations
+
+migration-up:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" up -dir ./migrations
+
+migration-down:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" down -dir ./migrations
 
 .PHONY: \
 	.bin-deps \
