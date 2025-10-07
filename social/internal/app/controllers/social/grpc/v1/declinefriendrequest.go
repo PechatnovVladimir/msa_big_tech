@@ -18,6 +18,17 @@ func (s *Service) DeclineFriendRequest(ctx context.Context, request *social.Decl
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	_, _ = s.SocialUseCase.DeclineFriendRequest(ctx, dto.DeclineFriendRequestIN{})
-	return nil, nil
+	inUC := dto.DeclineFriendRequestIN{RequestID: request.RequestId}
+
+	outUC, err := s.SocialUseCase.DeclineFriendRequest(ctx, inUC)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	friendRequest := &social.FriendRequest{
+		RequestId: outUC.RequestID,
+		Status:    social.Status(outUC.Status),
+	}
+
+	return &social.DeclineFriendRequestResponse{FriendRequest: friendRequest}, nil
 }

@@ -19,6 +19,17 @@ func (s *Service) AcceptFriendRequest(ctx context.Context, request *social.Accep
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	_, _ = s.SocialUseCase.AcceptFriendRequest(ctx, dto.AcceptFriendRequestIN{})
-	return nil, nil
+	inUC := dto.AcceptFriendRequestIN{RequestID: request.RequestId}
+
+	outUC, err := s.SocialUseCase.AcceptFriendRequest(ctx, inUC)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	friendRequest := &social.FriendRequest{
+		RequestId: outUC.RequestID,
+		Status:    social.Status(outUC.Status),
+	}
+
+	return &social.AcceptFriendRequestResponse{FriendRequest: friendRequest}, nil
 }

@@ -5,7 +5,7 @@ import (
 	socialPB "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
 
-// зависимости
+// Deps - зависимости
 type Deps struct {
 	SocialUseCase social.UseCase
 }
