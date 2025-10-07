@@ -2,41 +2,33 @@ package chat
 
 import (
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/google/uuid"
 )
 
 // Repository - интерфейс репозитория чата
 type Repository interface {
-	CreateDirectChat(ctx context.Context, userID string, participantID string) (*chat.Chat, error)
-	GetChat(ctx context.Context, chatID string) (*chat.Chat, error)
-	ListUserChats(ctx context.Context, userID string) ([]*chat.Chat, error)
-	SendMessage(ctx context.Context, m *chat.Message) (*chat.Message, error)
-	ListChatMembers(ctx context.Context, chatID string) ([]*string, error)
-	ListMessages(ctx context.Context, chatID string, opts pagination.Options) ([]*chat.Message, error)
-	StreamMessage(ctx context.Context, chatID string) (<-chan *chat.Message, error)
-}
-
-type OutboxRepository interface {
-	SaveMessageSent(ctx context.Context, message *chat.Message) error
+	//получить чат по user_id и participant_id между собеседниками
+	GetChatByUserAndParticipant(ctx context.Context, in dtoRepo.GetChatByUserAndParticipantIN) (out dtoRepo.GetChatByUserAndParticipantOUT, ok bool)
+	CreateDirectChat(ctx context.Context, in dtoRepo.CreateDirectChatIN) error
+	GetChat(ctx context.Context, in dtoRepo.GetChatIN) (out dtoRepo.GetChatOUT, err error)
+	ListChatMembers(ctx context.Context, in dtoRepo.ListChatMembersIN) (out dtoRepo.ListChatMembersOUT, err error)
+	ListMessages(ctx context.Context, in dtoRepo.ListMessagesIN) (out dtoRepo.ListMessagesOUT, err error)
+	ListUserChats(ctx context.Context, in dtoRepo.ListUserChatsIN) (out dtoRepo.ListUserChatsOUT, err error)
+	SendMessage(ctx context.Context, in dtoRepo.SendMessageIN) (out dtoRepo.SendMessageOUT, err error)
+	Test() error
 }
 
 // UserService - интерфейс доступа к сервису пользователей
-type UserProvider interface {
-	GetUserFromContext(ctx context.Context) (*chat.User, error)
-}
-
-type TransactionManager interface {
-	RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error
+type UserService interface {
+	Test() error
 }
 
 // Deps - зависимости
 type Deps struct {
-	ChatRepo           Repository
-	UserProvider       UserProvider
-	TransactionManager TransactionManager
-	OutboxRepo         OutboxRepository
+	ChatRepo    Repository
+	UserService UserService
 }
 
 type Service struct {
@@ -45,13 +37,13 @@ type Service struct {
 
 // UseCase - интерфейс сервиса чата
 type UseCase interface {
-	CreateDirectChat(ctx context.Context, in *dto.CreateDirectChatIN) (*dto.CreateDirectChatOUT, error)
-	GetChat(ctx context.Context, in *dto.GetChatIN) (*dto.GetChatOUT, error)
-	ListUserChats(ctx context.Context, in *dto.ListUserChatsIN) (*dto.ListUserChatsOUT, error)
-	SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.SendMessageOUT, error)
-	ListChatMembers(ctx context.Context, in *dto.ListChatMembersIN) (*dto.ListChatMembersOUT, error)
-	ListMessages(ctx context.Context, in *dto.ListMessagesIN) (*dto.ListMessagesOUT, error)
-	StreamMessages(ctx context.Context, in *dto.StreamMessagesIN) (<-chan *chat.Message, error)
+	CreateDirectChat(ctx context.Context, in dto.CreateDirectChatIN) (dto.CreateDirectChatOUT, error)
+	GetChat(ctx context.Context, in dto.GetChatIN) (dto.GetChatOUT, error)
+	ListChatMembers(ctx context.Context, in dto.ListChatMembersIN) (dto.ListChatMembersOUT, error)
+	ListMessages(ctx context.Context, in dto.ListMessagesIN) (dto.ListMessagesOUT, error)
+	ListUserChats(ctx context.Context, in dto.ListUserChatsIN) (dto.ListUserChatsOUT, error)
+	SendMessage(ctx context.Context, in dto.SendMessageIN) (dto.SendMessageOut, error)
+	StreamMessages(ctx context.Context, in dto.StreamMessagesIN) (dto.StreamMessagesOUT, error)
 }
 
 var _ UseCase = (*Service)(nil)
@@ -60,4 +52,12 @@ func New(d Deps) *Service {
 	return &Service{
 		Deps: d,
 	}
+}
+
+func getCurrentUser(ctx context.Context) (string, bool) {
+	//берем из контекста или ...
+	//out, ok := ctx.Value("current_user").(string)
+	//пока заглушка генерим на лету
+	out := uuid.New().String()
+	return out, true
 }

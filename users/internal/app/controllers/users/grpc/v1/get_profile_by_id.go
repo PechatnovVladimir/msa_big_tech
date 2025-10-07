@@ -6,14 +6,20 @@ import (
 )
 
 func (s *Service) GetProfileByID(ctx context.Context, request *userPB.GetProfileByIDRequest) (*userPB.GetProfileByIDResponse, error) {
-	data := dtoGetProfileByIDFromGetProfileByIDRequest(request)
 
-	profile, err := s.uc.GetProfileByID(ctx, data)
+	profileID := request.UserId
+
+	p, err := s.uc.GetProfileByID(ctx, profileID)
 	if err != nil {
 		return nil, err
 	}
 
-	userProfile := responseUserProfileFromUserProfileModel(profile)
+	userProfile := &userPB.UserProfile{
+		UserId:    p.ID,
+		Nickname:  p.Nickname,
+		Bio:       p.Bio,
+		AvatarUrl: p.Avatar,
+	}
 
 	return &userPB.GetProfileByIDResponse{UserProfile: userProfile}, nil
 

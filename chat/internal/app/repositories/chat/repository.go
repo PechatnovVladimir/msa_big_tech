@@ -1,18 +1,15 @@
 package chat
 
-import (
-	"github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
-)
+import "log"
 
 type Repository struct {
-	db postgres.QueryEngineProvider
-	sb squirrel.StatementBuilderType
 }
 
-func NewRepository(txManager postgres.QueryEngineProvider) *Repository {
-	return &Repository{
-		db: txManager,
-		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
-	}
+func New() *Repository {
+	return &Repository{}
+}
+
+func (r *Repository) Test() error {
+	log.Println("chat repository Test() called")
+	return nil
 }

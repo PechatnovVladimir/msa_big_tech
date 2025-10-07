@@ -6,14 +6,19 @@ import (
 )
 
 func (s *Service) GetProfileByNickname(ctx context.Context, request *userPB.GetProfileByNicknameRequest) (*userPB.GetProfileByNicknameResponse, error) {
-	data := dtoGetProfileByNicknameFromGetProfileByNicknameRequest(request)
+	nickname := request.Nickname
 
-	profile, err := s.uc.GetProfileByNickname(ctx, data)
+	p, err := s.uc.GetProfileByNickname(ctx, nickname)
 	if err != nil {
 		return nil, err
 	}
 
-	userProfile := responseUserProfileFromUserProfileModel(profile)
+	userProfile := &userPB.UserProfile{
+		UserId:    p.ID,
+		Nickname:  p.Nickname,
+		Bio:       p.Bio,
+		AvatarUrl: p.Avatar,
+	}
 
 	return &userPB.GetProfileByNicknameResponse{UserProfile: userProfile}, nil
 

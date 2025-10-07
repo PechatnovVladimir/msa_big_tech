@@ -4,7 +4,6 @@ package github.com.PechatnovVladimir.msa_big_tech.users.api.v1;
 
 import "buf/validate/validate.proto";
 import "google/api/field_behavior.proto";
-import "google/protobuf/timestamp.proto";
 import "protoc-gen-openapiv2/options/annotations.proto";
 
 option go_package = "github.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users";
@@ -17,7 +16,6 @@ message UserProfile {
       description: "UserProfile - профиль пользователя"
       required: [
         "user_id",
-        "email",
         "nickname",
         "bio",
         "avatar_url"
@@ -32,14 +30,12 @@ message UserProfile {
 
   //user_id уникальный идентификатор пользователя в формате UUID
   string user_id = 1;
-  //email email пользователя
-  string email = 2;
   //nickname никнейм пользователя
-  string nickname = 3;
+  string nickname = 2;
   //bio биография пользователя
-  string bio = 4;
+  string bio = 3;
   //avatar_url ссылка на аватарку пользователя
-  string avatar_url = 5;
+  string avatar_url = 4;
 }
 
 //CreateProfileRequest - запрос CreateProfile
@@ -49,8 +45,6 @@ message CreateProfileRequest {
       title: "CreateProfileRequest"
       description: "CreateProfileRequest - запрос CreateProfile"
       required: [
-        "userid",
-        "email",
         "nickname"
       ]
     }
@@ -69,15 +63,7 @@ message CreateProfileRequest {
 
   ];
   //nickname - никнейм пользователя
-  string email = 2 [
-    json_name = "email",
-    (buf.validate.field).required = true,
-    (buf.validate.field).string.email = true,
-    (google.api.field_behavior) = REQUIRED
-  ];
-
-  //nickname - никнейм пользователя
-  string nickname = 3 [
+  string nickname = 2 [
     json_name = "nickname",
     (buf.validate.field).required = true,
     (buf.validate.field).string = {
@@ -87,14 +73,15 @@ message CreateProfileRequest {
     },
     (google.api.field_behavior) = REQUIRED
   ];
+  //nickname - никнейм пользователя
   //bio биография пользователя
-  optional string bio = 4[
+  optional string bio = 3[
     json_name = "bio",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
   ];
   //avatar_url ссылка на аватарку пользователя
-  optional string avatar_url = 5 [
+  optional string avatar_url = 4 [
     json_name = "avatarUrl",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
@@ -130,13 +117,7 @@ message UpdateProfileRequest {
     (buf.validate.field).string.uuid = true,
     (google.api.field_behavior) = REQUIRED
   ];
-  optional string email = 2 [
-    json_name = "email",
-    (buf.validate.field).required = false,
-    (buf.validate.field).string.email = true,
-    (google.api.field_behavior) = OPTIONAL
-  ];
-  optional string nickname = 3 [
+  optional string nickname = 2 [
     json_name = "nickname",
     (buf.validate.field).required = false,
     (buf.validate.field).string = {
@@ -146,12 +127,12 @@ message UpdateProfileRequest {
     },
     (google.api.field_behavior) = OPTIONAL
   ];
-  optional string bio = 4 [
+  optional string bio = 3 [
     json_name = "bio",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
   ];
-  optional string avatar_url = 5 [
+  optional string avatar_url = 4 [
     json_name = "avatarurl",
     (buf.validate.field).required = false,
     (google.api.field_behavior) = OPTIONAL
@@ -203,18 +184,9 @@ message GetProfileByNicknameResponse {
   UserProfile UserProfile = 1;
 }
 
-message Query {
-  //список ID пользователей
-  repeated string IDs = 1;
-  optional string email = 2;
-  optional string nickname = 3;
-  optional google.protobuf.Timestamp createdfrom = 4;
-  optional google.protobuf.Timestamp createdto = 5;
-}
-
 message SearchByNicknameRequest {
-  Query query = 1;
-  uint64 limit = 2;
+  string query = 1;
+  int64 limit = 2;
 }
 
 message SearchByNicknameResponse {

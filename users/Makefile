@@ -2,10 +2,6 @@ include vendor.proto.mk
 
 SERVICE_NAME := users
 
-POSTGRES_DB := postgres-$(SERVICE_NAME)
-POSTGRES_USER := postgres-$(SERVICE_NAME)-user
-POSTGRES_PASSWORD := postgres-$(SERVICE_NAME)-psw
-
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
@@ -43,7 +39,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	buf generate
 
 .ver-commit:
-	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW2
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW2-dev
 
 #generate-protoc: .protoc-generate
 generate: .buf-generate
@@ -57,21 +53,6 @@ vercommit: .ver-commit
 
 run:
 	go run ./cmd/app/main.go
-
-pg-up:
-	docker-compose up -d
-
-pg-down:
-	docker-compose down
-
-migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" status -dir ./migrations
-
-migration-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" up -dir ./migrations
-
-migration-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" down -dir ./migrations
 
 .PHONY: \
 	.bin-deps \

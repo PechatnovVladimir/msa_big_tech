@@ -15,7 +15,7 @@ func (s *Service) RemoveFriend(ctx context.Context, request *social.RemoveFriend
 	//валидация по proto описанию
 	err := protovalidate.Validate(request)
 	if err != nil {
-		return nil, err
+		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
 	err = s.SocialUseCase.RemoveFriend(ctx, dto.RemoveFriendIN{

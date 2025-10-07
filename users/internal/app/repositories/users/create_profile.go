@@ -3,24 +3,12 @@ package users
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
-	"strings"
+	"log"
 )
 
-func (r *Repository) CreateProfile(ctx context.Context, p *users.UserProfile) (*users.UserProfile, error) {
-	row := FromModel(p)
-
-	query := r.sb.
-		Insert(usersTable).
-		Columns(usersTableColumns...).
-		Values(row.Values()...).
-		Suffix("RETURNING " + strings.Join(usersTableColumns, ","))
-
-	pool := r.db.GetQueryEngine(ctx)
-
-	var outRow UserProfileRow
-	if err := pool.Getx(ctx, &outRow, query); err != nil {
-		return &users.UserProfile{}, err
-	}
-
-	return ToModel(&outRow), nil
+func (r *Repository) CreateProfile(ctx context.Context, p *users.UserProfile) error {
+	_ = ctx
+	_ = p
+	log.Println("Repository CreateProfile called")
+	return nil
 }
