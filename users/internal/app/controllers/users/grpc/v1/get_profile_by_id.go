@@ -16,6 +16,7 @@ func (s *Service) GetProfileByID(ctx context.Context, request *userPB.GetProfile
 
 	userProfile := &userPB.UserProfile{
 		UserId:    p.ID,
+		Email:     p.Email,
 		Nickname:  p.Nickname,
 		Bio:       p.Bio,
 		AvatarUrl: p.Avatar,

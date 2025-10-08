@@ -8,12 +8,12 @@ import (
 
 type (
 	Repository interface {
-		CreateProfile(ctx context.Context, userProfile *users.UserProfile) error
-		UpdateProfile(ctx context.Context, userProfile *users.UserProfile) error
+		CreateProfile(ctx context.Context, userProfile *users.UserProfile) (*users.UserProfile, error)
+		UpdateProfile(ctx context.Context, userProfile *users.UserProfileForUpdate) (*users.UserProfile, error)
 		DeleteProfile(ctx context.Context, profileID string) error
 		GetProfileByID(ctx context.Context, profileID string) (*users.UserProfile, error)
 		GetProfileByNickname(ctx context.Context, nickname string) (*users.UserProfile, error)
-		SearchByNickname(ctx context.Context, nickname string) ([]*users.UserProfile, error)
+		SearchByNickname(ctx context.Context, filter *users.UserProfileFilter, limit *uint64) ([]*users.UserProfile, error)
 	}
 )
 type Service struct {

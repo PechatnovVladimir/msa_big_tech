@@ -1,28 +1,42 @@
 package dto
 
+import "time"
+
 type CreateProfileDTO struct {
 	//ID пользователя
 	ID string
 	//Никнейм пользователя
 	Nickname string
+	//Email пользователя
+	Email string
 	//Биография пользователя
-	Bio string
+	Bio *string
 	//Ссылка на аватарку пользователя
-	Avatar string
+	Avatar *string
 }
 
 type UpdateProfileDTO struct {
 	//ID пользователя
 	ID string
 	//Никнейм пользователя
-	Nickname string
+	Nickname *string
+	//Email пользователя
+	Email *string
 	//Биография пользователя
-	Bio string
+	Bio *string
 	//Ссылка на аватарку пользователя
-	Avatar string
+	Avatar *string
+}
+
+type Query struct {
+	IDs         []string
+	Email       *string
+	Nickname    *string
+	CreatedFrom *time.Time
+	CreatedTo   *time.Time
 }
 
 type SearchByNicknameDTO struct {
-	Query string
-	Limit int64
+	Query Query
+	Limit uint64
 }

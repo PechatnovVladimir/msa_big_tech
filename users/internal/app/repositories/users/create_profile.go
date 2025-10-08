@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func (r *Repository) CreateProfile(ctx context.Context, p *users.UserProfile) error {
+func (r *Repository) CreateProfile(ctx context.Context, p *users.UserProfile) (*users.UserProfile, error) {
 	row := FromModel(p)
 
 	query := r.sb.
@@ -19,8 +19,8 @@ func (r *Repository) CreateProfile(ctx context.Context, p *users.UserProfile) er
 
 	var outRow UserProfileRow
 	if err := pool.Getx(ctx, &outRow, query); err != nil {
-		return err
+		return &users.UserProfile{}, err
 	}
 
-	return nil
+	return ToModel(&outRow), nil
 }

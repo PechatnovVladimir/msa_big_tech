@@ -33,17 +33,24 @@ func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*u
 	userProfile := users.NewUserProfile()
 
 	userProfile.ID = d.ID
-	userProfile.Email = "pvv@mail.ru"
+	userProfile.Email = d.Email
 	userProfile.Nickname = d.Nickname
-	userProfile.Bio = d.Bio
-	userProfile.Avatar = d.Avatar
+
+	if d.Bio != nil {
+		userProfile.Bio = *d.Bio
+	}
+
+	if d.Avatar != nil {
+		userProfile.Avatar = *d.Avatar
+	}
+
 	userProfile.CreateAt = time.Now()
 
 	//сохраняем в репозиторий
-	err := s.repository.CreateProfile(ctx, userProfile)
+	out, err := s.repository.CreateProfile(ctx, userProfile)
 
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, err.Error())
+		return &users.UserProfile{}, fmt.Errorf("%w: %s", ErrCreateProfileFailed, err.Error())
 	}
-	return userProfile, nil
+	return out, nil
 }

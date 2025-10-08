@@ -17,6 +17,27 @@ type UserProfile struct {
 	CreateAt time.Time
 }
 
+type UserProfileForUpdate struct {
+	//Идентификатор пользователя
+	ID string
+	//e-mail пользователя
+	Email *string
+	//Никнейм пользователя
+	Nickname *string
+	//Биография пользователя
+	Bio *string
+	//Ссылка на аватарку пользователя
+	Avatar *string
+}
+
+type UserProfileFilter struct {
+	IDs         []string
+	Email       *string
+	Nickname    *string
+	CreatedFrom *time.Time
+	CreatedTo   *time.Time
+}
+
 func NewUserProfile() *UserProfile {
 	return &UserProfile{}
 }

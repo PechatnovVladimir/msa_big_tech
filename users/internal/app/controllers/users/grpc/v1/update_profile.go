@@ -20,6 +20,10 @@ func (s *Service) UpdateProfile(ctx context.Context, request *userPB.UpdateProfi
 		ID: request.UserId,
 	}
 
+	if request.Email != nil {
+		d.Email = *request.Email
+	}
+
 	if request.Nickname != nil {
 		d.Nickname = *request.Nickname
 	}
@@ -40,6 +44,7 @@ func (s *Service) UpdateProfile(ctx context.Context, request *userPB.UpdateProfi
 	userProfile := &userPB.UserProfile{
 		UserId:    p.ID,
 		Nickname:  p.Nickname,
+		Email:     p.Email,
 		Bio:       p.Bio,
 		AvatarUrl: p.Avatar,
 	}
