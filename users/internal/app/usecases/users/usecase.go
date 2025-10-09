@@ -22,15 +22,15 @@ type Service struct {
 
 type UseCase interface {
 	//CreateProfile создать профиль
-	CreateProfile(ctx context.Context, dto dto.CreateProfileDTO) (*users.UserProfile, error)
+	CreateProfile(ctx context.Context, dto dto.CreateProfile) (*users.UserProfile, error)
 	//UpdateProfile обновить профиль
-	UpdateProfile(ctx context.Context, dto dto.UpdateProfileDTO) (*users.UserProfile, error)
+	UpdateProfile(ctx context.Context, dto dto.UpdateProfile) (*users.UserProfile, error)
 	//GetProfileByID получить профиль по ID
-	GetProfileByID(ctx context.Context, id string) (*users.UserProfile, error)
+	GetProfileByID(ctx context.Context, dto dto.GetProfileById) (*users.UserProfile, error)
 	//GetProfileByNickname по иск по нику
-	GetProfileByNickname(ctx context.Context, nickname string) (*users.UserProfile, error)
+	GetProfileByNickname(ctx context.Context, dto dto.GetProfileByNickname) (*users.UserProfile, error)
 	//SearchByNickname поиск пользователей
-	SearchByNickname(ctx context.Context, dto dto.SearchByNicknameDTO) ([]*users.UserProfile, error)
+	SearchByNickname(ctx context.Context, dto dto.SearchByNickname) ([]*users.UserProfile, error)
 }
 
 var _ UseCase = (*Service)(nil)

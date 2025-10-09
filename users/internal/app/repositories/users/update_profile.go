@@ -24,7 +24,7 @@ func (r *Repository) UpdateProfile(ctx context.Context, p *users.UserProfileForU
 	}
 
 	if p.Avatar != nil {
-		query = query.Set("avatar", p.Avatar)
+		query = query.Set("avatar_url", p.Avatar)
 	}
 
 	query = query.Suffix("RETURNING " + strings.Join(usersTableColumns, ","))

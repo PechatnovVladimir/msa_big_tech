@@ -15,20 +15,14 @@ func (s *Service) GetProfileByID(ctx context.Context, request *userPB.GetProfile
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	profileID := request.UserId
+	data := dtoGetProfileByIDFromGetProfileByIDRequest(request)
 
-	p, err := s.uc.GetProfileByID(ctx, profileID)
+	profile, err := s.uc.GetProfileByID(ctx, data)
 	if err != nil {
 		return nil, err
 	}
 
-	userProfile := &userPB.UserProfile{
-		UserId:    p.ID,
-		Email:     p.Email,
-		Nickname:  p.Nickname,
-		Bio:       p.Bio,
-		AvatarUrl: p.Avatar,
-	}
+	userProfile := responseUserProfileFromUserProfileModel(profile)
 
 	return &userPB.GetProfileByIDResponse{UserProfile: userProfile}, nil
 

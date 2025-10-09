@@ -6,51 +6,32 @@ import (
 	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
-	"time"
 )
 
 var (
 	ErrCreateProfileFailed = errors.New("create profile failed")
 )
 
-func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*users.UserProfile, error) {
-	//валидация dto (?)
-	//валидацию сделали на уровне controllers, нужна ли еще дополнительная?
-
+func (s *Service) CreateProfile(ctx context.Context, profile dto.CreateProfile) (*users.UserProfile, error) {
 	//проверяем уникальность ID
-	//_, err := s.GetProfileByID(ctx, d.ID)
-	//if err == nil {
-	//	return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
-	//}
+	_, err := s.GetProfileByID(ctx, dto.GetProfileById{ID: profile.ID})
+	if err == nil {
+		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
+	}
 
 	//проверяем уникальность nickname
-	//_, err = s.GetProfileByNickname(ctx, d.Nickname)
-	//if err == nil {
-	//	return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
-	//}
-
-	//создаем профайл
-	userProfile := users.NewUserProfile()
-
-	userProfile.ID = d.ID
-	userProfile.Email = d.Email
-	userProfile.Nickname = d.Nickname
-
-	if d.Bio != nil {
-		userProfile.Bio = *d.Bio
+	_, err = s.GetProfileByNickname(ctx, dto.GetProfileByNickname{Nickname: profile.Nickname})
+	if err == nil {
+		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
 	}
 
-	if d.Avatar != nil {
-		userProfile.Avatar = *d.Avatar
-	}
-
-	userProfile.CreateAt = time.Now()
+	data := modelUserProfileFromCreateProfileDto(profile)
 
 	//сохраняем в репозиторий
-	out, err := s.repository.CreateProfile(ctx, userProfile)
+	outProfile, err := s.repository.CreateProfile(ctx, data)
 
 	if err != nil {
 		return &users.UserProfile{}, fmt.Errorf("%w: %s", ErrCreateProfileFailed, err.Error())
 	}
-	return out, nil
+	return outProfile, nil
 }

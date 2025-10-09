@@ -40,7 +40,7 @@ func main() {
 			Avatar:   gofakeit.URL(),
 			CreateAt: time.Time{},
 		}
-		err := repo.CreateProfile(ctx, &p)
+		_, err := repo.CreateProfile(ctx, &p)
 		if err != nil {
 			log.Println(err)
 		}

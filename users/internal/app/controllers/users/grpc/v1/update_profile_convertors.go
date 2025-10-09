@@ -5,8 +5,8 @@ import (
 	userPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 )
 
-func dtoUpdateProfileFromUpdateProfileRequest(request *userPB.UpdateProfileRequest) dto.UpdateProfileDTO {
-	result := dto.UpdateProfileDTO{
+func dtoUpdateProfileFromUpdateProfileRequest(request *userPB.UpdateProfileRequest) dto.UpdateProfile {
+	result := dto.UpdateProfile{
 		ID: request.UserId,
 	}
 
