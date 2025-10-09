@@ -17,10 +17,9 @@ message Chat {
       title: "Chat"
       description: "Chat - информация о чате"
       required: [
-        "chat_id",
-        "description"
+        "chat_id"
       ]
-      example: "{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"description\": \"chat description\"}"
+      example: "{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\"}"
     }
     external_docs: {
       url: "https://github.com/grpc-ecosystem/grpc-gateway"
@@ -29,8 +28,6 @@ message Chat {
   };
   //chat_id - ID чата в формате UUID
   string chat_id = 1;
-  //name - описание чата
-  string description = 2;
 }
 
 //Message - информация о сообщении
@@ -58,7 +55,7 @@ message Message {
 
 //CreateDirectChatRequest - запрос CreateDirectChat
 message CreateDirectChatRequest {
-  //participant_id - ID собеседника
+  //participant_id - ID пользователя-владельца чата
   string participant_id = 1 [
     json_name = "participant_id",
     (buf.validate.field).required = true,

@@ -1,4 +1,4 @@
-package models
+package chat
 
 // Chat - чат
 type Chat struct {
@@ -6,8 +6,6 @@ type Chat struct {
 	ChatID string
 	//UserID - ID пользователя создавшего чат в формате UUID
 	UserID string
-	//ParticipantID - ID пользователя собеседника в формате UUID
-	ParticipantID string
 }
 
 type Chats []Chat

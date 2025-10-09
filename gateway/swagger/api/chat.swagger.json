@@ -309,17 +309,12 @@
     "v1Chat": {
       "type": "object",
       "example": {
-        "chat_id": "CD0F7430-FDDA-4E27-8C95-001E18E9CF50",
-        "description": "chat description"
+        "chat_id": "CD0F7430-FDDA-4E27-8C95-001E18E9CF50"
       },
       "properties": {
         "chatId": {
           "type": "string",
           "title": "chat_id - ID чата в формате UUID"
-        },
-        "description": {
-          "type": "string",
-          "title": "name - описание чата"
         }
       },
       "description": "Chat - информация о чате",
@@ -329,8 +324,7 @@
         "url": "https://github.com/grpc-ecosystem/grpc-gateway"
       },
       "required": [
-        "chatId",
-        "description"
+        "chatId"
       ]
     },
     "v1CreateDirectChatRequest": {
@@ -338,7 +332,7 @@
       "properties": {
         "participant_id": {
           "type": "string",
-          "title": "participant_id - ID собеседника"
+          "title": "participant_id - ID пользователя-владельца чата"
         }
       },
       "title": "CreateDirectChatRequest - запрос CreateDirectChat",

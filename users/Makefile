@@ -1,10 +1,10 @@
 include vendor.proto.mk
 
-POSTGRES_DB := postgres-users
-POSTGRES_USER := postgres-users-user
-POSTGRES_PASSWORD := postgres-users-psw
-
 SERVICE_NAME := users
+
+POSTGRES_DB := postgres-$(SERVICE_NAME)
+POSTGRES_USER := postgres-$(SERVICE_NAME)-user
+POSTGRES_PASSWORD := postgres-$(SERVICE_NAME)-psw
 
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf

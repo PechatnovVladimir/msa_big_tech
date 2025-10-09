@@ -29,9 +29,7 @@ const (
 type Chat struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// chat_id - ID чата в формате UUID
-	ChatId string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
-	// name - описание чата
-	Description   string `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
+	ChatId        string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,13 +67,6 @@ func (*Chat) Descriptor() ([]byte, []int) {
 func (x *Chat) GetChatId() string {
 	if x != nil {
 		return x.ChatId
-	}
-	return ""
-}
-
-func (x *Chat) GetDescription() string {
-	if x != nil {
-		return x.Description
 	}
 	return ""
 }
@@ -138,7 +129,7 @@ func (x *Message) GetText() string {
 // CreateDirectChatRequest - запрос CreateDirectChat
 type CreateDirectChatRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
-	// participant_id - ID собеседника
+	// participant_id - ID пользователя-владельца чата
 	ParticipantId string `protobuf:"bytes,1,opt,name=participant_id,proto3" json:"participant_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -880,11 +871,10 @@ var File_api_chat_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_chat_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc2\x02\n" +
+	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xee\x01\n" +
 	"\x04Chat\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId\x12 \n" +
-	"\vdescription\x18\x02 \x01(\tR\vdescription:\xfe\x01\x92A\xfa\x01\n" +
-	"\x9f\x01*\x04Chat2'Chat - информация о чатеJV{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"description\": \"chat description\"}\xd2\x01\achat_id\xd2\x01\vdescription*V\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId:\xcc\x01\x92A\xc8\x01\n" +
+	"n*\x04Chat2'Chat - информация о чатеJ3{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\"}\xd2\x01\achat_id*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xc1\x02\n" +
 	"\aMessage\x12\x1d\n" +
 	"\n" +

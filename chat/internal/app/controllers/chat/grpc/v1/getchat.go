@@ -27,8 +27,7 @@ func (s *Service) GetChat(ctx context.Context, request *chat.GetChatRequest) (*c
 	}
 
 	chatOut := chat.Chat{
-		ChatId:      out.ChatID,
-		Description: "description",
+		ChatId: out.ChatID,
 	}
 
 	return &chat.GetChatResponse{

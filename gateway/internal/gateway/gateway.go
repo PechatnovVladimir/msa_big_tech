@@ -25,8 +25,8 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
-	//err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50052", opts)
-	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "chat-service:50052", opts)
+	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50052", opts)
+	//err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "chat-service:50052", opts)
 	if err != nil {
 		panic(err)
 	}

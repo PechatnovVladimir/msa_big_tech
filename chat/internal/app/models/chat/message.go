@@ -1,4 +1,4 @@
-package models
+package chat
 
 import "time"
 
@@ -6,12 +6,14 @@ import "time"
 type Message struct {
 	//MessageID - ID сообщения
 	MessageID string
-	//CreateAt - время создания сообщения
-	CreatedAt time.Time
-	//Text - текст сообщения
-	Text string
 	//ChatID - ID чата
 	ChatID string
+	//SenderID - ID собеседника
+	SenderID string
+	//Text - текст сообщения
+	Text string
+	//CreateAt - время создания сообщения
+	CreatedAt time.Time
 }
 
 type Messages []Message

@@ -34,16 +34,16 @@ func (s *Service) CreateDirectChat(ctx context.Context, request *chat.CreateDire
 }
 
 // конвертация request в dto
-func grpc2dto(request *chat.CreateDirectChatRequest) dto.CreateDirectChatIN {
-	out := dto.CreateDirectChatIN{}
+func grpc2dto(request *chat.CreateDirectChatRequest) *dto.CreateDirectChatIN {
+	out := &dto.CreateDirectChatIN{}
 	out.ParticipantID = request.ParticipantId
 	return out
 }
 
 // конвертация dto в response
-func dto2grpc(in dto.CreateDirectChatOUT) *chat.CreateDirectChatResponse {
-	out := chat.CreateDirectChatResponse{
+func dto2grpc(in *dto.CreateDirectChatOUT) *chat.CreateDirectChatResponse {
+	out := &chat.CreateDirectChatResponse{
 		ChatId: in.ChatID,
 	}
-	return &out
+	return out
 }
