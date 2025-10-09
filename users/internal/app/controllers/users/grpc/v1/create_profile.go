@@ -3,7 +3,6 @@ package v1
 import (
 	"buf.build/go/protovalidate"
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 	userPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -16,32 +15,14 @@ func (s *Service) CreateProfile(ctx context.Context, request *userPB.CreateProfi
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	d := dto.CreateProfileDTO{
-		ID:       request.UserId,
-		Nickname: request.Nickname,
-		Email:    request.Email,
-	}
+	data := dtoCreateProfileFromCreateProfileRequest(request)
 
-	if request.Bio != nil {
-		d.Bio = *request.Bio
-	}
-
-	if request.AvatarUrl != nil {
-		d.Avatar = *request.AvatarUrl
-	}
-
-	p, err := s.uc.CreateProfile(ctx, d)
+	profile, err := s.uc.CreateProfile(ctx, data)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	userProfile := &userPB.UserProfile{
-		UserId:    p.ID,
-		Nickname:  p.Nickname,
-		Email:     p.Email,
-		Bio:       p.Bio,
-		AvatarUrl: p.Avatar,
-	}
+	userProfile := responseUserProfileFromUserProfileModel(profile)
 
 	return &userPB.CreateProfileResponse{UserProfile: userProfile}, nil
 }

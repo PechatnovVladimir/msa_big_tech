@@ -10,6 +10,7 @@ import (
 )
 
 func (s *Service) SearchByNickname(ctx context.Context, request *userPB.SearchByNicknameRequest) (*userPB.SearchByNicknameResponse, error) {
+	//валидация по proto описанию
 
 	err := protovalidate.Validate(request)
 	if err != nil {
