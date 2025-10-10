@@ -56,8 +56,9 @@ proto-format:
 
 vercommit: .ver-commit
 
+#
 run:
-	go run ./cmd/app/main.go
+	CurrentUser="7A6E0C36-E1F7-434D-AF96-00426777C9A3" go run ./cmd/app/main.go
 
 pg-up:
 	docker-compose up -d

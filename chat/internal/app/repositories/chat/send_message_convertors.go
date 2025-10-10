@@ -30,3 +30,13 @@ func fromModelForSendMessage(m *chat.Message) (*MessageRow, *ChatMembersRow) {
 			UserID: m.SenderID,
 		}
 }
+
+func toModelForSendMessage(m *MessageRow) *chat.Message {
+	return &chat.Message{
+		MessageID: m.ID,
+		ChatID:    m.ChatID,
+		SenderID:  m.SenderID,
+		Text:      m.Text,
+		CreatedAt: m.CreatedAt,
+	}
+}

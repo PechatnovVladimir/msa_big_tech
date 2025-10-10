@@ -34,5 +34,5 @@ func (r *Repository) SendMessage(ctx context.Context, m *chat.Message) (*chat.Me
 		return nil, err
 	}
 
-	return nil, nil
+	return toModelForSendMessage(&outRow), nil
 }

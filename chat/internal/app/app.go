@@ -20,6 +20,8 @@ func Run(ctx context.Context) (err error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
+	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
+
 	//соединение
 	conn, err := connection.NewConnectionPool(ctx, DSN(),
 		connection.WithMaxConnIdleTime(time.Minute),
