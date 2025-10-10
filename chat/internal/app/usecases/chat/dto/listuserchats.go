@@ -1,4 +1,10 @@
 package dto
 
-type ListUserChatsIN struct{}
-type ListUserChatsOUT struct{}
+import "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+
+type ListUserChatsIN struct {
+	UserID string
+}
+type ListUserChatsOUT struct {
+	Chats []*chat.Chat
+}

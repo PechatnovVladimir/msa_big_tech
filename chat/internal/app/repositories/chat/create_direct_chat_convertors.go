@@ -35,13 +35,3 @@ func fromModelForCreateDirectChat(r *chat.Chat) (*ChatsRow, *ChatMembersRow) {
 
 	return chatsRow, chatMembersRow
 }
-
-func toModelForCreateDirectChat(r *ChatMembersRow) *chat.Chat {
-	if r == nil {
-		return nil
-	}
-	return &chat.Chat{
-		UserID: r.UserID,
-		ChatID: r.ChatID,
-	}
-}

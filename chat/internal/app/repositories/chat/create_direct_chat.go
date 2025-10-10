@@ -37,5 +37,5 @@ func (r *Repository) CreateDirectChat(ctx context.Context, chat *chat.Chat) (*ch
 		return nil, err
 	}
 
-	return toModelForCreateDirectChat(&outRow), nil
+	return toModelFromChatMembersRow(&outRow), nil
 }
