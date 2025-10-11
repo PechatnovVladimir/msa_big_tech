@@ -22,13 +22,13 @@
   "paths": {
     "/v1/users/CreateProfile": {
       "post": {
-        "summary": "создать профиль пользователя",
+        "summary": "CreateProfile - создать профиль пользователя",
         "operationId": "UserService_CreateProfile",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiCreateProfileResponse"
+              "$ref": "#/definitions/v1CreateProfileResponse"
             }
           },
           "default": {
@@ -41,10 +41,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "CreateProfileRequest - запрос CreateProfile",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiCreateProfileRequest"
+              "$ref": "#/definitions/v1CreateProfileRequest"
             }
           }
         ],
@@ -53,15 +54,15 @@
         ]
       }
     },
-    "/v1/users/GetProfileByID/{userId}": {
+    "/v1/users/GetProfileByID/{userid}": {
       "get": {
-        "summary": "получить профиль по ID",
+        "summary": "GetProfileByID - получить профиль по ID",
         "operationId": "UserService_GetProfileByID",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiGetProfileByIDResponse"
+              "$ref": "#/definitions/v1GetProfileByIDResponse"
             }
           },
           "default": {
@@ -73,11 +74,11 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "userid",
+            "description": "user_id - ID пользователя в формате UUID",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -87,13 +88,13 @@
     },
     "/v1/users/GetProfileByNickname/{nickname}": {
       "get": {
-        "summary": "поиск по нику",
+        "summary": "GetProfileByNickname - поиск пользователя по нику",
         "operationId": "UserService_GetProfileByNickname",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiGetProfileByNicknameResponse"
+              "$ref": "#/definitions/v1GetProfileByNicknameResponse"
             }
           },
           "default": {
@@ -118,13 +119,13 @@
     },
     "/v1/users/SearchByNickname": {
       "post": {
-        "summary": "поиск пользователей",
+        "summary": "SearchByNickname - поиск пользователей",
         "operationId": "UserService_SearchByNickname",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiSearchByNicknameResponse"
+              "$ref": "#/definitions/v1SearchByNicknameResponse"
             }
           },
           "default": {
@@ -156,13 +157,13 @@
     },
     "/v1/users/UpdateProfile": {
       "patch": {
-        "summary": "обновить профиль пользователя",
+        "summary": "UpdateProfile - обновить профиль пользователя",
         "operationId": "UserService_UpdateProfile",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiUpdateProfileResponse"
+              "$ref": "#/definitions/v1UpdateProfileResponse"
             }
           },
           "default": {
@@ -175,10 +176,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": "UpdateProfileRequest - запрос UpdateProfile",
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiUpdateProfileRequest"
+              "$ref": "#/definitions/v1UpdateProfileRequest"
             }
           }
         ],
@@ -189,104 +191,6 @@
     }
   },
   "definitions": {
-    "apiCreateProfileRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "nickname": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        },
-        "avatarUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "apiCreateProfileResponse": {
-      "type": "object",
-      "properties": {
-        "UserProfile": {
-          "$ref": "#/definitions/apiUserProfile"
-        }
-      }
-    },
-    "apiGetProfileByIDResponse": {
-      "type": "object",
-      "properties": {
-        "UserProfile": {
-          "$ref": "#/definitions/apiUserProfile"
-        }
-      }
-    },
-    "apiGetProfileByNicknameResponse": {
-      "type": "object",
-      "properties": {
-        "UserProfile": {
-          "$ref": "#/definitions/apiUserProfile"
-        }
-      }
-    },
-    "apiSearchByNicknameResponse": {
-      "type": "object",
-      "properties": {
-        "UserProfile": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/apiUserProfile"
-          }
-        }
-      }
-    },
-    "apiUpdateProfileRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "nickname": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        },
-        "avatarUrl": {
-          "type": "string"
-        }
-      }
-    },
-    "apiUpdateProfileResponse": {
-      "type": "object",
-      "properties": {
-        "UserProfile": {
-          "$ref": "#/definitions/apiUserProfile"
-        }
-      }
-    },
-    "apiUserProfile": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "nickname": {
-          "type": "string"
-        },
-        "bio": {
-          "type": "string"
-        },
-        "avatarUrl": {
-          "type": "string"
-        }
-      }
-    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -314,6 +218,153 @@
           }
         }
       }
+    },
+    "v1CreateProfileRequest": {
+      "type": "object",
+      "properties": {
+        "userid": {
+          "type": "string",
+          "title": "user_id - ID пользователя"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "nickname - никнейм пользователя"
+        },
+        "bio": {
+          "type": "string",
+          "title": "nickname - никнейм пользователя\nbio биография пользователя"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "title": "avatar_url ссылка на аватарку пользователя"
+        }
+      },
+      "description": "CreateProfileRequest - запрос CreateProfile",
+      "title": "CreateProfileRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "userid",
+        "nickname"
+      ]
+    },
+    "v1CreateProfileResponse": {
+      "type": "object",
+      "properties": {
+        "UserProfile": {
+          "$ref": "#/definitions/v1UserProfile",
+          "title": "UserProfile - полный профайл пользователя"
+        }
+      },
+      "title": "CreateProfileResponse - ответ CreateProfile"
+    },
+    "v1GetProfileByIDResponse": {
+      "type": "object",
+      "properties": {
+        "UserProfile": {
+          "$ref": "#/definitions/v1UserProfile",
+          "title": "UserProfile - профиль пользователя"
+        }
+      },
+      "title": "GetProfileByIDResponse - GetProfileByID ответ"
+    },
+    "v1GetProfileByNicknameResponse": {
+      "type": "object",
+      "properties": {
+        "UserProfile": {
+          "$ref": "#/definitions/v1UserProfile"
+        }
+      }
+    },
+    "v1SearchByNicknameResponse": {
+      "type": "object",
+      "properties": {
+        "UserProfile": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1UserProfile"
+          }
+        }
+      }
+    },
+    "v1UpdateProfileRequest": {
+      "type": "object",
+      "properties": {
+        "userid": {
+          "type": "string",
+          "title": "user_id - ID пользователя в формате UUID"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "bio": {
+          "type": "string"
+        },
+        "avatarurl": {
+          "type": "string"
+        }
+      },
+      "description": "UpdateProfileRequest - запрос UpdateProfile",
+      "title": "UpdateProfileRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "userid"
+      ]
+    },
+    "v1UpdateProfileResponse": {
+      "type": "object",
+      "properties": {
+        "UserProfile": {
+          "$ref": "#/definitions/v1UserProfile",
+          "title": "UserProfile - профайл пользователя"
+        }
+      },
+      "title": "UpdateProfileResponse - UpdateProfile ответ"
+    },
+    "v1UserProfile": {
+      "type": "object",
+      "example": {
+        "nickname": "pvv",
+        "email": "my-mail@mail.ru",
+        "bio": "biography pvv",
+        "avatar_url": "pvv.jpg"
+      },
+      "properties": {
+        "userId": {
+          "type": "string",
+          "title": "user_id уникальный идентификатор пользователя в формате UUID"
+        },
+        "nickname": {
+          "type": "string",
+          "title": "nickname никнейм пользователя"
+        },
+        "bio": {
+          "type": "string",
+          "title": "bio биография пользователя"
+        },
+        "avatarUrl": {
+          "type": "string",
+          "title": "avatar_url ссылка на аватарку пользователя"
+        }
+      },
+      "description": "UserProfile - профиль пользователя",
+      "title": "UserProfile",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "userId",
+        "nickname",
+        "bio",
+        "avatarUrl"
+      ]
     }
   }
 }
