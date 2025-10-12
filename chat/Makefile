@@ -58,7 +58,7 @@ vercommit: .ver-commit
 
 #
 run:
-	CurrentUser="7A6E0C36-E1F7-434D-AF96-00426777C9A3" go run ./cmd/app/main.go
+	CurrentUser="08993dbf-9a51-451f-adc5-5269da08c7a0" go run ./cmd/app/main.go
 
 pg-up:
 	docker-compose up -d

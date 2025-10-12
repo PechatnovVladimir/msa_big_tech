@@ -5,7 +5,6 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
-	"os"
 )
 
 // Repository - интерфейс репозитория чата
@@ -15,21 +14,20 @@ type Repository interface {
 	GetChat(ctx context.Context, chatID string) (*chat.Chat, error)
 	ListUserChats(ctx context.Context, userID string) ([]*chat.Chat, error)
 	SendMessage(ctx context.Context, m *chat.Message) (*chat.Message, error)
+	ListChatMembers(ctx context.Context, chatID string) ([]*string, error)
 
-	GetChatByUserAndParticipant(ctx context.Context, in dtoRepo.GetChatByUserAndParticipantIN) (out dtoRepo.GetChatByUserAndParticipantOUT, ok bool)
-	ListChatMembers(ctx context.Context, in dtoRepo.ListChatMembersIN) (out dtoRepo.ListChatMembersOUT, err error)
 	ListMessages(ctx context.Context, in dtoRepo.ListMessagesIN) (out dtoRepo.ListMessagesOUT, err error)
 }
 
 // UserService - интерфейс доступа к сервису пользователей
-type UserService interface {
-	Test() error
+type UserProvider interface {
+	GetUserFromContext(ctx context.Context) (*chat.User, error)
 }
 
 // Deps - зависимости
 type Deps struct {
-	ChatRepo    Repository
-	UserService UserService
+	ChatRepo     Repository
+	UserProvider UserProvider
 }
 
 type Service struct {
@@ -42,8 +40,8 @@ type UseCase interface {
 	GetChat(ctx context.Context, in *dto.GetChatIN) (*dto.GetChatOUT, error)
 	ListUserChats(ctx context.Context, in *dto.ListUserChatsIN) (*dto.ListUserChatsOUT, error)
 	SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.SendMessageOUT, error)
+	ListChatMembers(ctx context.Context, in *dto.ListChatMembersIN) (*dto.ListChatMembersOUT, error)
 
-	ListChatMembers(ctx context.Context, in dto.ListChatMembersIN) (dto.ListChatMembersOUT, error)
 	ListMessages(ctx context.Context, in dto.ListMessagesIN) (dto.ListMessagesOUT, error)
 	StreamMessages(ctx context.Context, in dto.StreamMessagesIN) (dto.StreamMessagesOUT, error)
 }
@@ -54,13 +52,4 @@ func New(d Deps) *Service {
 	return &Service{
 		Deps: d,
 	}
-}
-
-func getCurrentUser(ctx context.Context) (string, bool) {
-	//берем из переменной окружения
-	out := os.Getenv("CurrentUser")
-	if out == "" {
-		return "", false
-	}
-	return out, true
 }

@@ -3,6 +3,7 @@ package chat
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+	"strings"
 )
 
 func (r *Repository) SendMessage(ctx context.Context, m *chat.Message) (*chat.Message, error) {
@@ -12,7 +13,8 @@ func (r *Repository) SendMessage(ctx context.Context, m *chat.Message) (*chat.Me
 	queryMessage := r.sb.
 		Insert(messagesTable).
 		Columns(messagesTableColumns...).
-		Values(messageRow.Values()...)
+		Values(messageRow.Values()...).
+		Suffix("RETURNING " + strings.Join(messagesTableColumns, ", "))
 
 	//insert into chat_members ... Отправитель сообщения становится участником чата. Если уникальность будет нарушена, то пропустить
 	queryChatMembers := r.sb.

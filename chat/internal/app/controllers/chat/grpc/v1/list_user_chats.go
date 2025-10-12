@@ -1,7 +1,6 @@
 package v1
 
 import (
-	"buf.build/go/protovalidate"
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"google.golang.org/grpc/codes"
@@ -9,12 +8,6 @@ import (
 )
 
 func (s *Service) ListUserChats(ctx context.Context, request *chat.ListUserChatsRequest) (*chat.ListUserChatsResponse, error) {
-	//валидация по proto описанию
-	err := protovalidate.Validate(request)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
-
 	data := fromListUserChatsRequestToDto(request)
 
 	chats, err := s.ChatUseCase.ListUserChats(ctx, data)

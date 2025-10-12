@@ -3,7 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/adapters/userservice"
+	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/adapters/userprovider"
 	chatGPRS "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc/v1"
 	chatRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat"
@@ -36,12 +36,12 @@ func Run(ctx context.Context) (err error) {
 	//менеджер транзакций
 	txManager := connection.NewTxManager(conn)
 
-	userServiceAdapter := userservice.New()
+	userServiceProvider := userprovider.New()
 	chatRepository := chatRepo.NewRepository(txManager)
 
 	chatUseCase := chat.New(chat.Deps{
-		UserService: userServiceAdapter,
-		ChatRepo:    chatRepository,
+		UserProvider: userServiceProvider,
+		ChatRepo:     chatRepository,
 	})
 
 	//grpc

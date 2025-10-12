@@ -1,4 +1,8 @@
 package dto
 
-type ListChatMembersIN struct{}
-type ListChatMembersOUT struct{}
+type ListChatMembersIN struct {
+	ChatID string
+}
+type ListChatMembersOUT struct {
+	UserIDs []*string
+}
