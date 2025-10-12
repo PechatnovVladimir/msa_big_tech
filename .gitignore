@@ -36,3 +36,4 @@ go.work.sum
 /users/vendor.protobuf/
 /users/docker/
 /chat/docker/
+/social/docker/
