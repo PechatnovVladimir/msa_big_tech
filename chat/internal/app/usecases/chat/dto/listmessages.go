@@ -1,5 +1,22 @@
 package dto
 
-type ListMessagesIN struct{}
+import (
+	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+	"time"
+)
 
-type ListMessagesOUT struct{}
+type Cursor struct {
+	ID   string
+	Time time.Time
+}
+
+type ListMessagesIN struct {
+	ChatID string
+	Limit  uint64
+	Cursor Cursor
+}
+
+type ListMessagesOUT struct {
+	Messages []*chat.Message
+	Cursor   *Cursor
+}
