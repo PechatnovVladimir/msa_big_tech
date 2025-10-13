@@ -10,7 +10,7 @@ import (
 func (r *Repository) ChangeStatusFriendRequest(ctx context.Context, requestID string, status int) (*social.FriendRequest, error) {
 	query := r.sb.Update(friendRequestsTable).
 		Set("status", status).
-		Where(sq.Eq{"request_id": requestID}).
+		Where(sq.Eq{"id": requestID}).
 		Suffix("RETURNING " + strings.Join(friendRequestsTableColumns, ","))
 
 	pool := r.db.GetQueryEngine(ctx)

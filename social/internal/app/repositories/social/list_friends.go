@@ -1,23 +1,28 @@
-package chat
+package social
 
 import (
 	"context"
 	"fmt"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
+	"log"
 	"strings"
 )
 
-func (r *Repository) ListMessages(ctx context.Context, chatID string, p pagination.Options) ([]*chat.Message, error) {
-	query := r.sb.Select("*").
-		From(messagesTable).
-		Where(sq.Eq{chatMembersTableColumnChatID: chatID})
+func (r *Repository) ListFriends(ctx context.Context, userID string, p pagination.Options) ([]*social.Friend, error) {
+
+	log.Println("Repo - ", userID, p.Limit(), p.Cursor())
+
+	query := r.sb.
+		Select("user_id,friend_user_id,created_at").
+		From("friends").
+		Where(sq.Eq{"user_id": userID})
 
 	//Сортировка
 	orderSQL := buildOrderBy(p.OrderBy())
 	if len(orderSQL) == 0 {
-		orderSQL = []string{messagesTableColumnCreatedAt, messagesTableColumnID}
+		orderSQL = []string{"created_at", "friend_user_id"}
 	}
 	query = query.OrderBy(orderSQL...)
 
@@ -25,35 +30,36 @@ func (r *Repository) ListMessages(ctx context.Context, chatID string, p paginati
 	if l := p.Limit(); l > 0 {
 		query = query.Limit(uint64(l))
 	}
-	//select * from messages where created_at > $1
+	//select ... from friends where created_at > $1
 	if t := p.Cursor().Time; t != nil {
-		query = query.Where(sq.Gt{messagesTableColumnCreatedAt: t})
+		query = query.Where(sq.Gt{"created_at": t})
 	}
 
 	pool := r.db.GetQueryEngine(ctx)
 
-	var outRow []MessageRow
+	log.Println(query.ToSql())
+
+	var outRow []FriendRow
 	if err := pool.Selectx(ctx, &outRow, query); err != nil {
 		return nil, err
 	}
 
-	out := make([]*chat.Message, 0, len(outRow))
+	out := make([]*social.Friend, 0, len(outRow))
 	for i := range outRow {
-		out = append(out, toModelForListMessages(outRow[i]))
+		out = append(out, toModelForListFriends(outRow[i]))
 	}
 
 	return out, nil
 }
 
-// Разрешённые поля сортировки → SQL
 func buildOrderBy(fields []pagination.SortField) []string {
 	if len(fields) == 0 {
 		return nil
 	}
 
 	whitelist := map[string]bool{
-		"created_at": true,
-		"sender_id":  true,
+		"created_at":     true,
+		"friend_user_id": true,
 	}
 
 	var out []string

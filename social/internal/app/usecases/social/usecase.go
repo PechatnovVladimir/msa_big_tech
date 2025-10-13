@@ -2,6 +2,7 @@ package social
 
 import (
 	"context"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
@@ -13,9 +14,9 @@ type Repository interface {
 	ListRequests(ctx context.Context, userID string) ([]*social.FriendRequest, error)
 	ChangeStatusFriendRequest(ctx context.Context, requestID string, status int) (*social.FriendRequest, error)
 	CreateFriend(ctx context.Context, fr *social.FriendRequest) error
+	ListFriends(ctx context.Context, userID string, opts pagination.Options) ([]*social.Friend, error)
 
 	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
-	ListFriends(ctx context.Context, in dtoRepo.ListFriendsIN) (dtoRepo.ListFriendsOUT, error)
 	DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
 }
 
@@ -45,10 +46,10 @@ type Service struct {
 type UseCase interface {
 	SendFriendRequest(ctx context.Context, in *dto.SendFriendRequestIN) (*dto.SendFriendRequestOUT, error)
 	ListRequests(ctx context.Context, in *dto.ListRequestsIN) (*dto.ListRequestsOUT, error)
+	AcceptFriendRequest(ctx context.Context, in *dto.AcceptFriendRequestIN) (*dto.AcceptFriendRequestOUT, error)
+	DeclineFriendRequest(ctx context.Context, in *dto.DeclineFriendRequestIN) (*dto.DeclineFriendRequestOUT, error)
+	ListFriends(ctx context.Context, in *dto.ListFriendsIN) (*dto.ListFriendsOUT, error)
 
-	AcceptFriendRequest(ctx context.Context, in dto.AcceptFriendRequestIN) (dto.AcceptFriendRequestOUT, error)
-	DeclineFriendRequest(ctx context.Context, in dto.DeclineFriendRequestIN) (dto.DeclineFriendRequestOUT, error)
-	ListFriends(ctx context.Context, in dto.ListFriendsIN) (dto.ListFriendsOUT, error)
 	RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) error
 }
 

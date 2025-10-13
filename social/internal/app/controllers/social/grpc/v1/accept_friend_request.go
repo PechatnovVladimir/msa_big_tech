@@ -1,27 +1,18 @@
 package v1
 
 import (
-	"buf.build/go/protovalidate"
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 func (s *Service) AcceptFriendRequest(ctx context.Context, request *social.AcceptFriendRequestRequest) (*social.AcceptFriendRequestResponse, error) {
-	log.Println("SocialService AcceptFriendRequest called")
 
-	//валидация по proto описанию
-	err := protovalidate.Validate(request)
-	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
-	}
+	data := &dto.AcceptFriendRequestIN{RequestID: request.RequestId}
 
-	inUC := dto.AcceptFriendRequestIN{RequestID: request.RequestId}
-
-	outUC, err := s.SocialUseCase.AcceptFriendRequest(ctx, inUC)
+	outUC, err := s.SocialUseCase.AcceptFriendRequest(ctx, data)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
