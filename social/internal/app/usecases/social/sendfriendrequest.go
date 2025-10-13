@@ -9,7 +9,7 @@ import (
 
 func (s *Service) SendFriendRequest(ctx context.Context, in dto.SendFriendRequestIN) (dto.SendFriendRequestOUT, error) {
 
-	authUser, err := s.AuthService.GetAuthUser()
+	authUser, err := s.AuthProvider.GetAuthUser()
 	if err != nil {
 		return dto.SendFriendRequestOUT{}, err
 	}

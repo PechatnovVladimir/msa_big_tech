@@ -1,4 +1,4 @@
-package authservice
+package authprovider
 
 import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
@@ -11,7 +11,7 @@ type Client struct {
 }
 
 var (
-	_ social.AuthService = (*Client)(nil)
+	_ social.AuthProvider = (*Client)(nil)
 )
 
 func New() *Client {

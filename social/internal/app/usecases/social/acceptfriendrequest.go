@@ -11,7 +11,7 @@ import (
 func (s *Service) AcceptFriendRequest(ctx context.Context, in dto.AcceptFriendRequestIN) (dto.AcceptFriendRequestOUT, error) {
 	log.Println("AcceptFriendRequest")
 
-	authUser, err := s.AuthService.GetAuthUser()
+	authUser, err := s.AuthProvider.GetAuthUser()
 	if err != nil {
 		return dto.AcceptFriendRequestOUT{}, err
 	}

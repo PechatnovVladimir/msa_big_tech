@@ -11,7 +11,7 @@ import (
 func (s *Service) RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) error {
 	log.Println("RemoveFriend")
 
-	authUser, err := s.AuthService.GetAuthUser()
+	authUser, err := s.AuthProvider.GetAuthUser()
 	if err != nil {
 		return err
 	}

@@ -11,7 +11,7 @@ import (
 func (s *Service) ListRequests(ctx context.Context, in dto.ListRequestsIN) (dto.ListRequestsOUT, error) {
 	log.Println("ListRequests")
 
-	_, err := s.AuthService.GetAuthUser()
+	_, err := s.AuthProvider.GetAuthUser()
 	if err != nil {
 		return dto.ListRequestsOUT{}, err
 	}

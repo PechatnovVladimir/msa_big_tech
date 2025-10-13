@@ -10,7 +10,7 @@ import (
 
 func (s *Service) DeclineFriendRequest(ctx context.Context, in dto.DeclineFriendRequestIN) (dto.DeclineFriendRequestOUT, error) {
 	log.Println("DeclineFriendRequest")
-	authUser, err := s.AuthService.GetAuthUser()
+	authUser, err := s.AuthProvider.GetAuthUser()
 	if err != nil {
 		return dto.DeclineFriendRequestOUT{}, err
 	}

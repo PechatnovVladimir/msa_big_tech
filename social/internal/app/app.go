@@ -3,8 +3,9 @@ package app
 import (
 	"context"
 	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authservice"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userservice"
+	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authprovider"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
 	socialRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social"
@@ -13,20 +14,34 @@ import (
 	"os"
 	"os/signal"
 	"syscall"
+	"time"
 )
 
 func Run(ctx context.Context) (err error) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
+	//соединение
+	conn, err := connection.NewConnectionPool(ctx, DSN(),
+		connection.WithMaxConnIdleTime(time.Minute),
+		connection.WithMinConnectionsCount(3),
+		connection.WithMaxConnectionsCount(10),
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer conn.Close()
 
-	authServiceAdapter := authservice.New()
-	userServiceAdapter := userservice.New()
-	socialRepository := socialRepo.New()
+	//менеджер транзакций
+	txManager := connection.NewTxManager(conn)
+
+	authServiceAdapter := authprovider.New()
+	userServiceAdapter := userprovider.New()
+	socialRepository := socialRepo.New(txManager)
 
 	socialUseCase := social.New(social.Deps{
-		AuthService: authServiceAdapter,
-		UserService: userServiceAdapter,
-		SocialRepo:  socialRepository,
+		AuthProvider: authServiceAdapter,
+		UserProvider: userServiceAdapter,
+		SocialRepo:   socialRepository,
 	})
 
 	//grpc

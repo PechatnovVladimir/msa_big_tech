@@ -2,6 +2,7 @@ package social
 
 import (
 	"context"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models"
 	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 )
@@ -16,22 +17,22 @@ type Repository interface {
 	DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
 }
 
-// UserService - интерфейс доступа к сервису пользователей
-type UserService interface {
-	Test() error
+// UserProvider - интерфейс доступа к сервису пользователей
+type UserProvider interface {
+	GetUserFromContext(ctx context.Context) (*models.User, error)
 }
 
-// AuthService - интерфейс доступа к сервису аутентификации
-type AuthService interface {
+// AuthProvider - интерфейс доступа к сервису аутентификации
+type AuthProvider interface {
 	//GetAuthUser - получить аутентифицированного пользователя
 	GetAuthUser() (string, error)
 }
 
 // Deps - зависимости
 type Deps struct {
-	SocialRepo  Repository
-	AuthService AuthService
-	UserService UserService
+	SocialRepo   Repository
+	AuthProvider AuthProvider
+	UserProvider UserProvider
 }
 
 type Service struct {
