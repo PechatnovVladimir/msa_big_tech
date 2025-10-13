@@ -11,9 +11,10 @@ import (
 type Repository interface {
 	SendFriendRequest(ctx context.Context, fr *social.FriendRequest) (*social.FriendRequest, error)
 	ListRequests(ctx context.Context, userID string) ([]*social.FriendRequest, error)
+	ChangeStatusFriendRequest(ctx context.Context, requestID string, status int) (*social.FriendRequest, error)
+	CreateFriend(ctx context.Context, fr *social.FriendRequest) error
 
 	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
-	UpdateFriendRequest(ctx context.Context, in dtoRepo.FriendRequest) error
 	ListFriends(ctx context.Context, in dtoRepo.ListFriendsIN) (dtoRepo.ListFriendsOUT, error)
 	DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
 }
