@@ -4,7 +4,6 @@ import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
-	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 )
 
@@ -16,8 +15,8 @@ type Repository interface {
 	CreateFriend(ctx context.Context, fr *social.FriendRequest) error
 	ListFriends(ctx context.Context, userID string, opts pagination.Options) ([]*social.Friend, error)
 
-	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
-	DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
+	//GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
+	//DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
 }
 
 // UserProvider - интерфейс доступа к сервису пользователей
