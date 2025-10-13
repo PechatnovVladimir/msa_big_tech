@@ -2,7 +2,7 @@ package social
 
 import (
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/converter"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 	"log"
@@ -26,7 +26,7 @@ func (s *Service) DeclineFriendRequest(ctx context.Context, in dto.DeclineFriend
 	}
 
 	if friendRequest.ToUserID != authUser {
-		return dto.DeclineFriendRequestOUT{}, models.ErrSocialPermissionDenied
+		return dto.DeclineFriendRequestOUT{}, social.ErrSocialPermissionDenied
 	}
 
 	friendRequest.Decline()

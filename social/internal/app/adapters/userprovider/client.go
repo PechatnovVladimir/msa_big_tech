@@ -2,7 +2,7 @@ package userprovider
 
 import (
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models"
+	social2 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
 	"os"
 )
@@ -19,10 +19,10 @@ func New() *Client {
 	return &Client{}
 }
 
-func (c *Client) GetUserFromContext(ctx context.Context) (*models.User, error) {
+func (c *Client) GetUserFromContext(ctx context.Context) (*social2.User, error) {
 	_ = ctx
 	//пока не из контекста, а из переменной окружения
-	return &models.User{
+	return &social2.User{
 		UserID: os.Getenv("CurrentUser"),
 	}, nil
 }

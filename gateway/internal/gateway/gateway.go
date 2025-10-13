@@ -30,8 +30,8 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
-	//err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50053", opts)
-	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "social-service:50053", opts)
+	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50053", opts)
+	//err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "social-service:50053", opts)
 	if err != nil {
 		panic(err)
 	}

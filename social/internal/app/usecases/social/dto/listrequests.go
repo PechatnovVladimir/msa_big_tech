@@ -10,5 +10,5 @@ type Request struct {
 }
 
 type ListRequestsOUT struct {
-	Requests []Request
+	Requests []*Request
 }

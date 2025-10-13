@@ -1,4 +1,4 @@
-package models
+package social
 
 type User struct {
 	UserID   string

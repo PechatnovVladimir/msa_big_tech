@@ -1,4 +1,4 @@
-package models
+package social
 
 import (
 	"github.com/google/uuid"
@@ -8,21 +8,19 @@ import (
 // FriendRequest - заявка в друзья
 type FriendRequest struct {
 	//RequestID - ID заявки
-	RequestID string `json:"request_id"`
+	RequestID string
 	//FromUserID - ID юзера от кого заявки
-	FromUserID string `json:"from_user_id"`
+	FromUserID string
 	//ToUserID - ID юзера кому заявка
-	ToUserID string `json:"to_user_id"`
+	ToUserID string
 	//Status - статус заявки
-	Status StatusFriendRequest `json:"status"`
+	Status StatusFriendRequest
 	//CreatedAt - время создания заявки
-	CreatedAt time.Time `json:"created_at"`
+	CreatedAt time.Time
 }
 
-type FriendRequests []FriendRequest
-
-func NewFriendRequest(fromUserID string, toUserID string) FriendRequest {
-	return FriendRequest{
+func NewFriendRequest(fromUserID string, toUserID string) *FriendRequest {
+	return &FriendRequest{
 		RequestID:  uuid.New().String(),
 		CreatedAt:  time.Now(),
 		FromUserID: fromUserID,

@@ -2,15 +2,16 @@ package social
 
 import (
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	dtoRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 )
 
 // Repository - интерфейс репозитория social
 type Repository interface {
-	SendFriendRequest(ctx context.Context, in dtoRepo.SendFriendRequestIN) error
-	ListRequests(ctx context.Context, in dtoRepo.ListRequestsIN) (dtoRepo.ListRequestsOUT, error)
+	SendFriendRequest(ctx context.Context, fr *social.FriendRequest) (*social.FriendRequest, error)
+	ListRequests(ctx context.Context, userID string) ([]*social.FriendRequest, error)
+
 	GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
 	UpdateFriendRequest(ctx context.Context, in dtoRepo.FriendRequest) error
 	ListFriends(ctx context.Context, in dtoRepo.ListFriendsIN) (dtoRepo.ListFriendsOUT, error)
@@ -19,7 +20,7 @@ type Repository interface {
 
 // UserProvider - интерфейс доступа к сервису пользователей
 type UserProvider interface {
-	GetUserFromContext(ctx context.Context) (*models.User, error)
+	GetUserFromContext(ctx context.Context) (*social.User, error)
 }
 
 // AuthProvider - интерфейс доступа к сервису аутентификации
@@ -41,12 +42,13 @@ type Service struct {
 
 // UseCase - интерфейс сервиса чата
 type UseCase interface {
+	SendFriendRequest(ctx context.Context, in *dto.SendFriendRequestIN) (*dto.SendFriendRequestOUT, error)
+	ListRequests(ctx context.Context, in *dto.ListRequestsIN) (*dto.ListRequestsOUT, error)
+
 	AcceptFriendRequest(ctx context.Context, in dto.AcceptFriendRequestIN) (dto.AcceptFriendRequestOUT, error)
 	DeclineFriendRequest(ctx context.Context, in dto.DeclineFriendRequestIN) (dto.DeclineFriendRequestOUT, error)
 	ListFriends(ctx context.Context, in dto.ListFriendsIN) (dto.ListFriendsOUT, error)
-	ListRequests(ctx context.Context, in dto.ListRequestsIN) (dto.ListRequestsOUT, error)
 	RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) error
-	SendFriendRequest(ctx context.Context, in dto.SendFriendRequestIN) (dto.SendFriendRequestOUT, error)
 }
 
 var _ UseCase = (*Service)(nil)

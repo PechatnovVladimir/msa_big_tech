@@ -1,4 +1,4 @@
-package converter
+package v1
 
 import (
 	"errors"
@@ -6,18 +6,18 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
 
-func SendFriendRequestRequestProtoToDto(in *social.SendFriendRequestRequest) (dto.SendFriendRequestIN, error) {
+func fromSendFriendRequestRequestToDto(in *social.SendFriendRequestRequest) (*dto.SendFriendRequestIN, error) {
 	if in == nil {
-		return dto.SendFriendRequestIN{}, errors.New("grpc SendFriendRequestRequest is nil")
+		return &dto.SendFriendRequestIN{}, errors.New("grpc SendFriendRequestRequest is nil")
 	}
 
-	out := dto.SendFriendRequestIN{
+	out := &dto.SendFriendRequestIN{
 		UserId: in.UserId,
 	}
 	return out, nil
 }
 
-func SendFriendRequestResponseDtoToProto(in dto.SendFriendRequestOUT) (*social.SendFriendRequestResponse, error) {
+func fromDtoToSendFriendRequestResponse(in *dto.SendFriendRequestOUT) (*social.SendFriendRequestResponse, error) {
 	if in.RequestID == "" {
 		return nil, errors.New("RequestID is empty")
 	}
@@ -25,7 +25,7 @@ func SendFriendRequestResponseDtoToProto(in dto.SendFriendRequestOUT) (*social.S
 	out := &social.SendFriendRequestResponse{
 		FriendRequest: &social.FriendRequest{
 			RequestId: in.RequestID,
-			Status:    social.Status_PENDING,
+			Status:    social.Status(in.Status),
 		},
 	}
 

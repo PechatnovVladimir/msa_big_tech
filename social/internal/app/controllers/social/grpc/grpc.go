@@ -2,6 +2,7 @@ package grpc
 
 import (
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/validate"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
 	socialPB "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"google.golang.org/grpc"
@@ -22,6 +23,7 @@ type Server struct {
 func New(d socialGPRS.Deps) (*Server, error) {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
+		grpc.ChainUnaryInterceptor(validate.Interseptor),
 	)
 
 	socialService := socialGPRS.New(d)
