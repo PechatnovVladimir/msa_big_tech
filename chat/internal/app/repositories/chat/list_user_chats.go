@@ -20,9 +20,12 @@ func (r *Repository) ListUserChats(ctx context.Context, userID string) ([]*chat.
 		return nil, err
 	}
 
-	out := make([]*chat.Chat, 0, len(rowsChats))
-	for i := range rowsChats {
-		out = append(out, toModelFromChatMembersRow(&rowsChats[i]))
-	}
-	return out, nil
+	_ = rowsChats
+
+	//out := make([]*chat.Chat, 0, len(rowsChats))
+	//for i := range rowsChats {
+	//	out = append(out, toModelFromChatMembersRow(&rowsChats[i]))
+	//}
+
+	return nil, nil
 }

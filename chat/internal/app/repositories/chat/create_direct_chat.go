@@ -2,23 +2,25 @@ package chat
 
 import (
 	"context"
+	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/google/uuid"
 	"strings"
+	"time"
 )
 
 // CreateDirectChat - создать личный чат
 func (r *Repository) CreateDirectChat(ctx context.Context, userID string, participantID string) (*chat.Chat, error) {
 	chatID := uuid.New().String()
+	createdAt := time.Now()
 
-	//chatRow, chatMembersRow := fromModelForCreateDirectChat(chatID, userID, participantID)
+	//chatRow, chatMembersRow := fromModelCreateDirectChat(chatID, userID, participantID)
 
-	//insert в pg
 	//вставка в таблицу chats (id чата) и в таблицу chat_members (id чата и id собеседников)
 	queryChatsTable := r.sb.
 		Insert(chatsTable).
 		Columns(chatsTableColumns...).
-		Values(chatID).
+		Values(chatID, createdAt).
 		Suffix("RETURNING " + strings.Join(chatsTableColumns, ", "))
 
 	queryChatMembersTable := r.sb.
@@ -30,17 +32,19 @@ func (r *Repository) CreateDirectChat(ctx context.Context, userID string, partic
 
 	pool := r.db.GetQueryEngine(ctx)
 
-	var outChatsRow ChatsRow
-	err := pool.Getx(ctx, &outChatsRow, queryChatsTable)
+	tagChats, err := pool.Execx(ctx, queryChatsTable)
 	if err != nil {
 		return nil, err
 	}
 
-	var outChatMembersRow []ChatMembersRow
-	err = pool.Getx(ctx, &outChatMembersRow, queryChatMembersTable)
+	tagChatMembers, err := pool.Execx(ctx, queryChatMembersTable)
 	if err != nil {
 		return nil, err
 	}
 
-	return toModelFromChatMembersRow(&outChatsRow, &outChatMembersRow), nil
+	if tagChats.RowsAffected() != 1 && tagChatMembers.RowsAffected() != 2 {
+		return nil, fmt.Errorf("failed to create direct chat")
+	}
+
+	return toModelCreateDirectChat(chatID, userID, participantID, createdAt), nil
 }

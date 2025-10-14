@@ -5,9 +5,11 @@ const (
 )
 
 const (
-	chatsTableColumnID = "id"
+	chatsTableColumnID        = "id"
+	chatsTableColumnCreatedAt = "created_at"
 )
 
 var chatsTableColumns = []string{
 	chatsTableColumnID,
+	chatsTableColumnCreatedAt,
 }
