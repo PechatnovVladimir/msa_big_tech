@@ -1,6 +1,9 @@
 package chat
 
-import "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+import (
+	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+	"github.com/google/uuid"
+)
 
 type ChatsRow struct {
 	ID string `db:"id"`
@@ -19,13 +22,10 @@ func (r *ChatMembersRow) Values() []any {
 	return []any{r.ChatID, r.UserID}
 }
 
-func fromModelForCreateDirectChat(r *chat.Chat) (*ChatsRow, *ChatMembersRow) {
-	if r == nil {
-		return nil, nil
-	}
+func fromModelForCreateDirectChat(chatID string, userID string, participantID string) (*ChatsRow, *ChatMembersRow) {
 
 	chatsRow := &ChatsRow{
-		ID: r.ChatID,
+		ID: chatID,
 	}
 
 	chatMembersRow := &ChatMembersRow{

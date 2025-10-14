@@ -9,7 +9,7 @@ import (
 
 // Repository - интерфейс репозитория чата
 type Repository interface {
-	CreateDirectChat(ctx context.Context, chat *chat.Chat) (*chat.Chat, error)
+	CreateDirectChat(ctx context.Context, userID string, participantID string) (*chat.Chat, error)
 	GetChat(ctx context.Context, chatID string) (*chat.Chat, error)
 	ListUserChats(ctx context.Context, userID string) ([]*chat.Chat, error)
 	SendMessage(ctx context.Context, m *chat.Message) (*chat.Message, error)

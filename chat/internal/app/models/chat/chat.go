@@ -1,11 +1,13 @@
 package chat
 
+import "time"
+
 // Chat - чат
 type Chat struct {
 	//ChatID - ID чата в формате UUID
 	ChatID string
-	//UserID - ID пользователя создавшего чат в формате UUID
-	UserID string
+	//Участники чата
+	Members []string
+	//Время создания
+	CreateAt time.Time
 }
-
-type Chats []Chat

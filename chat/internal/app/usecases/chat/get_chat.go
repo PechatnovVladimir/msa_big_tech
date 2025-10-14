@@ -2,31 +2,47 @@ package chat
 
 import (
 	"context"
+	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
-	"log"
+	"slices"
 )
 
 func (s *Service) GetChat(ctx context.Context, in *dto.GetChatIN) (*dto.GetChatOUT, error) {
-	log.Println("chat usecase called GetChat")
+	const api = "ChatService.GetChat"
 
-	//получаем текущего пользователя
-	//currentUser, ok := getCurrentUser(ctx)
-	//if !ok {
-	//	return dto.GetChatOUT{}, dto.ErrUserNotAuthenticated
-	//}
+	currentUser, err := s.UserProvider.GetUserFromContext(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("%s. %s: %w", "Пользователь не аутентифицирован", api, chat.ErrUnauthenticated)
+	}
+	_ = currentUser
 
 	data := fromGetChatIN(in)
 
 	//получаем информацию о чате
-	chat, err := s.ChatRepo.GetChat(ctx, data)
+	chatData, err := s.ChatRepo.GetChat(ctx, data)
 
 	if err != nil {
 		return &dto.GetChatOUT{}, dto.ErrChatNotFound
 	}
 
-	//если текущий пользователь не владелец чата, то доступа нет
-	//if currentUser != chat.UserID {
-	//	return dto.GetChatOUT{}, dto.ErrChatPermissionDenied
-	//}
-	return toGetChatOUT(chat), nil
+	chatMembers, _ := s.ListChatMembers(ctx, &dto.ListChatMembersIN{ChatID: chatData.ChatID})
+
+	if !slices.Contains(convertToStringSlice(chatMembers.UserIDs), currentUser.UserID) {
+		return nil, fmt.Errorf("%s: %w", api, chat.ErrPermissionDenied)
+	}
+
+	return toGetChatOUT(chatData), nil
+}
+
+func convertToStringSlice(s []*string) []string {
+	s1 := make([]string, 0, len(s))
+	for _, ptr := range s {
+		if ptr != nil {
+			s1 = append(s1, *ptr)
+		} else {
+			s1 = append(s1, "")
+		}
+	}
+	return s1
 }
