@@ -29,7 +29,11 @@ const (
 type Chat struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// chat_id - ID чата в формате UUID
-	ChatId        string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	ChatId string `protobuf:"bytes,1,opt,name=chat_id,json=chatId,proto3" json:"chat_id,omitempty"`
+	// created_at - время создания чата
+	CreatedAt *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	// user_ids - участники чата
+	UserIds       []string `protobuf:"bytes,3,rep,name=user_ids,json=userIds,proto3" json:"user_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -69,6 +73,20 @@ func (x *Chat) GetChatId() string {
 		return x.ChatId
 	}
 	return ""
+}
+
+func (x *Chat) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Chat) GetUserIds() []string {
+	if x != nil {
+		return x.UserIds
+	}
+	return nil
 }
 
 // Message - информация о сообщении
@@ -871,9 +889,12 @@ var File_api_chat_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_chat_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xee\x01\n" +
+	"\x1aapi/chat/v1/messages.proto\x125github.com.PechatnovVladimir.msa_big_tech.chat.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1cgoogle/api/annotations.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc4\x02\n" +
 	"\x04Chat\x12\x17\n" +
-	"\achat_id\x18\x01 \x01(\tR\x06chatId:\xcc\x01\x92A\xc8\x01\n" +
+	"\achat_id\x18\x01 \x01(\tR\x06chatId\x129\n" +
+	"\n" +
+	"created_at\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x12\x19\n" +
+	"\buser_ids\x18\x03 \x03(\tR\auserIds:\xcc\x01\x92A\xc8\x01\n" +
 	"n*\x04Chat2'Chat - информация о чатеJ3{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\"}\xd2\x01\achat_id*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xc1\x02\n" +
 	"\aMessage\x12\x1d\n" +
@@ -961,20 +982,21 @@ var file_api_chat_v1_messages_proto_goTypes = []any{
 	(*timestamppb.Timestamp)(nil),    // 17: google.protobuf.Timestamp
 }
 var file_api_chat_v1_messages_proto_depIdxs = []int32{
-	0,  // 0: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.GetChatResponse.chat:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Chat
-	0,  // 1: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListUserChatsResponse.chats:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Chat
-	1,  // 2: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.SendMessageResponse.message:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
-	17, // 3: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor.created_at:type_name -> google.protobuf.Timestamp
-	12, // 4: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesRequest.cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
-	1,  // 5: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.messages:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
-	12, // 6: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.next_cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
-	17, // 7: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesRequest.since_unix_ms:type_name -> google.protobuf.Timestamp
-	1,  // 8: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesResponse.message:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
-	9,  // [9:9] is the sub-list for method output_type
-	9,  // [9:9] is the sub-list for method input_type
-	9,  // [9:9] is the sub-list for extension type_name
-	9,  // [9:9] is the sub-list for extension extendee
-	0,  // [0:9] is the sub-list for field type_name
+	17, // 0: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Chat.created_at:type_name -> google.protobuf.Timestamp
+	0,  // 1: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.GetChatResponse.chat:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Chat
+	0,  // 2: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListUserChatsResponse.chats:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Chat
+	1,  // 3: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.SendMessageResponse.message:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
+	17, // 4: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor.created_at:type_name -> google.protobuf.Timestamp
+	12, // 5: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesRequest.cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
+	1,  // 6: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.messages:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
+	12, // 7: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.next_cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
+	17, // 8: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesRequest.since_unix_ms:type_name -> google.protobuf.Timestamp
+	1,  // 9: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesResponse.message:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
+	10, // [10:10] is the sub-list for method output_type
+	10, // [10:10] is the sub-list for method input_type
+	10, // [10:10] is the sub-list for extension type_name
+	10, // [10:10] is the sub-list for extension extendee
+	0,  // [0:10] is the sub-list for field type_name
 }
 
 func init() { file_api_chat_v1_messages_proto_init() }

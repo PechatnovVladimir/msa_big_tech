@@ -11,6 +11,6 @@ func fromGetChatIN(in *dto.GetChatIN) string {
 
 func toGetChatOUT(in *chat.Chat) *dto.GetChatOUT {
 	return &dto.GetChatOUT{
-		ChatID: in.ChatID,
+		Chat: in,
 	}
 }

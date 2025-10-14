@@ -14,8 +14,8 @@ type ChatMembersRow struct {
 
 type ChatsMembersRow struct {
 	ChatID    string    `db:"chat_id"`
-	UserID    string    `db:"user_id"`
 	CreatedAt time.Time `db:"created_at"`
+	UserIDs   []string  `db:"user_ids"`
 }
 
 func (r *ChatsRow) Values() []any {

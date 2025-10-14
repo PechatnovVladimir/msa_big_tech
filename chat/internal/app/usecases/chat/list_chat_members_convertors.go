@@ -6,7 +6,7 @@ func fromListChatMembersIN(in *dto.ListChatMembersIN) string {
 	return in.ChatID
 }
 
-func toListChatMembersOUT(in []*string) *dto.ListChatMembersOUT {
+func toListChatMembersOUT(in []string) *dto.ListChatMembersOUT {
 	return &dto.ListChatMembersOUT{
 		UserIDs: in,
 	}

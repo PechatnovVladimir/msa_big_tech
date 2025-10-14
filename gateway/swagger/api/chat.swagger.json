@@ -315,6 +315,18 @@
         "chatId": {
           "type": "string",
           "title": "chat_id - ID чата в формате UUID"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "created_at - время создания чата"
+        },
+        "userIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "user_ids - участники чата"
         }
       },
       "description": "Chat - информация о чате",

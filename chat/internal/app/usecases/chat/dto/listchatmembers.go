@@ -4,5 +4,5 @@ type ListChatMembersIN struct {
 	ChatID string
 }
 type ListChatMembersOUT struct {
-	UserIDs []*string
+	UserIDs []string
 }
