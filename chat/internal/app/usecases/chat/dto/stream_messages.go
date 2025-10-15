@@ -1,4 +1,10 @@
 package dto
 
-type StreamMessagesIN struct{}
-type StreamMessagesOUT struct{}
+import (
+	"time"
+)
+
+type StreamMessagesIN struct {
+	ChatID           string
+	SinceMessageTime time.Time
+}

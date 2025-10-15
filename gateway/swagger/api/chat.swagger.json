@@ -491,7 +491,7 @@
           "type": "string",
           "title": "chat_id - ID чата"
         },
-        "sinceUnixMs": {
+        "sinceMessageTime": {
           "type": "string",
           "format": "date-time",
           "title": "since_unix_ms - время начала стрима"

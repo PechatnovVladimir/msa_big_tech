@@ -191,7 +191,7 @@ message StreamMessagesRequest {
     (google.api.field_behavior) = REQUIRED
   ];
   //since_unix_ms - время начала стрима
-  optional google.protobuf.Timestamp since_unix_ms = 2;
+  optional google.protobuf.Timestamp since_message_time = 2;
 }
 
 //StreamMessagesResponse - ответ StreamMessages

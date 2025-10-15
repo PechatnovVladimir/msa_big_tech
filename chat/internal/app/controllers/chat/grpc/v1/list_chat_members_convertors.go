@@ -14,7 +14,7 @@ func fromListChatMembersRequestToDto(request *chat.ListChatMembersRequest) *dto.
 func fromDtoToListChatMembersResponse(in *dto.ListChatMembersOUT) *chat.ListChatMembersResponse {
 	userIDs := make([]string, len(in.UserIDs))
 	for i, userID := range in.UserIDs {
-		userIDs[i] = *userID
+		userIDs[i] = userID
 	}
 
 	return &chat.ListChatMembersResponse{

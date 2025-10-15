@@ -790,9 +790,9 @@ type StreamMessagesRequest struct {
 	// chat_id - ID чата
 	ChatId string `protobuf:"bytes,1,opt,name=chat_id,proto3" json:"chat_id,omitempty"`
 	// since_unix_ms - время начала стрима
-	SinceUnixMs   *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=since_unix_ms,json=sinceUnixMs,proto3,oneof" json:"since_unix_ms,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
+	SinceMessageTime *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=since_message_time,json=sinceMessageTime,proto3,oneof" json:"since_message_time,omitempty"`
+	unknownFields    protoimpl.UnknownFields
+	sizeCache        protoimpl.SizeCache
 }
 
 func (x *StreamMessagesRequest) Reset() {
@@ -832,9 +832,9 @@ func (x *StreamMessagesRequest) GetChatId() string {
 	return ""
 }
 
-func (x *StreamMessagesRequest) GetSinceUnixMs() *timestamppb.Timestamp {
+func (x *StreamMessagesRequest) GetSinceMessageTime() *timestamppb.Timestamp {
 	if x != nil {
-		return x.SinceUnixMs
+		return x.SinceMessageTime
 	}
 	return nil
 }
@@ -939,11 +939,11 @@ const file_api_chat_v1_messages_proto_rawDesc = "" +
 	"\bmessages\x18\x01 \x03(\v2>.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.MessageR\bmessages\x12c\n" +
 	"\vnext_cursor\x18\x02 \x01(\v2=.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.CursorH\x00R\n" +
 	"nextCursor\x88\x01\x01B\x0e\n" +
-	"\f_next_cursor\"\x98\x01\n" +
+	"\f_next_cursor\"\xa7\x01\n" +
 	"\x15StreamMessagesRequest\x12(\n" +
-	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\x12C\n" +
-	"\rsince_unix_ms\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\vsinceUnixMs\x88\x01\x01B\x10\n" +
-	"\x0e_since_unix_ms\"r\n" +
+	"\achat_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\achat_id\x12M\n" +
+	"\x12since_message_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampH\x00R\x10sinceMessageTime\x88\x01\x01B\x15\n" +
+	"\x13_since_message_time\"r\n" +
 	"\x16StreamMessagesResponse\x12X\n" +
 	"\amessage\x18\x01 \x01(\v2>.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.MessageR\amessageB\x84\x03\n" +
 	"9com.github.com.PechatnovVladimir.msa_big_tech.chat.api.v1B\rMessagesProtoP\x01ZCgithub.com/PechatnovVladimir/msa_big_tech/chat/pkg/api/chat/v1;chat\xa2\x02\x06GCPMCA\xaa\x023Github.Com.PechatnovVladimir.MsaBigTech.Chat.Api.V1\xca\x023Github\\Com\\PechatnovVladimir\\MsaBigTech\\Chat\\Api\\V1\xe2\x02?Github\\Com\\PechatnovVladimir\\MsaBigTech\\Chat\\Api\\V1\\GPBMetadata\xea\x029Github::Com::PechatnovVladimir::MsaBigTech::Chat::Api::V1b\x06proto3"
@@ -990,7 +990,7 @@ var file_api_chat_v1_messages_proto_depIdxs = []int32{
 	12, // 5: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesRequest.cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
 	1,  // 6: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.messages:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
 	12, // 7: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.ListMessagesResponse.next_cursor:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Cursor
-	17, // 8: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesRequest.since_unix_ms:type_name -> google.protobuf.Timestamp
+	17, // 8: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesRequest.since_message_time:type_name -> google.protobuf.Timestamp
 	1,  // 9: github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.StreamMessagesResponse.message:type_name -> github.com.PechatnovVladimir.msa_big_tech.chat.api.v1.Message
 	10, // [10:10] is the sub-list for method output_type
 	10, // [10:10] is the sub-list for method input_type

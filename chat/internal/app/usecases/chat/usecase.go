@@ -15,6 +15,7 @@ type Repository interface {
 	SendMessage(ctx context.Context, m *chat.Message) (*chat.Message, error)
 	ListChatMembers(ctx context.Context, chatID string) ([]*string, error)
 	ListMessages(ctx context.Context, chatID string, opts pagination.Options) ([]*chat.Message, error)
+	StreamMessage(ctx context.Context, chatID string) (<-chan *chat.Message, error)
 }
 
 // UserService - интерфейс доступа к сервису пользователей
@@ -40,8 +41,7 @@ type UseCase interface {
 	SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.SendMessageOUT, error)
 	ListChatMembers(ctx context.Context, in *dto.ListChatMembersIN) (*dto.ListChatMembersOUT, error)
 	ListMessages(ctx context.Context, in *dto.ListMessagesIN) (*dto.ListMessagesOUT, error)
-
-	StreamMessages(ctx context.Context, in dto.StreamMessagesIN) (dto.StreamMessagesOUT, error)
+	StreamMessages(ctx context.Context, in *dto.StreamMessagesIN) (<-chan *chat.Message, error)
 }
 
 var _ UseCase = (*Service)(nil)
