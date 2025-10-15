@@ -21,19 +21,17 @@ func (s *Service) SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.
 	}
 
 	if len(in.Text) > maxTextSize {
-		return nil, fmt.Errorf("%s: %w: max messsage size is %d", api, chat.ErrInvalidArgument, maxTextSize)
+		return nil, fmt.Errorf("%s: %w: Длина сообщения должна быть не более %d", api, chat.ErrInvalidArgument, maxTextSize)
 	}
 
 	chatInfo, err := s.ChatRepo.GetChat(ctx, in.ChatID)
-
+	//ошибка БД
 	if err != nil {
 		return &dto.SendMessageOUT{}, fmt.Errorf("%s: %w", api, err)
 	}
 
-	userIDs := chatInfo.Members
-
 	//если текущий пользователь не является участником чата, то доступ к чату запрещен
-	if !slices.Contains(userIDs, currentUser.UserID) {
+	if !slices.Contains(chatInfo.Members, currentUser.UserID) {
 		return nil, fmt.Errorf("%s: %w", api, chat.ErrPermissionDenied)
 	}
 
@@ -46,10 +44,10 @@ func (s *Service) SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.
 	message, err := s.ChatRepo.SendMessage(ctx, data)
 
 	if err != nil {
-		return &dto.SendMessageOUT{}, err
+		return &dto.SendMessageOUT{}, fmt.Errorf("%s: %w", api, err)
 	}
 
-	out := toSendMessageOUT(message)
+	msg := toSendMessageOUT(message)
 
-	return out, nil
+	return msg, nil
 }
