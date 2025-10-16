@@ -49,7 +49,7 @@ func Run(ctx context.Context) (err error) {
 		ChatUseCase: chatUseCase,
 	})
 	if err != nil {
-		return fmt.Errorf("authGRPC.New: %w", err)
+		return fmt.Errorf("chatGRPC.New: %w", err)
 	}
 
 	log.Println("Chat service started!")
