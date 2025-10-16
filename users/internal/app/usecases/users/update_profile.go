@@ -2,21 +2,33 @@ package users
 
 import (
 	"context"
+	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users/dto"
 )
 
-func (s *Service) UpdateProfile(ctx context.Context, in dto.UpdateProfile) (*users.UserProfile, error) {
-	_, err := s.repository.GetProfileByID(ctx, in.ID)
+func (s *Service) UpdateProfile(ctx context.Context, profile dto.UpdateProfile) (*users.UserProfile, error) {
+	const api = "UserService.UpdateProfile"
+
+	currentUser, err := s.UserProvider.GetUserFromContext(ctx)
 	if err != nil {
-		return nil, users.ErrUserNotFound
+		return nil, fmt.Errorf("%s: %w", api, users.ErrUnauthenticated)
 	}
 
-	data := modelUserProfileForUpdateFromUpdateProfileDto(in)
+	if currentUser != profile.ID {
+		return nil, fmt.Errorf("%s: %w", api, users.ErrPermissionDenied)
+	}
 
-	updatedProfile, err := s.repository.UpdateProfile(ctx, data)
+	_, err = s.UserRepo.GetProfileByID(ctx, profile.ID)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("%s: %w", api, users.ErrUserNotFound)
+	}
+
+	data := modelUserProfileForUpdateFromUpdateProfileDto(profile)
+
+	updatedProfile, err := s.UserRepo.UpdateProfile(ctx, data)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", api, err)
 	}
 
 	return updatedProfile, nil

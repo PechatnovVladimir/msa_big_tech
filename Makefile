@@ -1,7 +1,7 @@
 #auth-service:50051 pg 5431
 #chat-service:50052    5432
 #social-service:50053  5433
-#users-service:50054   5454
+#users-service:50054   5434
 
 
 build:

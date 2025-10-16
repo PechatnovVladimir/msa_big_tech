@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/adapters/userprovider"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc"
 	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
@@ -30,14 +31,18 @@ func Run(ctx context.Context) (err error) {
 	//менеджер транзакций
 	txManager := connection.NewTxManager(conn)
 
-	//репозиторий
-	repo := userRepo.NewRepository(txManager)
+	userProvider := userprovider.New()
 
-	//юзкейс
-	uc := usersUC.New(repo)
+	//репозиторий
+	userRepository := userRepo.NewRepository(txManager)
+
+	userUseCase := usersUC.New(usersUC.Deps{
+		UserRepo:     userRepository,
+		UserProvider: userProvider,
+	})
 
 	//grpc
-	grpcServer, err := usersGPRS.New(uc)
+	grpcServer, err := usersGPRS.New(userUseCase)
 	if err != nil {
 		return fmt.Errorf("grpc.New: %w", err)
 	}

@@ -65,13 +65,13 @@ pg-down:
 	docker-compose down
 
 migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" status -dir ./migrations
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" status -dir ./migrations
 
 migration-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" up -dir ./migrations
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" up -dir ./migrations
 
 migration-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" down -dir ./migrations
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" down -dir ./migrations
 
 .PHONY: \
 	.bin-deps \
