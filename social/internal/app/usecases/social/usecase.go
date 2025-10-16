@@ -3,6 +3,7 @@ package social
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 )
@@ -14,9 +15,8 @@ type Repository interface {
 	ChangeStatusFriendRequest(ctx context.Context, requestID string, status int) (*social.FriendRequest, error)
 	CreateFriend(ctx context.Context, fr *social.FriendRequest) error
 	ListFriends(ctx context.Context, userID string, opts pagination.Options) ([]*social.Friend, error)
-
-	//GetFriendRequestByID(ctx context.Context, requestID string) (dtoRepo.FriendRequest, error)
-	//DeleteFriendRequest(ctx context.Context, in dtoRepo.DeleteFriendRequestIN) error
+	GetFriendRequest(ctx context.Context, requestID string) (*social.FriendRequest, error)
+	RemoveFriend(ctx context.Context, userID string, friendID string) error
 }
 
 // UserProvider - интерфейс доступа к сервису пользователей
@@ -35,6 +35,7 @@ type Deps struct {
 	SocialRepo   Repository
 	AuthProvider AuthProvider
 	UserProvider UserProvider
+	Tm           *postgres.TransactionManager
 }
 
 type Service struct {

@@ -42,6 +42,7 @@ func Run(ctx context.Context) (err error) {
 		AuthProvider: authServiceAdapter,
 		UserProvider: userServiceAdapter,
 		SocialRepo:   socialRepository,
+		Tm:           txManager,
 	})
 
 	//grpc

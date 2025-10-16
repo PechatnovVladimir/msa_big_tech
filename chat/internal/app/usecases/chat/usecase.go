@@ -5,6 +5,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 )
 
 // Repository - интерфейс репозитория чата
@@ -27,6 +28,7 @@ type UserProvider interface {
 type Deps struct {
 	ChatRepo     Repository
 	UserProvider UserProvider
+	Tx           *postgres.TransactionManager
 }
 
 type Service struct {

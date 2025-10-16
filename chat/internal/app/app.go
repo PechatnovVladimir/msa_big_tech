@@ -42,6 +42,7 @@ func Run(ctx context.Context) (err error) {
 	chatUseCase := chat.New(chat.Deps{
 		UserProvider: userServiceProvider,
 		ChatRepo:     chatRepository,
+		Tx:           txManager,
 	})
 
 	//grpc

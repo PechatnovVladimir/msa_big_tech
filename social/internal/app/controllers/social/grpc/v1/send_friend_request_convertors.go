@@ -1,14 +1,14 @@
 package v1
 
 import (
-	"errors"
+	models "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
 
 func fromSendFriendRequestRequestToDto(in *social.SendFriendRequestRequest) (*dto.SendFriendRequestIN, error) {
 	if in == nil {
-		return &dto.SendFriendRequestIN{}, errors.New("grpc SendFriendRequestRequest is nil")
+		return &dto.SendFriendRequestIN{}, models.ErrSocialInvalidArgument
 	}
 
 	out := &dto.SendFriendRequestIN{
@@ -19,7 +19,7 @@ func fromSendFriendRequestRequestToDto(in *social.SendFriendRequestRequest) (*dt
 
 func fromDtoToSendFriendRequestResponse(in *dto.SendFriendRequestOUT) (*social.SendFriendRequestResponse, error) {
 	if in.RequestID == "" {
-		return nil, errors.New("RequestID is empty")
+		return nil, models.ErrSocialInvalidArgument
 	}
 
 	out := &social.SendFriendRequestResponse{

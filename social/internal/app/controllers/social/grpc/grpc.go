@@ -24,6 +24,7 @@ func New(d socialGPRS.Deps) (*Server, error) {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
 		grpc.ChainUnaryInterceptor(validate.Interseptor),
+		grpc.ChainUnaryInterceptor(ErrorsUnaryServerInterceptor()),
 	)
 
 	socialService := socialGPRS.New(d)

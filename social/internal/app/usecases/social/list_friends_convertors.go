@@ -4,6 +4,7 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
+	"time"
 )
 
 func fromListFriendsIN(in *dto.ListFriendsIN) (userID string, opts pagination.Options) {
@@ -11,6 +12,11 @@ func fromListFriendsIN(in *dto.ListFriendsIN) (userID string, opts pagination.Op
 	cursor := pagination.Cursor{
 		ID:   &in.Cursor.ID,
 		Time: &in.Cursor.Time,
+	}
+
+	if cursor.Time.Unix() == 0 {
+		t := time.Now().UTC()
+		cursor.Time = &t
 	}
 
 	opts = pagination.NewOptions(
