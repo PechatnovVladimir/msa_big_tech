@@ -110,5 +110,8 @@ func (r *Repository) SearchEvents(ctx context.Context, opts ...appoutbox.SearchE
 			NextAttemptAt: nextAttemptAt,
 		})
 	}
+
+	log.Println(events)
+
 	return events
 }

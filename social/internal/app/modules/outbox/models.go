@@ -1,7 +1,6 @@
 package outbox
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -19,7 +18,7 @@ const (
 )
 
 type Event struct {
-	ID            uuid.UUID
+	ID            string
 	AggregateType AggregateType
 	AggregateID   string
 	EventType     EventType

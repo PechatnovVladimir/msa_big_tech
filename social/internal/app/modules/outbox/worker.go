@@ -3,7 +3,6 @@ package outbox
 import (
 	"context"
 	"errors"
-	"github.com/google/uuid"
 	"log"
 	"time"
 )
@@ -56,7 +55,7 @@ type (
 	//FriendREquestEventHandler - обработчик событий по заявкам в друзья
 	FriendRequestEventsHandler interface {
 		// Возвращает списки успешных и проваленных id; err — для фатальных ошибок батча.
-		HandleBatch(ctx context.Context, events []*Event) (succeeded []uuid.UUID, failed []uuid.UUID, err error)
+		HandleBatch(ctx context.Context, events []*Event) (succeeded []string, failed []string, err error)
 	}
 )
 
@@ -126,15 +125,15 @@ func (w *OutboxFriendRequestWorker) Fetch(ctx context.Context) error {
 		//WithNotBefore(from),
 		//WithNotAfter(now),
 		// 2-я ступень pruning
-		//WithAggregateType(AggregateTypeFriendRequest),
+		WithAggregateType(AggregateTypeFriendRequest),
 		// 3-я ступень pruning
-		//WithEventType(EventTypeFriendRequest),
+		WithEventType(EventTypeFriendRequest),
 		// фильтрация
-		//WithOnlyUnpublished(),
+		WithOnlyUnpublished(),
 		//WithDueAt(now),
-		//WithMaxRetryCount(w.maxRetry),
-		//WithLimit(w.batchSize),
-		//WithLock(), // FOR UPDATE
+		WithMaxRetryCount(w.maxRetry),
+		WithLimit(w.batchSize),
+		WithLock(), // FOR UPDATE
 	)
 	if len(events) == 0 {
 		log.Println("outbox no events")

@@ -16,7 +16,7 @@ type Repository interface {
 
 type TransactionManager interface {
 	RunRepeatableRead(ctx context.Context, f func(ctx context.Context) error) error
-	RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error
+	//RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error
 }
 
 type Deps struct {

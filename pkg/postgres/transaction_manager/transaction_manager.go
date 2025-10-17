@@ -1,28 +1,31 @@
-package postgres
+package transaction_manager
 
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/jackc/pgx/v5"
 )
 
 // TransactionManager - менеджер транзакций: позовляет выполнять функции разных репозиториев ходящих в одну БД в рамках транзакции
 type TransactionManager struct {
-	connection *Connection
+	connection *postgres.Connection
 }
 
 // New constructs TransactionManager
-func NewTxManager(connection *Connection) *TransactionManager {
+func New(connection *postgres.Connection) *TransactionManager {
 	return &TransactionManager{connection: connection}
 }
 
 type key string
 
-const txKey key = "tx"
+const (
+	txKey key = "tx"
+)
 
 func (m *TransactionManager) runTransaction(ctx context.Context, txOpts pgx.TxOptions, fn func(ctx context.Context) error) (err error) {
 	// If it's nested Transaction, skip initiating a new one and return func(ctx context.Context) error
-	tx, ok := ctx.Value(txKey).(*Transaction)
+	tx, ok := ctx.Value(txKey).(*postgres.Transaction)
 	if ok {
 		return fn(ctx)
 	}
@@ -33,7 +36,7 @@ func (m *TransactionManager) runTransaction(ctx context.Context, txOpts pgx.TxOp
 		return fmt.Errorf("can't begin transaction: %v", err)
 	}
 
-	tx = &Transaction{Tx: pgxTx}
+	tx = &postgres.Transaction{Tx: pgxTx}
 	// Set txKey to context
 	ctx = context.WithValue(ctx, txKey, tx)
 
@@ -70,14 +73,10 @@ func (m *TransactionManager) runTransaction(ctx context.Context, txOpts pgx.TxOp
 	return err
 }
 
-type TransactionManagerAPI interface {
-	GetQueryEngine(ctx context.Context) QueryEngine
-}
-
 // GetQueryEngine provides QueryEngine
-func (m *TransactionManager) GetQueryEngine(ctx context.Context) QueryEngine {
+func (m *TransactionManager) GetQueryEngine(ctx context.Context) postgres.QueryEngine {
 	// Transaction always runs on node with NodeRoleWrite role
-	if tx, ok := ctx.Value(txKey).(QueryEngine); ok {
+	if tx, ok := ctx.Value(txKey).(postgres.QueryEngine); ok {
 		return tx
 	}
 
@@ -85,25 +84,25 @@ func (m *TransactionManager) GetQueryEngine(ctx context.Context) QueryEngine {
 }
 
 // RunReadCommitted execs f func in runTransaction with LevelReadCommitted isolation level
-func (m *TransactionManager) RunReadCommitted(ctx context.Context, f func(txCtx context.Context) error) error {
+func (m *TransactionManager) RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error {
 	return m.runTransaction(ctx, pgx.TxOptions{
-		IsoLevel: pgx.ReadCommitted,
-		// AccessMode: accessMode,
+		IsoLevel:   pgx.ReadCommitted,
+		AccessMode: pgx.ReadWrite,
 	}, f)
 }
 
 // RunRepeatableRead execs f func in runTransaction with LevelRepeatableRead isolation level
-func (m *TransactionManager) RunRepeatableRead(ctx context.Context, f func(txCtx context.Context) error) error {
+func (m *TransactionManager) RunRepeatableRead(ctx context.Context, f func(ctx context.Context) error) error {
 	return m.runTransaction(ctx, pgx.TxOptions{
-		IsoLevel: pgx.RepeatableRead,
-		// AccessMode: accessMode,
+		IsoLevel:   pgx.RepeatableRead,
+		AccessMode: pgx.ReadWrite,
 	}, f)
 }
 
 // RunSerializable execs f func in runTransaction with LevelSerializable isolation level
-func (m *TransactionManager) RunSerializable(ctx context.Context, f func(txCtx context.Context) error) error {
+func (m *TransactionManager) RunSerializable(ctx context.Context, f func(ctx context.Context) error) error {
 	return m.runTransaction(ctx, pgx.TxOptions{
-		IsoLevel: pgx.Serializable,
-		// AccessMode: accessMode,
+		IsoLevel:   pgx.Serializable,
+		AccessMode: pgx.ReadWrite,
 	}, f)
 }

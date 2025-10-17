@@ -6,11 +6,11 @@ import (
 )
 
 type Repository struct {
-	db postgres.TransactionManagerAPI
+	db postgres.QueryEngineProvider
 	sb squirrel.StatementBuilderType
 }
 
-func New(p postgres.TransactionManagerAPI) *Repository {
+func New(p postgres.QueryEngineProvider) *Repository {
 	return &Repository{
 		db: p,
 		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),

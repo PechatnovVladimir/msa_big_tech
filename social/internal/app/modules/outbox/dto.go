@@ -1,7 +1,6 @@
 package outbox
 
 import (
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -77,7 +76,7 @@ type updateEventsOptions struct {
 	AggregateType *AggregateType
 	EventType     *EventType
 
-	IDs []uuid.UUID
+	IDs []string
 
 	// что обновляем
 	SetPublishedAt   *time.Time
@@ -102,7 +101,7 @@ func CollectUpdateEventsOptions(opts ...UpdateEventsOption) updateEventsOptions 
 
 // ----- Option builders -----
 
-func WithUpdateIDs(ids ...uuid.UUID) UpdateEventsOption {
+func WithUpdateIDs(ids ...string) UpdateEventsOption {
 	return func(o *updateEventsOptions) { o.IDs = append(o.IDs, ids...) }
 }
 

@@ -2,7 +2,6 @@ package outbox
 
 import (
 	"database/sql"
-	"github.com/google/uuid"
 	"time"
 )
 
@@ -25,7 +24,7 @@ type outboxEvent1 struct {
 }
 
 type OutboxEvent struct {
-	ID            uuid.UUID           `db:"id"`
+	ID            string              `db:"id"`
 	AggregateType string              `db:"aggregate_type"`
 	AggregateID   string              `db:"aggregate_id"`
 	EventType     string              `db:"event_type"`

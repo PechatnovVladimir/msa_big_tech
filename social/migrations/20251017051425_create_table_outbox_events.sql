@@ -2,7 +2,7 @@
 -- +goose StatementBegin
 SELECT 'up SQL query';
 CREATE TABLE IF NOT EXISTS outbox_events (
-                                                    id              UUID        NOT NULL,
+                                                    id              TEXT        NOT NULL,
                                                     aggregate_type  TEXT        NOT NULL,
                                                     aggregate_id    TEXT        NOT NULL,
                                                     event_type      TEXT        NOT NULL,

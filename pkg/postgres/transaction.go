@@ -2,12 +2,14 @@ package postgres
 
 import (
 	"context"
+
 	"github.com/georgysavva/scany/v2/pgxscan"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-// Transaction wraps pgx.Tx and extend API
+var _ QueryEngine = (*Transaction)(nil)
+
 type Transaction struct {
 	pgx.Tx
 }
@@ -27,7 +29,7 @@ func (t *Transaction) Selectx(ctx context.Context, dest interface{}, sqlizer Sql
 		return err
 	}
 
-	return pgxscan.Select(ctx, t.Tx, dest, query, args)
+	return pgxscan.Select(ctx, t.Tx, dest, query, args...)
 }
 
 func (t *Transaction) Execx(ctx context.Context, sqlizer Sqlizer) (pgconn.CommandTag, error) {

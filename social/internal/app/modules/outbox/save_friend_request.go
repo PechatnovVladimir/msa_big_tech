@@ -9,7 +9,7 @@ import (
 
 func (p *Processor) SaveFriendRequest(ctx context.Context, friendRequest *social.FriendRequest) error {
 	event := Event{
-		ID:            uuid.New(),
+		ID:            uuid.New().String(),
 		AggregateType: AggregateTypeFriendRequest,
 		AggregateID:   friendRequest.RequestID,
 		EventType:     EventTypeFriendRequest,

@@ -3,7 +3,6 @@ package friend_request_events_handler
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
-	"github.com/google/uuid"
 	"log"
 	"time"
 )
@@ -20,12 +19,12 @@ func NewKafkaFriendRequestBatchHandler() *KafkaFriendRequestBatchHandler {
 	}
 }
 
-func (h *KafkaFriendRequestBatchHandler) HandleBatch(ctx context.Context, events []*outbox.Event) (succeeded []uuid.UUID, failed []uuid.UUID, err error) {
-	succeeded = make([]uuid.UUID, 0, len(events))
-	failed = make([]uuid.UUID, 0, len(events))
+func (h *KafkaFriendRequestBatchHandler) HandleBatch(ctx context.Context, events []*outbox.Event) (succeeded []string, failed []string, err error) {
+	succeeded = make([]string, 0, len(events))
+	failed = make([]string, 0, len(events))
 
 	for i, event := range events {
-		log.Println("Событие: ", event.ID.String())
+		log.Println("Событие: ", event.ID)
 		if i%2 == 0 {
 			succeeded = append(succeeded, event.ID)
 		} else {
