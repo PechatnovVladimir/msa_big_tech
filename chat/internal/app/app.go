@@ -9,6 +9,7 @@ import (
 	chatRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
 	"log"
 	"os"
 	"os/signal"
@@ -34,7 +35,7 @@ func Run(ctx context.Context) (err error) {
 	defer conn.Close()
 
 	//менеджер транзакций
-	txManager := connection.NewTxManager(conn)
+	txManager := transaction_manager.New(conn)
 
 	userServiceProvider := userprovider.New()
 	chatRepository := chatRepo.NewRepository(txManager)
