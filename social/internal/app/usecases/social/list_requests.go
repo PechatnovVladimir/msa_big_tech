@@ -8,6 +8,7 @@ import (
 )
 
 func (s *Service) ListRequests(ctx context.Context, in *dto.ListRequestsIN) (*dto.ListRequestsOUT, error) {
+
 	const api = "SocialService.ListRequests"
 
 	currentUser, err := s.UserProvider.GetUserFromContext(ctx)

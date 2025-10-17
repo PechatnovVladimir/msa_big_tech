@@ -19,7 +19,7 @@ type Repository interface {
 }
 
 type OutboxRepository interface {
-	SaveFriendRequestID(ctx context.Context, friendRequestID string) error
+	SaveFriendRequest(ctx context.Context, friendRequest *social.FriendRequest) error
 }
 
 // UserProvider - интерфейс доступа к сервису пользователей

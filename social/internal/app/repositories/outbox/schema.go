@@ -20,7 +20,11 @@ const (
 	columnOutboxNextAttemptAt = "next_attempt_at"
 )
 
-type outboxEvent struct {
+type outboxEvent1 struct {
+	ID string `db:"id"`
+}
+
+type OutboxEvent struct {
 	ID            uuid.UUID           `db:"id"`
 	AggregateType string              `db:"aggregate_type"`
 	AggregateID   string              `db:"aggregate_id"`
@@ -46,7 +50,7 @@ var (
 	}
 )
 
-func (e *outboxEvent) mapFields() map[string]any {
+func (e *OutboxEvent) mapFields() map[string]any {
 	return map[string]any{
 		columnOutboxID:            e.ID,
 		columnOutboxAggType:       e.AggregateType,
@@ -60,7 +64,7 @@ func (e *outboxEvent) mapFields() map[string]any {
 	}
 }
 
-func (e *outboxEvent) Values(columns ...string) []any {
+func (e *OutboxEvent) Values(columns ...string) []any {
 	m := e.mapFields()
 	values := make([]any, 0, len(columns))
 	for i := range columns {

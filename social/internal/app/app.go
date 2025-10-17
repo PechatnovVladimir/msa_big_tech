@@ -5,6 +5,7 @@ import (
 	"fmt"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authprovider"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/friend_request_events_handler"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
@@ -40,6 +41,17 @@ func Run(ctx context.Context) (err error) {
 	userServiceAdapter := userprovider.New()
 	socialRepository := socialRepo.New(txManager)
 	outboxRepository := outboxRepo.NewRepository(txManager)
+
+	friendRequestEventsHandler := friend_request_events_handler.NewKafkaFriendRequestBatchHandler()
+
+	worker := outbox.NewOutboxFriendRequestWorker(outboxRepository, txManager, friendRequestEventsHandler,
+		outbox.WithBatchSize(10),
+		outbox.WithMaxRetry(10),
+		outbox.WithRetryInterval(30*time.Second),
+		outbox.WithWindow(time.Hour),
+	)
+
+	go worker.Run(ctx)
 
 	outboxProcessor := outbox.NewProcessor(outbox.Deps{Repository: outboxRepository})
 

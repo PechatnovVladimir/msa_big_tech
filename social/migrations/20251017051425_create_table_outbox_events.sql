@@ -2,7 +2,7 @@
 -- +goose StatementBegin
 SELECT 'up SQL query';
 CREATE TABLE IF NOT EXISTS outbox_events (
-                                                    id              UUID        NOT NULL default gen_random_uuid(),
+                                                    id              UUID        NOT NULL,
                                                     aggregate_type  TEXT        NOT NULL,
                                                     aggregate_id    TEXT        NOT NULL,
                                                     event_type      TEXT        NOT NULL,
@@ -11,8 +11,10 @@ CREATE TABLE IF NOT EXISTS outbox_events (
                                                     published_at    TIMESTAMPTZ,
                                                     retry_count     INT         NOT NULL DEFAULT 0,
                                                     next_attempt_at TIMESTAMPTZ,
-                                                    primary key (created_at, id)
-) PARTITION BY RANGE (created_at);
+                                                    --primary key (created_at, id)
+                                                    primary key (id)
+);
+--PARTITION BY RANGE (created_at);
 
 COMMENT ON TABLE  outbox_events IS 'Таблица событий для паттерна Transactional Outbox (partitioned)';
 COMMENT ON COLUMN outbox_events.id               IS 'Уникальный идентификатор события (UUID)';

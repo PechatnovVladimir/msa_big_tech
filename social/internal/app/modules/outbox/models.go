@@ -5,22 +5,27 @@ import (
 	"time"
 )
 
-const (
-	AggregateTypeFriendRequest = "friend_request"
-)
+type AggregateType string
 
 const (
-	EventTypeFriendRequest = "social.friend.request"
-	EventTypeFriendUpdated = "social.friend.updated"
+	AggregateTypeFriendRequest AggregateType = "friend_request"
+)
+
+type EventType string
+
+const (
+	EventTypeFriendRequest EventType = "social.friend.request"
+	EventTypeFriendUpdated EventType = "social.friend.updated"
 )
 
 type Event struct {
 	ID            uuid.UUID
-	AggregateType string
+	AggregateType AggregateType
 	AggregateID   string
-	EventType     string
+	EventType     EventType
 	Payload       []byte
 	CreatedAt     time.Time
 	PublishedAt   *time.Time
 	RetryCount    int
+	NextAttemptAt *time.Time
 }

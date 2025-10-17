@@ -2,9 +2,9 @@ package grpc
 
 import (
 	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/validate"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
 	socialPB "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/validate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"

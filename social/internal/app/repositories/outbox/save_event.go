@@ -9,13 +9,13 @@ import (
 )
 
 func (r *Repository) SaveEvent(ctx context.Context, e *appoutbox.Event) error {
-	const api = "outbox.Repository.SaveOrderCreatedID"
+	const api = "outbox.Repository.SaveEvent"
 
-	row := outboxEvent{
+	row := OutboxEvent{
 		ID:            e.ID,
-		AggregateType: e.AggregateType,
+		AggregateType: string(e.AggregateType),
 		AggregateID:   e.AggregateID,
-		EventType:     e.EventType,
+		EventType:     string(e.EventType),
 		Payload:       notnullJSON(e.Payload),
 		CreatedAt:     e.CreatedAt,
 		PublishedAt: func(t *time.Time) sql.Null[time.Time] {
@@ -25,9 +25,15 @@ func (r *Repository) SaveEvent(ctx context.Context, e *appoutbox.Event) error {
 			return sql.Null[time.Time]{}
 		}(&e.CreatedAt),
 		RetryCount: e.RetryCount,
+		NextAttemptAt: func(t *time.Time) sql.Null[time.Time] {
+			if e.NextAttemptAt != nil {
+				return sql.Null[time.Time]{V: *e.NextAttemptAt, Valid: true}
+			}
+			return sql.Null[time.Time]{}
+		}(&e.CreatedAt),
 	}
 
-	qb := r.qb.Insert(tableOutboxEvents).
+	qb := r.sb.Insert(tableOutboxEvents).
 		Columns(tableOutboxEventsColumns...).
 		Values(row.Values(tableOutboxEventsColumns...)...)
 

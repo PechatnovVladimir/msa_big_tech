@@ -10,10 +10,13 @@ var _ social.OutboxRepository = (*Processor)(nil)
 // Repository - репозиторий Outbox
 type Repository interface {
 	SaveEvent(ctx context.Context, e *Event) error
+	SearchEvents(ctx context.Context, opts ...SearchEventsOption) []*Event
+	UpdateEvents(ctx context.Context, opts ...UpdateEventsOption) error
 }
 
 type TransactionManager interface {
 	RunRepeatableRead(ctx context.Context, f func(ctx context.Context) error) error
+	RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error
 }
 
 type Deps struct {

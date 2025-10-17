@@ -2,10 +2,10 @@ package grpc
 
 import (
 	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/validate"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc/v1"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	usersPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/users/pkg/validate"
 
 	"buf.build/go/protovalidate"
 

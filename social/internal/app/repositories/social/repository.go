@@ -10,9 +10,9 @@ type Repository struct {
 	sb squirrel.StatementBuilderType
 }
 
-func New(txManager postgres.TransactionManagerAPI) *Repository {
+func New(p postgres.TransactionManagerAPI) *Repository {
 	return &Repository{
-		db: txManager,
+		db: p,
 		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
 	}
 }
