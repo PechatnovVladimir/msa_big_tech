@@ -3,7 +3,6 @@ package social
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social/dto"
 )
@@ -19,6 +18,10 @@ type Repository interface {
 	RemoveFriend(ctx context.Context, userID string, friendID string) error
 }
 
+type OutboxRepository interface {
+	SaveFriendRequestID(ctx context.Context, friendRequestID string) error
+}
+
 // UserProvider - интерфейс доступа к сервису пользователей
 type UserProvider interface {
 	GetUserFromContext(ctx context.Context) (*social.User, error)
@@ -30,12 +33,17 @@ type AuthProvider interface {
 	GetAuthUser() (string, error)
 }
 
+type TransactionManager interface {
+	RunReadCommitted(ctx context.Context, f func(ctx context.Context) error) error
+}
+
 // Deps - зависимости
 type Deps struct {
-	SocialRepo   Repository
-	AuthProvider AuthProvider
-	UserProvider UserProvider
-	Tm           *postgres.TransactionManager
+	SocialRepo         Repository
+	AuthProvider       AuthProvider
+	UserProvider       UserProvider
+	TransactionManager TransactionManager
+	OutboxRepo         OutboxRepository
 }
 
 type Service struct {
@@ -49,7 +57,6 @@ type UseCase interface {
 	AcceptFriendRequest(ctx context.Context, in *dto.AcceptFriendRequestIN) (*dto.AcceptFriendRequestOUT, error)
 	DeclineFriendRequest(ctx context.Context, in *dto.DeclineFriendRequestIN) (*dto.DeclineFriendRequestOUT, error)
 	ListFriends(ctx context.Context, in *dto.ListFriendsIN) (*dto.ListFriendsOUT, error)
-
 	RemoveFriend(ctx context.Context, in dto.RemoveFriendIN) error
 }
 

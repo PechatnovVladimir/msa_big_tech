@@ -8,6 +8,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
+	outboxRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/outbox"
 	socialRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
 	"log"
@@ -37,12 +39,16 @@ func Run(ctx context.Context) (err error) {
 	authServiceAdapter := authprovider.New()
 	userServiceAdapter := userprovider.New()
 	socialRepository := socialRepo.New(txManager)
+	outboxRepository := outboxRepo.NewRepository(txManager)
+
+	outboxProcessor := outbox.NewProcessor(outbox.Deps{Repository: outboxRepository})
 
 	socialUseCase := social.New(social.Deps{
-		AuthProvider: authServiceAdapter,
-		UserProvider: userServiceAdapter,
-		SocialRepo:   socialRepository,
-		Tm:           txManager,
+		AuthProvider:       authServiceAdapter,
+		UserProvider:       userServiceAdapter,
+		SocialRepo:         socialRepository,
+		TransactionManager: txManager,
+		OutboxRepo:         outboxProcessor,
 	})
 
 	//grpc

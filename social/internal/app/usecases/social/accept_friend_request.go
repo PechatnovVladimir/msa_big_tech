@@ -31,7 +31,7 @@ func (s *Service) AcceptFriendRequest(ctx context.Context, in *dto.AcceptFriendR
 
 	//старт транзакции
 	var friendRequest *models.FriendRequest
-	err = s.Tm.RunReadCommitted(ctx,
+	err = s.TransactionManager.RunReadCommitted(ctx,
 		func(txCtx context.Context) error {
 			friendRequest, err = s.SocialRepo.ChangeStatusFriendRequest(txCtx, in.RequestID, int(models.ACCEPTED))
 			if err != nil {

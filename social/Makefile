@@ -65,6 +65,7 @@ pg-up:
 pg-down:
 	docker-compose down
 
+#Cоздать миграцию goose create <migration_name> sql -dir=./migrations
 migration-status:
 	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" status -dir ./migrations
 
