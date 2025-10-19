@@ -3,10 +3,11 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/kafka"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	tx "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authprovider"
-	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/friend_request_events_handler"
+	seh "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/socialeventshandler"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
 	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
@@ -17,6 +18,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 	"time"
 )
@@ -35,6 +37,11 @@ func Run(ctx context.Context) (err error) {
 	}
 	defer conn.Close()
 
+	producer, err := kafka.NewSyncProducer(strings.Split(KafkaBrokers, ","), nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	//менеджер транзакций
 	txManager := tx.New(conn)
 
@@ -43,9 +50,12 @@ func Run(ctx context.Context) (err error) {
 	socialRepository := socialRepo.New(txManager)
 	outboxRepository := outboxRepo.NewRepository(txManager)
 
-	friendRequestEventsHandler := friend_request_events_handler.NewKafkaFriendRequestBatchHandler()
+	socialEventsHandler := seh.NewKafkaBatchHandler(producer,
+		seh.WithMaxBatchSize(10),
+		seh.WithTopic(),
+	)
 
-	worker := outbox.NewOutboxFriendRequestWorker(outboxRepository, txManager, friendRequestEventsHandler,
+	worker := outbox.NewOutboxFriendRequestWorker(outboxRepository, txManager, socialEventsHandler,
 		outbox.WithBatchSize(10),
 		outbox.WithMaxRetry(10),
 		outbox.WithRetryInterval(30*time.Second),

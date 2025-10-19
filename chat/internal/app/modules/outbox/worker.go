@@ -53,29 +53,29 @@ func NewOutboxWorker(opts ...WorkerOption) OutboxWorker {
 
 type (
 	//FriendREquestEventHandler - обработчик событий по заявкам в друзья
-	FriendRequestEventsHandler interface {
+	ChatEventsHandler interface {
 		// Возвращает списки успешных и проваленных id; err — для фатальных ошибок батча.
 		HandleBatch(ctx context.Context, events []*Event) (succeeded []string, failed []string, err error)
 	}
 )
 
 // OutboxFriendRequestWorker — обработка outbox-событий именно по заявкам в друзья.
-type OutboxFriendRequestWorker struct {
+type OutboxChatWorker struct {
 	OutboxWorker
 
 	repo    Repository
 	tm      TransactionManager
-	handler FriendRequestEventsHandler
+	handler ChatEventsHandler
 }
 
 // NewOutboxFriendRequestWorker конструктор с дефолтами.
-func NewOutboxFriendRequestWorker(
+func NewOutboxChatWorker(
 	repo Repository,
 	tm TransactionManager,
-	h FriendRequestEventsHandler,
+	h ChatEventsHandler,
 	opts ...WorkerOption,
-) *OutboxFriendRequestWorker {
-	w := &OutboxFriendRequestWorker{
+) *OutboxChatWorker {
+	w := &OutboxChatWorker{
 		OutboxWorker: NewOutboxWorker(opts...),
 		repo:         repo,
 		tm:           tm,
@@ -87,7 +87,7 @@ func NewOutboxFriendRequestWorker(
 
 // Run — запускает бесконечный цикл обработки до отмены ctx.
 // Селектит batch с FOR UPDATE SKIP LOCKED, обрабатывает, коммитит.
-func (w *OutboxFriendRequestWorker) Run(ctx context.Context) error {
+func (w *OutboxChatWorker) Run(ctx context.Context) error {
 	log.Println("OutboxFriendRequestWorker started")
 
 	t := time.NewTicker(w.pollInterval)
@@ -98,41 +98,28 @@ func (w *OutboxFriendRequestWorker) Run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.C:
-			log.Println("OutboxFriendRequestWorker tick")
+			log.Println("OutboxChatWorker tick")
 
 			// Один "тик" — одна транзакция
-			if err := w.tm.RunRepeatableRead(ctx, w.FetchFriendRequest); err != nil {
+			if err := w.tm.RunRepeatableRead(ctx, w.FetchMessageSent); err != nil {
 				log.Printf("outbox FriendRequest: error: %v\n", err)
 			}
 
-			log.Println("OutboxFriendUpdatedWorker tick")
-			if err := w.tm.RunRepeatableRead(ctx, w.FetchFriendUpdated); err != nil {
-				log.Printf("outbox: friendUpdated error: %v\n", err)
-			}
 		}
 	}
 }
 
 // Fetch обработка событий
-func (w *OutboxFriendRequestWorker) FetchFriendRequest(ctx context.Context) error {
+func (w *OutboxChatWorker) FetchMessageSent(ctx context.Context) error {
 	log.Println("OutboxFriendRequestWorker.Fetch start")
 	defer log.Println("OutboxFetchFriendRequestWorker.Fetch end")
 
-	err := w.fetch(ctx, AggregateTypeFriendRequest, EventTypeFriendRequest)
+	err := w.fetch(ctx, AggregateTypeMessageSent, EventTypeMessageSent)
 
 	return err
 }
 
-func (w *OutboxFriendRequestWorker) FetchFriendUpdated(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker.Fetch start")
-	defer log.Println("OutboxFetchFriendRequestWorker.Fetch end")
-
-	err := w.fetch(ctx, AggregateTypeFriendUpdated, EventTypeFriendUpdated)
-
-	return err
-}
-
-func (w *OutboxFriendRequestWorker) fetch(ctx context.Context, aggregateType AggregateType, eventType EventType) error {
+func (w *OutboxChatWorker) fetch(ctx context.Context, aggregateType AggregateType, eventType EventType) error {
 	var (
 		now  = time.Now().UTC()
 		from = now.Add(-w.window)

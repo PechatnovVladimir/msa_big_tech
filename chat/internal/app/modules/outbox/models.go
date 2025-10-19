@@ -7,15 +7,13 @@ import (
 type AggregateType string
 
 const (
-	AggregateTypeFriendRequest AggregateType = "friend_request"
-	AggregateTypeFriendUpdated AggregateType = "friend_updated"
+	AggregateTypeMessageSent AggregateType = "message_sent"
 )
 
 type EventType string
 
 const (
-	EventTypeFriendRequest EventType = "social.friend.request"
-	EventTypeFriendUpdated EventType = "social.friend.updated"
+	EventTypeMessageSent EventType = "chat.message.sent"
 )
 
 type Event struct {

@@ -23,7 +23,7 @@ func main() {
 		ParticipantId: userID1,
 	}
 
-	for range 10 {
+	for range 1 {
 
 		resp, err := chat.client.CreateDirectChat(ctx, in)
 		if err != nil {
@@ -32,7 +32,7 @@ func main() {
 
 		chatID1 := resp.ChatId
 
-		for range 10 {
+		for range 100 {
 			message := &chatPB.SendMessageRequest{
 				ChatId: chatID1,
 				Text:   gofakeit.Comment(),

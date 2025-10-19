@@ -2,6 +2,7 @@
 #chat-service:50052    5432
 #social-service:50053  5433
 #users-service:50054   5434
+#notification-service:50054 5435
 
 
 build:

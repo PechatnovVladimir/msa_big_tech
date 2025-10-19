@@ -37,3 +37,4 @@ go.work.sum
 /users/docker/
 /chat/docker/
 /social/docker/
+/notification/docker/

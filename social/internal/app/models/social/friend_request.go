@@ -8,15 +8,15 @@ import (
 // FriendRequest - заявка в друзья
 type FriendRequest struct {
 	//RequestID - ID заявки
-	RequestID string
+	RequestID string `json:"request_id"`
 	//FromUserID - ID юзера от кого заявки
-	FromUserID string
+	FromUserID string `json:"from_user_id"`
 	//ToUserID - ID юзера кому заявка
-	ToUserID string
+	ToUserID string `json:"to_user_id"`
 	//Status - статус заявки
-	Status StatusFriendRequest
+	Status StatusFriendRequest `json:"status"`
 	//CreatedAt - время создания заявки
-	CreatedAt time.Time
+	CreatedAt time.Time `json:"created_at"`
 }
 
 func NewFriendRequest(fromUserID string, toUserID string) *FriendRequest {

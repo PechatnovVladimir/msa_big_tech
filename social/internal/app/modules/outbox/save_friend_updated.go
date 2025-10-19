@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func (p *Processor) SaveFriendRequest(ctx context.Context, friendRequest *social.FriendRequest) error {
+func (p *Processor) SaveFriendUpdated(ctx context.Context, friendRequest *social.FriendRequest) error {
 	data, err := json.Marshal(friendRequest)
 	if err != nil {
 		return err
@@ -16,9 +16,9 @@ func (p *Processor) SaveFriendRequest(ctx context.Context, friendRequest *social
 
 	event := Event{
 		ID:            uuid.New().String(),
-		AggregateType: AggregateTypeFriendRequest,
+		AggregateType: AggregateTypeFriendUpdated,
 		AggregateID:   friendRequest.RequestID,
-		EventType:     EventTypeFriendRequest,
+		EventType:     EventTypeFriendUpdated,
 		Payload:       data,
 		CreatedAt:     time.Now().UTC(),
 	}

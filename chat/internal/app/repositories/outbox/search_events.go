@@ -3,7 +3,7 @@ package outbox
 import (
 	"context"
 	"github.com/Masterminds/squirrel"
-	appoutbox "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
+	appoutbox "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/modules/outbox"
 	"log"
 	"time"
 )

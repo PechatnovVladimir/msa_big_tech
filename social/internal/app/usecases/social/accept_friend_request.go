@@ -42,6 +42,11 @@ func (s *Service) AcceptFriendRequest(ctx context.Context, in *dto.AcceptFriendR
 			if err != nil {
 				return fmt.Errorf("%s: %w", api, err)
 			}
+			err = s.OutboxRepo.SaveFriendUpdated(ctx, friendRequest)
+			if err != nil {
+				return err
+			}
+
 			return nil
 		},
 	)

@@ -41,7 +41,19 @@ func (s *Service) SendMessage(ctx context.Context, in *dto.SendMessageIN) (*dto.
 	data.SenderID = currentUser.UserID
 	data.CreatedAt = time.Now()
 
-	message, err := s.ChatRepo.SendMessage(ctx, data)
+	var message *chat.Message
+	err = s.TransactionManager.RunReadCommitted(ctx, func(ctx context.Context) error {
+		message, err = s.ChatRepo.SendMessage(ctx, data)
+		if err != nil {
+			return err
+		}
+		err = s.OutboxRepo.SaveMessageSent(ctx, message)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	})
 
 	if err != nil {
 		return &dto.SendMessageOUT{}, fmt.Errorf("%s: %w", api, err)

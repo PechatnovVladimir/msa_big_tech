@@ -18,6 +18,10 @@ type Repository interface {
 	StreamMessage(ctx context.Context, chatID string) (<-chan *chat.Message, error)
 }
 
+type OutboxRepository interface {
+	SaveMessageSent(ctx context.Context, message *chat.Message) error
+}
+
 // UserService - интерфейс доступа к сервису пользователей
 type UserProvider interface {
 	GetUserFromContext(ctx context.Context) (*chat.User, error)
@@ -29,9 +33,10 @@ type TransactionManager interface {
 
 // Deps - зависимости
 type Deps struct {
-	ChatRepo     Repository
-	UserProvider UserProvider
-	Tx           TransactionManager
+	ChatRepo           Repository
+	UserProvider       UserProvider
+	TransactionManager TransactionManager
+	OutboxRepo         OutboxRepository
 }
 
 type Service struct {
