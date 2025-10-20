@@ -5,7 +5,7 @@ create table if not exists inbox_messages (
     id text not null,
     topic text not null,
     partition int not null,
-    "offset" bigint not null,
+    offsett bigint not null, --ofsett - две tt так как с одной зарезервировано в postgres
     payload jsonb not null ,
     status text not null ,
     attempts int not null,

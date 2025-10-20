@@ -11,12 +11,12 @@ const (
 	columnInboxID          = "id"
 	columnInboxTopic       = "topic"
 	columnInboxPartition   = "partition"
-	columnInboxOffset      = "offset"
+	columnInboxOffset      = "offsett"
 	columnInboxPayload     = "payload"
 	columnInboxStatus      = "status"
 	columnInboxAttempts    = "attempts"
 	columnInboxLastError   = "last_error"
-	columnInboxReceiverAt  = "receiver_at"
+	columnInboxReceivedAt  = "received_at"
 	columnInboxProcessedAt = "processed_at"
 )
 
@@ -30,7 +30,7 @@ var (
 		columnInboxStatus,
 		columnInboxAttempts,
 		columnInboxLastError,
-		columnInboxReceiverAt,
+		columnInboxReceivedAt,
 		columnInboxProcessedAt,
 	}
 )
@@ -38,13 +38,13 @@ var (
 type Inbox struct {
 	ID          string              `db:"id"`
 	Topic       string              `db:"topic"`
-	Partition   int                 `db:"partition"`
-	Offset      int                 `db:"offset"`
+	Partition   int32               `db:"partition"`
+	Offset      int64               `db:"offsett"`
 	Payload     []byte              `db:"payload"`
 	Status      string              `db:"status"`
 	Attempts    int                 `db:"attempts"`
 	LastError   string              `db:"last_error"`
-	ReceiverAt  time.Time           `db:"receiver_at"`
+	ReceivedAt  time.Time           `db:"received_at"`
 	ProcessedAt sql.Null[time.Time] `db:"processed_at"`
 }
 
@@ -58,7 +58,7 @@ func (e *Inbox) mapFields() map[string]any {
 		columnInboxStatus:      e.Status,
 		columnInboxAttempts:    e.Attempts,
 		columnInboxLastError:   e.LastError,
-		columnInboxReceiverAt:  e.ReceiverAt,
+		columnInboxReceivedAt:  e.ReceivedAt,
 		columnInboxProcessedAt: e.ProcessedAt,
 	}
 }

@@ -1,8 +1,7 @@
-package chat
+package model
 
 import "time"
 
-// Message - сообщения в чатах
 type Message struct {
 	//MessageID - ID сообщения
 	MessageID string `json:"message_id"`
@@ -15,5 +14,3 @@ type Message struct {
 	//CreateAt - время создания сообщения
 	CreatedAt time.Time `json:"created_at"`
 }
-
-type Messages []Message
