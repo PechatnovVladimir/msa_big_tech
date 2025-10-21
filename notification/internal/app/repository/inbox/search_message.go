@@ -17,6 +17,7 @@ func (r *Repository) SearchMessage(ctx context.Context, opts ...inbox.SearchMess
 		Select(tableInboxMessagesColumns...).
 		From(tableInboxMessages).
 		Where(squirrel.Eq{columnInboxStatus: "received"}).
+		Where(squirrel.Eq{columnInboxProcessedAt: nil}).
 		OrderBy(columnInboxReceivedAt).
 		Limit(uint64(o.Limit))
 

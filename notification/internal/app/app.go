@@ -57,6 +57,17 @@ func Run(ctx context.Context) (err error) {
 
 	defer consumer.Close()
 
+	notificator := inbox.NewNotificator()
+
+	worker := inbox.NewInboxMessageWorker(inboxRepo, txManager, notificator,
+		inbox.WithBatchSize(10),
+		inbox.WithMaxRetry(10),
+		inbox.WithRetryInterval(10*time.Second),
+		inbox.WithWindow(time.Hour),
+	)
+
+	go worker.Run(ctx)
+
 	if err := consumer.Run(ctx, KafkaTopicName); err != nil && ctx.Err() == nil {
 		log.Println("consumer stopped", err)
 	}
