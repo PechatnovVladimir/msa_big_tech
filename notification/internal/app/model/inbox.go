@@ -4,6 +4,13 @@ import (
 	"time"
 )
 
+const (
+	StatusReceived   = "received"
+	StatusFailed     = "failed"
+	StatusProcessing = "processing"
+	StatusProcessed  = "processed"
+)
+
 type Inbox struct {
 	ID          string
 	Topic       string

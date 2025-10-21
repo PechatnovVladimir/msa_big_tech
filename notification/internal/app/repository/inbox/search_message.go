@@ -16,9 +16,16 @@ func (r *Repository) SearchMessage(ctx context.Context, opts ...inbox.SearchMess
 	qb := r.sb.
 		Select(tableInboxMessagesColumns...).
 		From(tableInboxMessages).
-		Where(squirrel.Eq{columnInboxStatus: "received"}).
 		OrderBy(columnInboxReceivedAt).
 		Limit(uint64(o.Limit))
+
+	if o.MaxAttempts > 0 {
+		qb = qb.Where(squirrel.Lt{columnInboxAttempts: o.MaxAttempts})
+	}
+
+	if len(o.Status) > 0 {
+		qb = qb.Where(squirrel.Eq{columnInboxStatus: o.Status})
+	}
 
 	// Блокировка строк для конкурентных воркеров
 	if o.WithLock {
