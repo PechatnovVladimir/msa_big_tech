@@ -13,7 +13,9 @@ func main() {
 
 	chat, err := NewClient("localhost:50052")
 	if err != nil {
+		log.Println("Error creating client:", err)
 		log.Fatal(err)
+
 	}
 	defer chat.Close()
 

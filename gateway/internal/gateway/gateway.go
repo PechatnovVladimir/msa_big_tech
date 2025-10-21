@@ -25,18 +25,18 @@ func Rest() {
 	if err != nil {
 		panic(err)
 	}
-	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50052", opts)
-	//err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "chat-service:50052", opts)
+	//err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50052", opts)
+	err = chatpb.RegisterChatServiceHandlerFromEndpoint(ctx, muxGRPC, "chat-service:50052", opts)
 	if err != nil {
 		panic(err)
 	}
-	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50053", opts)
-	//err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "social-service:50053", opts)
+	//err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50053", opts)
+	err = socialpb.RegisterSocialServiceHandlerFromEndpoint(ctx, muxGRPC, "social-service:50053", opts)
 	if err != nil {
 		panic(err)
 	}
-	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50054", opts)
-	//err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
+	//err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "localhost:50054", opts)
+	err = userspb.RegisterUserServiceHandlerFromEndpoint(ctx, muxGRPC, "users-service:50054", opts)
 	if err != nil {
 		panic(err)
 	}

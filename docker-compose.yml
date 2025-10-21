@@ -1,6 +1,155 @@
 version: '3.8'
 
+networks:
+  messenger:
+    driver: bridge
+
 services:
+  postgresql-chat:
+    image: postgres:17.6 # Версия PostgreSQL
+    container_name: 'postgresql-chat'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "postgres-chat"
+      POSTGRES_USER: "postgres-chat-user"
+      POSTGRES_PASSWORD: "postgres-chat-psw"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./config/postgres.conf:/etc/postgresql/postgresql.conf # конфиг БД
+      - ./docker/postgresql-chat/data:/var/lib/postgresql/data # том для того, чтобы при перезапуске контейнера все данные сохранялись
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5432:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - messenger
+
+  postgresql-soc:
+    image: postgres:17.6 # Версия PostgreSQL
+    container_name: 'postgres-soc'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "postgresql-soc"
+      POSTGRES_USER: "postgres-soc-user"
+      POSTGRES_PASSWORD: "postgres-soc-psw"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./config/postgres.conf:/etc/postgresql/postgresql.conf # конфиг БД
+      - ./docker/postgresql-soc/data:/var/lib/postgresql/data # том для того, чтобы при перезапуске контейнера все данные сохранялись
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5433:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - messenger
+
+  postgresql-users:
+    image: postgres:17.6 # Версия PostgreSQL
+    container_name: 'postgresql-users'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "postgres-users"
+      POSTGRES_USER: "postgres-users-user"
+      POSTGRES_PASSWORD: "postgres-users-psw"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./config/postgres.conf:/etc/postgresql/postgresql.conf # конфиг БД
+      - ./docker/postgresql-users/data:/var/lib/postgresql/data # том для того, чтобы при перезапуске контейнера все данные сохранялись
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5434:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - messenger
+
+  postgresql-notification:
+    image: postgres:17.6 # Версия PostgreSQL
+    container_name: 'postgresql-notification'
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: "postgres-notification"
+      POSTGRES_USER: "postgres-notification-user"
+      POSTGRES_PASSWORD: "postgres-notification-psw"
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./config/postgres.conf:/etc/postgresql/postgresql.conf # конфиг БД
+      - ./docker/postgresql-notification/data:/var/lib/postgresql/data # том для того, чтобы при перезапуске контейнера все данные сохранялись
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    ports:
+      - 5435:5432
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - messenger
+  # Apache Kafka broker
+  kafka:
+    image: apache/kafka:3.7.0
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # KRaft (single-node broker+controller)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: "broker,controller"
+      KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+      KAFKA_CONTROLLER_LISTENER_NAMES: "CONTROLLER"
+
+      # Листенеры: внешний и внутренний (для контейнеров)
+      KAFKA_LISTENERS: "PLAINTEXT://:9092,INTERNAL://:29092,CONTROLLER://:9093"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://localhost:9092,INTERNAL://kafka:29092"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: "PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT"
+      KAFKA_INTER_BROKER_LISTENER_NAME: "INTERNAL"
+
+      # Обязательные dev-настройки для одиночного брокера
+      CLUSTER_ID: "4L6g3nShT-eMCtK--X86sw"         # можно оставить так для локалки
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: "0"
+      KAFKA_NUM_PARTITIONS: "3"
+    volumes:
+      - ./docker/kafka:/bitnami/kafka
+    healthcheck:
+      test: ["CMD", "bash", "-c", "/opt/bitnami/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      - messenger
+
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kafka-ui
+    depends_on:
+      - kafka
+    ports:
+      - "8888:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=local
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+    networks:
+      - messenger
+
+
   auth-service:
     build:
       context: .
@@ -9,7 +158,7 @@ services:
     ports:
       - "50051:50051"
     networks:
-      - msa-network
+      - messenger
     restart: unless-stopped
     environment:
       - GRPC_PORT=50051
@@ -24,13 +173,16 @@ services:
     ports:
       - "50052:50052"
     networks:
-      - msa-network
+      - messenger
     restart: unless-stopped
     environment:
+      - CurrentUser=5d4490c9-e106-4d25-a186-3a59d6d7334e
       - GRPC_PORT=50052
       - AUTH_SERVICE_ADDRESS=auth-service:50051
     depends_on:
       - auth-service
+      - postgresql-chat
+      - kafka
     # volumes:
     #   - ./chat/configs:/root/configs:ro
 
@@ -42,13 +194,16 @@ services:
     ports:
       - "50053:50053"
     networks:
-      - msa-network
+      - messenger
     restart: unless-stopped
     environment:
+      - CurrentUser=5d4490c9-e106-4d25-a186-3a59d6d7334e
       - GRPC_PORT=50053
       - AUTH_SERVICE_ADDRESS=auth-service:50051
     depends_on:
       - auth-service
+      - postgresql-soc
+      - kafka
     # volumes:
     #   - ./social/configs:/root/configs:ro
 
@@ -60,15 +215,38 @@ services:
     ports:
       - "50054:50054"
     networks:
-      - msa-network
+      - messenger
     restart: unless-stopped
     environment:
+      - CurrentUser=5d4490c9-e106-4d25-a186-3a59d6d7334e
       - GRPC_PORT=50054
       - AUTH_SERVICE_ADDRESS=auth-service:50051
     depends_on:
       - auth-service
+      - postgresql-users
     # volumes:
     #   - ./social/configs:/root/configs:ro
+
+  notification-service:
+    build:
+      context: .
+      dockerfile: notification/Dockerfile
+    container_name: notification-service
+    ports:
+      - "50055:50055"
+    networks:
+      - messenger
+    restart: unless-stopped
+    environment:
+      - CurrentUser=5d4490c9-e106-4d25-a186-3a59d6d7334e
+      - GRPC_PORT=50055
+      - AUTH_SERVICE_ADDRESS=auth-service:50051
+    depends_on:
+      - auth-service
+      - postgresql-notification
+    # volumes:
+    #   - ./social/configs:/root/configs:ro
+
 
   api-gateway:
     build:
@@ -78,14 +256,13 @@ services:
     ports:
       - "8080:8080"
     networks:
-      - msa-network
+      - messenger
     restart: unless-stopped
     depends_on:
       - auth-service
+      - users-service
+      - social-service
+      - chat-service
     environment:
+      - CurrentUser=5d4490c9-e106-4d25-a186-3a59d6d7334e
       - PORT=8080
-
-
-networks:
-  msa-network:
-    driver: bridge

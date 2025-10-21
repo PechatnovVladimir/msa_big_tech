@@ -58,7 +58,7 @@ func (r *Repository) SearchEvents(ctx context.Context, opts ...appoutbox.SearchE
 	// Выполнение
 	conn := r.db.GetQueryEngine(ctx)
 
-	log.Println(qb.ToSql())
+	//log.Println(qb.ToSql())
 
 	var rows []OutboxEvent
 	if err := conn.Selectx(ctx, &rows, qb); err != nil {

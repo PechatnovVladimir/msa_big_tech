@@ -15,10 +15,11 @@ import (
 )
 
 const (
-	KafkaBrokers       = "localhost:9092"
+	//KafkaBrokers       = "localhost:9092"
+	KafkaBrokers       = "kafka:29092"
 	KafkaTopicName     = "chat.message.sent"
 	KafkaConsumerGroup = "notification-inbox-consumer-group"
-	KafkaConsumerName  = "notification-service-2" // Уникальный для каждого инстанса нашего приложения
+	KafkaConsumerName  = "notification-service-3" // Уникальный для каждого инстанса нашего приложения
 )
 
 func Run(ctx context.Context) (err error) {

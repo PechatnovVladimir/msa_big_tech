@@ -7,8 +7,10 @@ import (
 )
 
 var (
-	PostgresHost     = "localhost"
-	PostgresPort     = "5434"
+	//PostgresHost     = "localhost"
+	//PostgresPort     = "5434"
+	PostgresHost     = "postgresql-users"
+	PostgresPort     = "5432"
 	PostgresDB       = "postgres-users"
 	PostgresUser     = "postgres-users-user"
 	PostgresPassword = "postgres-users-psw"

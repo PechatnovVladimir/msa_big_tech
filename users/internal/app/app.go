@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/adapters/userprovider"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc"
 	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
@@ -29,7 +30,7 @@ func Run(ctx context.Context) (err error) {
 	defer conn.Close()
 
 	//менеджер транзакций
-	txManager := connection.NewTxManager(conn)
+	txManager := transaction_manager.New(conn)
 
 	userProvider := userprovider.New()
 

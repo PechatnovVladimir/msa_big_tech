@@ -7,7 +7,9 @@ import (
 )
 
 var (
-	PostgresHost     = "localhost"
+	//PostgresHost     = "localhost"
+	//PostgresPort     = "5432"
+	PostgresHost     = "postgresql-chat"
 	PostgresPort     = "5432"
 	PostgresDB       = "postgres-chat"
 	PostgresUser     = "postgres-chat-user"
