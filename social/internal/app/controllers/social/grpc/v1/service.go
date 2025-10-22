@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
 	socialPB "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 )
@@ -8,6 +9,7 @@ import (
 // Deps - зависимости
 type Deps struct {
 	SocialUseCase social.UseCase
+	Cfg           *config.Grpc
 }
 
 type Service struct {

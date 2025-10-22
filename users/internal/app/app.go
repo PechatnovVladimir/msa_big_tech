@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/adapters/userprovider"
@@ -16,10 +17,13 @@ import (
 	"time"
 )
 
-func Run(ctx context.Context) (err error) {
+func Run(ctx context.Context, cfg *config.Config) (err error) {
+	if cfg == nil {
+		log.Fatal("config is nil")
+	}
 
 	//соединение
-	conn, err := connection.NewConnectionPool(ctx, DSN(),
+	conn, err := connection.NewConnectionPool(ctx, cfg.Postgres.DSN(),
 		connection.WithMaxConnIdleTime(time.Minute),
 		connection.WithMinConnectionsCount(3),
 		connection.WithMaxConnectionsCount(10),
@@ -43,12 +47,12 @@ func Run(ctx context.Context) (err error) {
 	})
 
 	//grpc
-	grpcServer, err := usersGPRS.New(userUseCase)
+	grpcServer, err := usersGPRS.New(userUseCase, cfg.Grpc)
 	if err != nil {
-		return fmt.Errorf("grpc.New: %w", err)
+		return fmt.Errorf("%s - grpc.New: %w", cfg.App.Name, err)
 	}
 
-	log.Println("User service started!")
+	log.Println(fmt.Sprintf("%s started on port %d", cfg.App.Name, cfg.Grpc.Port))
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
@@ -56,7 +60,7 @@ func Run(ctx context.Context) (err error) {
 
 	grpcServer.Close()
 
-	log.Println("User service stopped!!!!")
+	log.Println(fmt.Sprintf("%s stopped!", cfg.App.Name))
 
 	return nil
 

@@ -11,6 +11,7 @@ import (
 	chatRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat"
 	outboxRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/outbox"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/kafka"
 	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
@@ -22,14 +23,17 @@ import (
 	"time"
 )
 
-func Run(ctx context.Context) (err error) {
+func Run(ctx context.Context, cfg *config.Config) (err error) {
+	if cfg == nil {
+		log.Fatal("config is nil")
+	}
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
 
 	//соединение
-	conn, err := connection.NewConnectionPool(ctx, DSN(),
+	conn, err := connection.NewConnectionPool(ctx, cfg.Postgres.DSN(),
 		connection.WithMaxConnIdleTime(time.Minute),
 		connection.WithMinConnectionsCount(3),
 		connection.WithMaxConnectionsCount(10),
@@ -39,7 +43,7 @@ func Run(ctx context.Context) (err error) {
 	}
 	defer conn.Close()
 
-	producer, err := kafka.NewSyncProducer(strings.Split(KafkaBrokers, ","), nil)
+	producer, err := kafka.NewSyncProducer(strings.Split(cfg.KafkaProducer.Brokers, ","), nil)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -77,12 +81,14 @@ func Run(ctx context.Context) (err error) {
 	//grpc
 	grpcServer, err := chatGPRS.New(v1.Deps{
 		ChatUseCase: chatUseCase,
+		Cfg:         &cfg.Grpc,
 	})
+
 	if err != nil {
-		return fmt.Errorf("chatGRPC.New: %w", err)
+		return fmt.Errorf("%s - grpc.New: %w", cfg.App.Name, err)
 	}
 
-	log.Println("Chat service started!")
+	log.Println(fmt.Sprintf("%s started on port %d", cfg.App.Name, cfg.Grpc.Port))
 
 	sig := make(chan os.Signal, 1)
 	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
@@ -90,7 +96,7 @@ func Run(ctx context.Context) (err error) {
 
 	grpcServer.Close()
 
-	log.Println("Chat service stopped!!!!")
+	log.Println(fmt.Sprintf("%s stopped!", cfg.App.Name))
 
 	return nil
 
