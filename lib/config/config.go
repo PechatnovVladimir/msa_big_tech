@@ -1,7 +1,9 @@
 package config
 
 import (
+	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 	"log"
@@ -15,7 +17,7 @@ type Config struct {
 	KafkaConsumer KafkaConsumer `mapstructure:"kafka_consumer"`
 }
 
-func LoadConfig() (*Config, error) {
+func LoadConfig(ctx context.Context, secret *secrets.Secrets) (*Config, error) {
 
 	//если есть переменные окружения загрузим их для последующего приоритетного переопределения данных yaml
 	_ = godotenv.Load(".env")
@@ -75,6 +77,27 @@ func LoadConfig() (*Config, error) {
 
 	if cfg.App.Mode == "" {
 		cfg.App.Mode = "debug"
+	}
+
+	//Если провайдер секретов не задан, то все... выходим...
+	if secret == nil {
+		log.Println("WARNING: no secret provided")
+		return &cfg, nil
+	}
+
+	pass, err := secret.Get(ctx, "SECRET_DB_PASSWORD")
+	if err != nil {
+		log.Printf("warn: cannot get secret password: %v", err)
+	}
+
+	user, err := secret.Get(ctx, "SECRET_DB_USER")
+	if err != nil {
+		log.Printf("warn: cannot get secret password: %v", err)
+	}
+
+	if pass != "" && user != "" {
+		cfg.Postgres.Password = pass
+		cfg.Postgres.User = user
 	}
 
 	return &cfg, nil
