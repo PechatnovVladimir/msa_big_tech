@@ -31,10 +31,10 @@ services:
 
   postgresql-soc:
     image: postgres:17.6 # Версия PostgreSQL
-    container_name: 'postgres-soc'
+    container_name: 'postgresql-soc'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgresql-soc"
+      POSTGRES_DB: "postgres-soc"
       POSTGRES_USER: "postgres-soc-user"
       POSTGRES_PASSWORD: "postgres-soc-psw"
       PGDATA: "/var/lib/postgresql/data/pgdata"
