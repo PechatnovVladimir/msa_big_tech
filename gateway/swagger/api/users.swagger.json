@@ -137,17 +137,48 @@
         },
         "parameters": [
           {
-            "name": "query",
+            "name": "query.IDs",
+            "description": "список ID пользователей",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          },
+          {
+            "name": "query.email",
             "in": "query",
             "required": false,
             "type": "string"
+          },
+          {
+            "name": "query.nickname",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "query.createdfrom",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "query.createdto",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
           },
           {
             "name": "limit",
             "in": "query",
             "required": false,
             "type": "string",
-            "format": "int64"
+            "format": "uint64"
           }
         ],
         "tags": [
@@ -226,13 +257,17 @@
           "type": "string",
           "title": "user_id - ID пользователя"
         },
+        "email": {
+          "type": "string",
+          "title": "nickname - никнейм пользователя"
+        },
         "nickname": {
           "type": "string",
           "title": "nickname - никнейм пользователя"
         },
         "bio": {
           "type": "string",
-          "title": "nickname - никнейм пользователя\nbio биография пользователя"
+          "title": "bio биография пользователя"
         },
         "avatarUrl": {
           "type": "string",
@@ -247,6 +282,7 @@
       },
       "required": [
         "userid",
+        "email",
         "nickname"
       ]
     },
@@ -278,6 +314,32 @@
         }
       }
     },
+    "v1Query": {
+      "type": "object",
+      "properties": {
+        "IDs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "список ID пользователей"
+        },
+        "email": {
+          "type": "string"
+        },
+        "nickname": {
+          "type": "string"
+        },
+        "createdfrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "createdto": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
     "v1SearchByNicknameResponse": {
       "type": "object",
       "properties": {
@@ -296,6 +358,9 @@
         "userid": {
           "type": "string",
           "title": "user_id - ID пользователя в формате UUID"
+        },
+        "email": {
+          "type": "string"
         },
         "nickname": {
           "type": "string"
@@ -340,6 +405,10 @@
           "type": "string",
           "title": "user_id уникальный идентификатор пользователя в формате UUID"
         },
+        "email": {
+          "type": "string",
+          "title": "email email пользователя"
+        },
         "nickname": {
           "type": "string",
           "title": "nickname никнейм пользователя"
@@ -361,6 +430,7 @@
       },
       "required": [
         "userId",
+        "email",
         "nickname",
         "bio",
         "avatarUrl"
