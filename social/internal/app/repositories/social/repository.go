@@ -1,15 +1,18 @@
 package social
 
-import "log"
+import (
+	"github.com/Masterminds/squirrel"
+	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+)
 
 type Repository struct {
+	db postgres.QueryEngineProvider
+	sb squirrel.StatementBuilderType
 }
 
-func New() *Repository {
-	return &Repository{}
-}
-
-func (r *Repository) Test() error {
-	log.Println("social repository Test() called")
-	return nil
+func New(p postgres.QueryEngineProvider) *Repository {
+	return &Repository{
+		db: p,
+		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
+	}
 }

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	chatGPRS "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc/v1"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/validate"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
@@ -22,6 +23,8 @@ type Server struct {
 func New(d chatGPRS.Deps) (*Server, error) {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
+		grpc.ChainUnaryInterceptor(validate.Interseptor),
+		grpc.ChainUnaryInterceptor(ErrorsUnaryServerInterceptor()),
 	)
 
 	chatService := chatGPRS.New(d)

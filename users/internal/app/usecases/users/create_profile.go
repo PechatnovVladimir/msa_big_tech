@@ -12,35 +12,38 @@ var (
 	ErrCreateProfileFailed = errors.New("create profile failed")
 )
 
-func (s *Service) CreateProfile(ctx context.Context, d dto.CreateProfileDTO) (*users.UserProfile, error) {
-	//валидация dto (?)
-	//валидацию сделали на уровне controllers, нужна ли еще дополнительная?
+func (s *Service) CreateProfile(ctx context.Context, profile dto.CreateProfile) (*users.UserProfile, error) {
+	const api = "UserService.CreateProfile"
+
+	currentUser, err := s.UserProvider.GetUserFromContext(ctx)
+	if err != nil {
+		return nil, fmt.Errorf("%s: %w", api, users.ErrUnauthenticated)
+	}
+
+	if currentUser != profile.ID {
+		return nil, fmt.Errorf("%s: %w", api, users.ErrPermissionDenied)
+	}
 
 	//проверяем уникальность ID
-	_, err := s.GetProfileByID(ctx, d.ID)
+	_, err = s.GetProfileByID(ctx, dto.GetProfileById{ID: profile.ID})
 	if err == nil {
-		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
+		return nil, fmt.Errorf("%s: %w", api, users.ErrUserAlreadyExists)
 	}
 
 	//проверяем уникальность nickname
-	_, err = s.GetProfileByNickname(ctx, d.Nickname)
+	_, err = s.GetProfileByNickname(ctx, dto.GetProfileByNickname{Nickname: profile.Nickname})
 	if err == nil {
-		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, users.ErrUserAlreadyExists.Error())
+		return nil, fmt.Errorf("%s: %w", api, users.ErrUserAlreadyExists)
 	}
 
-	//создаем профайл
-	userProfile := users.NewUserProfile()
-
-	userProfile.ID = d.ID
-	userProfile.Nickname = d.Nickname
-	userProfile.Bio = d.Bio
-	userProfile.Avatar = d.Avatar
+	data := modelUserProfileFromCreateProfileDto(profile)
 
 	//сохраняем в репозиторий
-	err = s.repository.CreateProfile(ctx, userProfile)
+	outProfile, err := s.UserRepo.CreateProfile(ctx, data)
 
 	if err != nil {
-		return nil, fmt.Errorf("%w: %s", ErrCreateProfileFailed, err.Error())
+		return &users.UserProfile{}, fmt.Errorf("%s: %w", api, err)
 	}
-	return userProfile, nil
+
+	return outProfile, nil
 }
