@@ -22,12 +22,13 @@
   "paths": {
     "/v1/social/AcceptFriendRequest": {
       "post": {
+        "summary": "AcceptFriendRequest - принять заявку",
         "operationId": "SocialService_AcceptFriendRequest",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiAcceptFriendRequestResponse"
+              "$ref": "#/definitions/v1AcceptFriendRequestResponse"
             }
           },
           "default": {
@@ -43,7 +44,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiAcceptFriendRequestRequest"
+              "$ref": "#/definitions/v1AcceptFriendRequestRequest"
             }
           }
         ],
@@ -54,12 +55,13 @@
     },
     "/v1/social/DeclineFriendRequest": {
       "post": {
+        "summary": "DeclineFriendRequest - отклонить заявку",
         "operationId": "SocialService_DeclineFriendRequest",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiDeclineFriendRequestResponse"
+              "$ref": "#/definitions/v1DeclineFriendRequestResponse"
             }
           },
           "default": {
@@ -75,7 +77,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiDeclineFriendRequestRequest"
+              "$ref": "#/definitions/v1DeclineFriendRequestRequest"
             }
           }
         ],
@@ -84,14 +86,15 @@
         ]
       }
     },
-    "/v1/social/ListFriends/{userId}": {
+    "/v1/social/ListFriends/{user_id}": {
       "get": {
+        "summary": "ListFriends - получить список друзей",
         "operationId": "SocialService_ListFriends",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListFriendsResponse"
+              "$ref": "#/definitions/v1ListFriendsResponse"
             }
           },
           "default": {
@@ -103,28 +106,30 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "user_id",
+            "description": "user_id - ID пользователя",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           },
           {
             "name": "limit",
+            "description": "limit - количество вывода при пагинации",
             "in": "query",
             "required": false,
             "type": "string",
-            "format": "int64"
+            "format": "uint64"
           },
           {
-            "name": "cursor.userId",
+            "name": "cursor.user_id",
+            "description": "user_id - ID пользователя",
             "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
+            "required": true,
+            "type": "string"
           },
           {
             "name": "cursor.createdAt",
+            "description": "created_at - время с которого начинаем",
             "in": "query",
             "required": false,
             "type": "string",
@@ -136,14 +141,15 @@
         ]
       }
     },
-    "/v1/social/ListRequests/{userId}": {
+    "/v1/social/ListRequests/{user_id}": {
       "get": {
+        "summary": "ListRequests - получить список входящих заявок",
         "operationId": "SocialService_ListRequests",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiListRequestsResponse"
+              "$ref": "#/definitions/v1ListRequestsResponse"
             }
           },
           "default": {
@@ -155,11 +161,11 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "user_id",
+            "description": "user_id - ID пользователя",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -167,14 +173,15 @@
         ]
       }
     },
-    "/v1/social/RemoveFriend/{userId}": {
+    "/v1/social/RemoveFriend/{user_id}": {
       "delete": {
+        "summary": "RemoveFriend - удалить из друзей",
         "operationId": "SocialService_RemoveFriend",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiRemoveFriendResponse"
+              "$ref": "#/definitions/v1RemoveFriendResponse"
             }
           },
           "default": {
@@ -186,11 +193,11 @@
         },
         "parameters": [
           {
-            "name": "userId",
+            "name": "user_id",
+            "description": "user_id - ID пользователя",
             "in": "path",
             "required": true,
-            "type": "string",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "tags": [
@@ -200,12 +207,13 @@
     },
     "/v1/social/SendFriendRequest": {
       "post": {
+        "summary": "SendFriendRequest - отправить заявку в друзья",
         "operationId": "SocialService_SendFriendRequest",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/apiSendFriendRequestResponse"
+              "$ref": "#/definitions/v1SendFriendRequestResponse"
             }
           },
           "default": {
@@ -221,7 +229,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/apiSendFriendRequestRequest"
+              "$ref": "#/definitions/v1SendFriendRequestRequest"
             }
           }
         ],
@@ -232,111 +240,15 @@
     }
   },
   "definitions": {
-    "apiAcceptFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiAcceptFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
-    },
-    "apiCursor": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
-        }
-      }
-    },
-    "apiDeclineFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiDeclineFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
-    },
-    "apiFriendRequest": {
-      "type": "object",
-      "properties": {
-        "requestId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "status": {
-          "$ref": "#/definitions/socialapiStatus"
-        }
-      }
-    },
-    "apiListFriendsResponse": {
-      "type": "object",
-      "properties": {
-        "friendUserIds": {
-          "type": "array",
-          "items": {
-            "type": "string",
-            "format": "int64"
-          }
-        },
-        "nextCursor": {
-          "$ref": "#/definitions/apiCursor"
-        }
-      }
-    },
-    "apiListRequestsResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "$ref": "#/definitions/apiFriendRequest"
-          }
-        }
-      }
-    },
-    "apiRemoveFriendResponse": {
-      "type": "object"
-    },
-    "apiSendFriendRequestRequest": {
-      "type": "object",
-      "properties": {
-        "userId": {
-          "type": "string",
-          "format": "int64"
-        }
-      }
-    },
-    "apiSendFriendRequestResponse": {
-      "type": "object",
-      "properties": {
-        "FriendRequest": {
-          "$ref": "#/definitions/apiFriendRequest"
-        }
-      }
+    "apiv1Status": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "PENDING",
+        "ACCEPTED",
+        "DECLINED"
+      ],
+      "default": "UNKNOWN"
     },
     "googlerpcStatus": {
       "type": "object",
@@ -366,15 +278,154 @@
       },
       "additionalProperties": {}
     },
-    "socialapiStatus": {
-      "type": "string",
-      "enum": [
-        "UNKNOWN",
-        "PENDING",
-        "ACCEPTED",
-        "DECLINED"
-      ],
-      "default": "UNKNOWN"
+    "v1AcceptFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "title": "request_id - ID заявки"
+        }
+      },
+      "title": "AcceptFriendRequestRequest - запрос AcceptFriendRequest",
+      "required": [
+        "request_id"
+      ]
+    },
+    "v1AcceptFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest",
+          "title": "FriendRequest - принятая заявки со статусом ACCEPTED"
+        }
+      },
+      "title": "AcceptFriendRequestResponse - ответ AcceptFriendRequest"
+    },
+    "v1Cursor": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "title": "user_id - ID пользователя"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "title": "created_at - время с которого начинаем"
+        }
+      },
+      "title": "Cursor - курсор для пагинации",
+      "required": [
+        "user_id"
+      ]
+    },
+    "v1DeclineFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "title": "request_id - ID заявки"
+        }
+      },
+      "title": "DeclineFriendRequestRequest - запрос DeclineFriendRequest",
+      "required": [
+        "request_id"
+      ]
+    },
+    "v1DeclineFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest",
+          "title": "FriendRequest - отклоненная заявка со статусом DECLINED"
+        }
+      },
+      "title": "DeclineFriendRequestResponse - ответ DeclineFriendRequest"
+    },
+    "v1FriendRequest": {
+      "type": "object",
+      "example": {
+        "request_id": "CD0F7430-FDDA-4E27-8C95-001E18E9CF50",
+        "status": "PENDING|ACCEPTED|DECLINED"
+      },
+      "properties": {
+        "requestId": {
+          "type": "string",
+          "title": "request_id - ID заявки"
+        },
+        "status": {
+          "$ref": "#/definitions/apiv1Status",
+          "title": "status - статус заявки"
+        }
+      },
+      "description": "FriendRequest - информация о заявке в друзья",
+      "title": "FriendRequest",
+      "externalDocs": {
+        "description": "Find out more about ABitOfEverything",
+        "url": "https://github.com/grpc-ecosystem/grpc-gateway"
+      },
+      "required": [
+        "requestId",
+        "status"
+      ]
+    },
+    "v1ListFriendsResponse": {
+      "type": "object",
+      "properties": {
+        "friendUserIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "friend_user_ids - список друзей"
+        },
+        "nextCursor": {
+          "$ref": "#/definitions/v1Cursor",
+          "title": "next_cursor - курсор пагинации"
+        }
+      },
+      "title": "ListFriendsResponse - ответ ListFriends"
+    },
+    "v1ListRequestsResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "$ref": "#/definitions/v1FriendRequest"
+          },
+          "title": "FriendRequest - список входящих заявок"
+        }
+      },
+      "title": "ListRequestsResponse - ответ ListRequests"
+    },
+    "v1RemoveFriendResponse": {
+      "type": "object",
+      "title": "RemoveFriendResponse - ответ RemoveFriendResponse"
+    },
+    "v1SendFriendRequestRequest": {
+      "type": "object",
+      "properties": {
+        "user_id": {
+          "type": "string",
+          "title": "user_id - ID пользователя, который приглашается в друзья"
+        }
+      },
+      "title": "SendFriendRequestRequest - запрос SendFriendRequest",
+      "required": [
+        "user_id"
+      ]
+    },
+    "v1SendFriendRequestResponse": {
+      "type": "object",
+      "properties": {
+        "FriendRequest": {
+          "$ref": "#/definitions/v1FriendRequest",
+          "title": "FriendRequest - заявка в друзья со статусом PENDING"
+        }
+      },
+      "title": "SendFriendRequestResponse - ответ SendFriendRequest"
     }
   }
 }

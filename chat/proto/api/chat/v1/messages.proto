@@ -1,0 +1,201 @@
+syntax = "proto3";
+
+package github.com.PechatnovVladimir.msa_big_tech.chat.api.v1;
+
+import "buf/validate/validate.proto";
+import "google/api/annotations.proto";
+import "google/api/field_behavior.proto";
+import "google/protobuf/timestamp.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
+option go_package = "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/api/chat/v1;chat";
+
+// Chat - информация о чате
+message Chat {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Chat"
+      description: "Chat - информация о чате"
+      required: [
+        "chat_id"
+      ]
+      example: "{\"chat_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\"}"
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+  //chat_id - ID чата в формате UUID
+  string chat_id = 1;
+  //created_at - время создания чата
+  google.protobuf.Timestamp created_at = 2;
+  //user_ids - участники чата
+  repeated string user_ids = 3;
+
+}
+
+//Message - информация о сообщении
+message Message {
+  option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_schema) = {
+    json_schema: {
+      title: "Message"
+      description: "Message - информация о сообщении"
+      required: [
+        "message_id",
+        "text"
+      ]
+      example: "{\"message_id\": \"CD0F7430-FDDA-4E27-8C95-001E18E9CF50\", \"text\": \"text message\"}"
+    }
+    external_docs: {
+      url: "https://github.com/grpc-ecosystem/grpc-gateway"
+      description: "Find out more about ABitOfEverything"
+    }
+  };
+  //message_id - ID сообщения
+  string message_id = 1;
+  //text - текст сообщения
+  string text = 2;
+}
+
+//CreateDirectChatRequest - запрос CreateDirectChat
+message CreateDirectChatRequest {
+  //participant_id - ID пользователя-владельца чата
+  string participant_id = 1 [
+    json_name = "participant_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+//CreateDirectChatResponse - ответ CreateDirectChat
+message CreateDirectChatResponse {
+  //chat_id - ID чата
+  string chat_id = 1;
+}
+
+//GetChatRequest - запрос GetChat
+message GetChatRequest {
+  //chat_id - ID чата
+  string chat_id = 1 [
+    json_name = "chat_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+//GetChatResponse - ответ GetChat
+message GetChatResponse {
+  //chat - информация о чате
+  Chat chat = 1;
+}
+
+//ListUserChatsRequest - запрос ListUserChats
+message ListUserChatsRequest {
+  //user_id - ID пользователя
+  string user_id = 1 [
+    json_name = "user_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+//ListUserChatsResponse - ответ ListUserChats
+message ListUserChatsResponse {
+  //chats - список чатов
+  repeated Chat chats = 1;
+}
+
+//ListChatMembersRequest - запрос ListChatMembers
+message ListChatMembersRequest {
+  //chat_id - ID чата
+  string chat_id = 1 [
+    json_name = "chat_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+}
+
+//ListChatMembersResponse - ответ ListChatMembers
+message ListChatMembersResponse {
+  //user_ids - список пользователей
+  repeated string user_ids = 1;
+}
+
+//SendMessageRequest - запрос SendMessage
+message SendMessageRequest {
+  //chat_id - ID чата
+  string chat_id = 1 [
+    json_name = "chat_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //text - текст отправляемого сообщения
+  string text = 2;
+}
+
+//SendMessageResponse - ответ SendMessage
+message SendMessageResponse {
+  //message - информация о сообщении
+  Message message = 1;
+}
+
+//Cursor - cursor для пагинации маркер начала следующей страницы
+message Cursor {
+  string message_id = 1;
+  google.protobuf.Timestamp created_at = 2;
+}
+
+//ListMessagesRequest - запрос ListMessages
+message ListMessagesRequest {
+  //chat_id - ID чата
+  string chat_id = 1 [
+    json_name = "chat_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  uint64 limit = 2 [
+    json_name = "limit",
+    (buf.validate.field).required = true,
+    (buf.validate.field).uint64 = {
+      gte: 5 //минимум по 5
+      lte: 100 //максимум по 100
+    },
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //cursor - cursor для пагинации
+  optional Cursor cursor = 3;
+}
+
+//ListMessagesResponse - ответ ListMessages
+message ListMessagesResponse {
+  //messages - список сообщений
+  repeated Message messages = 1;
+  //next_cursor - курсов для пагинации
+  optional Cursor next_cursor = 2;
+}
+
+//StreamMessagesRequest - запрос StreamMessages
+message StreamMessagesRequest {
+  //chat_id - ID чата
+  string chat_id = 1 [
+    json_name = "chat_id",
+    (buf.validate.field).required = true,
+    (buf.validate.field).string.uuid = true,
+    (google.api.field_behavior) = REQUIRED
+  ];
+  //since_unix_ms - время начала стрима
+  optional google.protobuf.Timestamp since_message_time = 2;
+}
+
+//StreamMessagesResponse - ответ StreamMessages
+message StreamMessagesResponse {
+  //message - информация о сообщении
+  Message message = 1;
+}

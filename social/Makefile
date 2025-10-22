@@ -1,10 +1,17 @@
+include vendor.proto.mk
+
 SERVICE_NAME := social
+
+POSTGRES_DB := postgres-soc
+POSTGRES_USER := postgres-soc-user
+POSTGRES_PASSWORD := postgres-soc-psw
+
 
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
 # Путь до protobuf файлов
-PROTO_PATH := $(CURDIR)/api
+PROTO_PATH := $(CURDIR)/proto/api/$(SERVICE_NAME)/v1
 
 # Путь до сгенеренных .pb.go файлов
 PKG_PROTO_PATH := $(CURDIR)/pkg
@@ -14,51 +21,69 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway@latest
 	go install github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2@latest
+	go install github.com/bufbuild/buf/cmd/buf@latest
+	go install github.com/yoheimuta/protolint/cmd/protolint@latest
 
-# генерация .go файлов с помощью protoc
+# генерация .go файлов с помощью protoc (пока оставляю на всякий случай, основно способ через buf ниже)
 .protoc-generate:
 	mkdir -p $(PKG_PROTO_PATH)
 	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--go_out=$(PKG_PROTO_PATH) --go_opt paths=source_relative \
 	--go-grpc_out=$(PKG_PROTO_PATH) --go-grpc_opt paths=source_relative \
 	--grpc-gateway_out=$(PKG_PROTO_PATH) --grpc-gateway_opt paths=source_relative --grpc-gateway_opt generate_unbound_methods=true \
-	$(PROTO_PATH)/$(SERVICE_NAME).proto
+	$(PROTO_PATH)/service.proto \
+	$(PROTO_PATH)/messages.proto
 
 	protoc -I $(VENDOR_PROTO_PATH) --proto_path=$(CURDIR) \
 	--openapiv2_out=../gateway/swagger --openapiv2_opt logtostderr=true \
-	$(PROTO_PATH)/$(SERVICE_NAME).proto
+	$(PROTO_PATH)/service.proto \
+	$(PROTO_PATH)/messages.proto
 
-
-
-.vendor-protoc-gen-openapiv2:
-	git clone -b main --single-branch -n --depth=1 --filter=tree:0 \
- 		https://github.com/grpc-ecosystem/grpc-gateway $(VENDOR_PROTO_PATH)/grpc-gateway && \
- 	cd $(VENDOR_PROTO_PATH)/grpc-gateway && \
-	git sparse-checkout set --no-cone protoc-gen-openapiv2/options && \
-	git checkout
-	mkdir -p $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
-	mv $(VENDOR_PROTO_PATH)/grpc-gateway/protoc-gen-openapiv2/options $(VENDOR_PROTO_PATH)/protoc-gen-openapiv2
-	rm -rf $(VENDOR_PROTO_PATH)/grpc-gateway
-
-# Устанавливаем proto описания google/api
-.vendor-googleapis:
-	git clone -b master --single-branch -n --depth=1 --filter=tree:0 \
-		https://github.com/googleapis/googleapis $(VENDOR_PROTO_PATH)/googleapis &&\
-	cd $(VENDOR_PROTO_PATH)/googleapis &&\
-	git sparse-checkout set --no-cone google/api &&\
-	git checkout
-	mkdir -p $(VENDOR_PROTO_PATH)/google/api
-	find $(VENDOR_PROTO_PATH)/googleapis/google/api -maxdepth 1 -type f -exec mv {} $(VENDOR_PROTO_PATH)/google/api \;
-	rm -rf $(VENDOR_PROTO_PATH)/googleapis
+# генерация .go файлов с помощью buf
+.buf-generate:
+	buf generate
 
 .ver-commit:
-	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW1
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW2
 
-generate: .protoc-generate
+#generate-protoc: .protoc-generate
+generate: .buf-generate
 
-vendor: .vendor-protoc-gen-openapiv2 .vendor-googleapis
+# Форматирование protobuf файлов
+proto-format:
+	$(info run buf format...)
+	buf format ./proto -w
 
 vercommit: .ver-commit
 
 run:
-	go run ./cmd/server/main.go
+	CurrentUser="9def0b15-7ee9-425c-a9b3-ba875dfc6d11"  go run ./cmd/app/main.go
+
+pg-up:
+	docker-compose up -d
+
+pg-down:
+	docker-compose down
+
+#Cоздать миграцию goose create <migration_name> sql -dir=./migrations
+migration-status:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" status -dir ./migrations
+
+migration-up:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" up -dir ./migrations
+
+migration-down:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" down -dir ./migrations
+
+
+.PHONY: \
+	.bin-deps \
+	.protoc-generate \
+	.tidy \
+	.proto-lint \
+	proto-format \
+	vendor \
+	vendor.protobuf \
+	generate \
+	build \
+	lint
