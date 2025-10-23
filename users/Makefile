@@ -55,8 +55,9 @@ proto-format:
 
 vercommit: .ver-commit
 
+#SECRET_DB_USER="postgres-users-user" SECRET_DB_PASSWORD="postgres-users-psw" go run ./cmd/app/main.go
 run:
-	SECRET_DB_USER="postgres-users-user" SECRET_DB_PASSWORD="postgres-users-psw" go run ./cmd/app/main.go
+	go run ./cmd/app/main.go
 
 pg-up:
 	docker-compose up -d

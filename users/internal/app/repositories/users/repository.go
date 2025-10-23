@@ -10,7 +10,7 @@ type Repository struct {
 	sb squirrel.StatementBuilderType
 }
 
-func NewRepository(txManager postgres.QueryEngineProvider) *Repository {
+func New(txManager postgres.QueryEngineProvider) *Repository {
 	return &Repository{
 		db: txManager,
 		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),
