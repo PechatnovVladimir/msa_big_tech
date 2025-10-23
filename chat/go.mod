@@ -7,7 +7,7 @@ require (
 	buf.build/go/protovalidate v1.0.0
 	github.com/IBM/sarama v1.46.2
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/PechatnovVladimir/msa_big_tech/pkg v0.0.0-20251021121704-705226fe0f41
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251023044445-f73b1ba8eef1
 	github.com/brianvoe/gofakeit/v7 v7.7.3
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
@@ -18,7 +18,7 @@ require (
 	google.golang.org/protobuf v1.36.9
 )
 
-//replace github.com/PechatnovVladimir/msa_big_tech/pkg => ../pkg
+//replace github.com/PechatnovVladimir/msa_big_tech/lib => ../lib
 
 require (
 	cel.dev/expr v0.24.0 // indirect

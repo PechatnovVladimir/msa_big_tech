@@ -3,10 +3,10 @@ module github.com/PechatnovVladimir/msa_big_tech/gateway
 go 1.25.1
 
 require (
-	github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20251021121704-705226fe0f41
-	github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20251021121704-705226fe0f41
-	github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20251021121704-705226fe0f41
-	github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20251021121704-705226fe0f41
+	github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20251023044445-f73b1ba8eef1
+	github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20251023044445-f73b1ba8eef1
+	github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20251023044445-f73b1ba8eef1
+	github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20251023044445-f73b1ba8eef1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	google.golang.org/grpc v1.75.1
 )

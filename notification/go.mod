@@ -5,7 +5,7 @@ go 1.25.1
 require (
 	github.com/IBM/sarama v1.46.2
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/PechatnovVladimir/msa_big_tech/pkg v0.0.0-20251021121704-705226fe0f41
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251023044445-f73b1ba8eef1
 )
 
 require (
