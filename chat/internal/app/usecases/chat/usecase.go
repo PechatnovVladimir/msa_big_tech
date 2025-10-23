@@ -4,7 +4,7 @@ import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/pagination"
 )
 
 // Repository - интерфейс репозитория чата

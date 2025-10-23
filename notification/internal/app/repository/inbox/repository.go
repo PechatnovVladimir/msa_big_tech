@@ -2,7 +2,7 @@ package inbox
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 )
 
 type Repository struct {

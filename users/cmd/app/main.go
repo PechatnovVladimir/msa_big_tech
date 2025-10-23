@@ -14,7 +14,7 @@ func main() {
 	//секреты в env
 	//secret := secrets.NewSecrets(secrets.NewEnvProvider())
 
-	secret := secrets.NewSecrets(secrets.NewFileProvider("secrets.yaml"))
+	secret := secrets.NewSecrets(secrets.NewFileProvider("secrets1.yaml"))
 
 	cfg, err := config.LoadConfig(ctx, secret)
 	if err != nil {

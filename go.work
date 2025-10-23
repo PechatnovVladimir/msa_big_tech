@@ -6,7 +6,6 @@ use (
 	./gateway
 	./lib
 	./notification
-	./pkg
 	./social
 	./users
 )

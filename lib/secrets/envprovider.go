@@ -7,6 +7,7 @@ import (
 )
 
 type EnvProvider struct {
+	isSet bool
 }
 
 func (env *EnvProvider) GetBytes(ctx context.Context, key string) ([]byte, error) {
@@ -22,6 +23,12 @@ func (env *EnvProvider) Get(ctx context.Context, key string) (string, error) {
 	return value, nil
 }
 
+func (env *EnvProvider) IsSet(ctx context.Context) bool {
+	return env.isSet
+}
+
 func NewEnvProvider() *EnvProvider {
-	return &EnvProvider{}
+	return &EnvProvider{
+		isSet: true,
+	}
 }

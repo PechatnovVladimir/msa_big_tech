@@ -2,11 +2,11 @@ package app
 
 import (
 	"context"
+	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/controllers/kafkaconsumer"
 	inboxRepo "github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/repository/inbox"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/usecase/inbox"
-	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres/transaction_manager"
 	"log"
 	"os"
 	"os/signal"

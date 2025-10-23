@@ -80,11 +80,12 @@ func LoadConfig(ctx context.Context, secret *secrets.Secrets) (*Config, error) {
 	}
 
 	//Если провайдер секретов не задан, то все... выходим...
-	if secret == nil {
+	if secret == nil || !secret.IsSet(ctx) {
 		log.Println("WARNING: no secret provided")
 		return &cfg, nil
 	}
 
+	//если есть установленные секреты для postgres, то используем их
 	pass, err := secret.Get(ctx, "SECRET_DB_PASSWORD")
 	if err != nil {
 		log.Printf("warn: cannot get secret password: %v", err)
