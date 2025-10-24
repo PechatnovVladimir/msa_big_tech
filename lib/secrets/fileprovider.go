@@ -1,7 +1,6 @@
 package secrets
 
 import (
-	"context"
 	"errors"
 	"gopkg.in/yaml.v3"
 	"os"
@@ -12,11 +11,11 @@ type FileProvider struct {
 	data  map[string]interface{}
 }
 
-func (f *FileProvider) GetBytes(ctx context.Context, key string) ([]byte, error) {
+func (f *FileProvider) GetBytes(key string) ([]byte, error) {
 	return nil, nil
 }
 
-func (f *FileProvider) Get(ctx context.Context, key string) (string, error) {
+func (f *FileProvider) Get(key string) (string, error) {
 	value, ok := f.data[key]
 	if !ok {
 		return "", errors.New("key not found")
@@ -24,7 +23,7 @@ func (f *FileProvider) Get(ctx context.Context, key string) (string, error) {
 	return value.(string), nil
 }
 
-func (f *FileProvider) IsSet(ctx context.Context) bool {
+func (f *FileProvider) IsSet() bool {
 	return f.isSet
 }
 

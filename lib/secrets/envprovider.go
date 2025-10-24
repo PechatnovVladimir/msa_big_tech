@@ -1,7 +1,6 @@
 package secrets
 
 import (
-	"context"
 	"errors"
 	"os"
 )
@@ -10,11 +9,11 @@ type EnvProvider struct {
 	isSet bool
 }
 
-func (env *EnvProvider) GetBytes(ctx context.Context, key string) ([]byte, error) {
+func (env *EnvProvider) GetBytes(key string) ([]byte, error) {
 	return nil, nil
 }
 
-func (env *EnvProvider) Get(ctx context.Context, key string) (string, error) {
+func (env *EnvProvider) Get(key string) (string, error) {
 	value, ok := os.LookupEnv(key)
 	if !ok {
 		return "", errors.New("key not found")
@@ -23,7 +22,7 @@ func (env *EnvProvider) Get(ctx context.Context, key string) (string, error) {
 	return value, nil
 }
 
-func (env *EnvProvider) IsSet(ctx context.Context) bool {
+func (env *EnvProvider) IsSet() bool {
 	return env.isSet
 }
 

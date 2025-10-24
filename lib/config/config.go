@@ -22,11 +22,14 @@ func LoadConfig(ctx context.Context, fileCfg string) (*Config, error) {
 	_ = godotenv.Load(".env")
 
 	v := viper.New()
-	v.SetConfigFile(fileCfg)
-	//v.SetConfigName("config")
 	v.SetConfigType("yaml")
-	v.AddConfigPath("./config/")
-	v.AddConfigPath(".")
+	if fileCfg != "" {
+		v.SetConfigFile(fileCfg)
+	} else {
+		v.SetConfigName("config")
+		v.AddConfigPath("./config/")
+		v.AddConfigPath(".")
+	}
 
 	//устанавливаем дефолтные значения, если нет в конфиге
 	v.SetDefault("app.name", "my-app")

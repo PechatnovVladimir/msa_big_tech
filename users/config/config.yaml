@@ -6,8 +6,8 @@ postgres:
   host:     localhost
   port:     5434
   database: postgres-users
-  user:     postgres-users-user
-  password: postgres-users-psw
+  #user:     postgres-users-user_config
+  #password: postgres-users-psw_config
   sslmode:  disable
 grpc:
   host: localhost

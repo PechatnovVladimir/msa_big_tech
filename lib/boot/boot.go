@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/IBM/sarama"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/configsecret"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/interceptors"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
@@ -23,7 +23,7 @@ import (
 
 type App struct {
 	ctx          context.Context
-	cfg          *config.Config
+	cfg          *configsecrets.Config
 	secret       *secrets.Secrets
 	grpcServer   *grpc.Server
 	grpcRegister func(*grpc.Server)
@@ -56,20 +56,26 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 	return app, nil
 }
 
-func WithConfig(ctx context.Context, cfgFile string) Option {
+// WithConfigXXX конфиг с интегрированными секретами, ENV переменными, значениями по умолчанию
+func WithConfigXXX(ctx context.Context, config Config) Option {
 	return func(app *App) error {
-		cfg, err := config.LoadConfig(ctx, cfgFile)
+		cl := configsecrets.NewConfigLoader().Configure(
+			configsecrets.WithDefaults(config.DefaultValue),
+			configsecrets.WithEnvBindings(config.EnvBinding),
+		)
+
+		secret := secrets.NewSecrets(config.SecretProvider)
+		if secret.IsSet() {
+			cl.WithSecretsProvider(secret)
+			cl.AddSecretKeys(config.SecretKeys...)
+		}
+
+		cfg, err := cl.LoadConfig(config.ConfigFile)
 		if err != nil {
 			return fmt.Errorf("failed to load config: %w", err)
 		}
-		app.cfg = cfg
-		return nil
-	}
-}
 
-func WithSecret(secret *secrets.Secrets) Option {
-	return func(app *App) error {
-		app.secret = secret
+		app.cfg = cfg
 		return nil
 	}
 }
