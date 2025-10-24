@@ -2,19 +2,15 @@ package main
 
 import (
 	"context"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app"
 	"log"
 )
 
 func main() {
-	cfg, err := config.LoadConfig()
-	if err != nil {
-		log.Fatal(err)
-	}
+	ctx := context.Background()
 
-	err = app.Run(context.Background(), cfg)
+	err := app.Start(ctx)
 	if err != nil {
-		log.Fatalln("social app.Run error:", err)
+		log.Fatalln("app.Run error:", err)
 	}
 }

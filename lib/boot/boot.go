@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"github.com/IBM/sarama"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/interceptors"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
@@ -18,7 +19,6 @@ import (
 	"strconv"
 	"sync"
 	"syscall"
-	"time"
 )
 
 type App struct {
@@ -29,6 +29,7 @@ type App struct {
 	grpcRegister func(*grpc.Server)
 	db           *postgres.Connection
 	tx           *transaction_manager.TransactionManager
+	syncProducer sarama.SyncProducer
 }
 
 type Option func(*App) error
@@ -73,29 +74,6 @@ func WithSecret(secret *secrets.Secrets) Option {
 	}
 }
 
-func (app *App) Postgres(ctx context.Context) (*postgres.Connection, *transaction_manager.TransactionManager, error) {
-	if app.db == nil {
-		conn, err := postgres.NewConnectionPool(ctx, app.cfg.Postgres.DSN(),
-			//TODO надо вынести в конфиг наверное нижеследующие параметры подключения
-			postgres.WithMaxConnIdleTime(time.Minute),
-			postgres.WithMinConnectionsCount(3),
-			postgres.WithMaxConnectionsCount(10),
-		)
-
-		if err != nil {
-			return nil, nil, err
-		}
-		tx := transaction_manager.New(conn)
-		app.db = conn
-		app.tx = tx
-	}
-	return app.db, app.tx, nil
-}
-
-func (app *App) RegisterGRPC(registerFunc func(*grpc.Server)) {
-	app.grpcRegister = registerFunc
-}
-
 func (app *App) Run(ctx context.Context) error {
 	if app.grpcRegister != nil {
 		app.grpcRegister(app.grpcServer)
@@ -134,8 +112,6 @@ func (app *App) Run(ctx context.Context) error {
 	if app.db != nil {
 		app.db.Close()
 	}
-
 	wg.Wait()
 	return nil
-
 }

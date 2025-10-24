@@ -14,7 +14,7 @@ import (
 func Start(ctx context.Context) (err error) {
 
 	app, err := boot.NewApp(ctx,
-		boot.WithConfig(ctx, "config.yaml"),
+		boot.WithConfig(ctx, "./config/config.yaml"),
 	)
 
 	if err != nil {

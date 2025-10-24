@@ -2,54 +2,44 @@ package app
 
 import (
 	"context"
-	"fmt"
 	seh "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/adapters/chateventshandler"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/adapters/userprovider"
-	chatGPRS "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc"
-	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc/v1"
+	serv "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/modules/outbox"
 	chatRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/chat"
 	outboxRepo "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/repositories/outbox"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka"
-	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
+	pb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
+	"google.golang.org/grpc"
 	"log"
 	"os"
-	"os/signal"
-	"strings"
-	"syscall"
 	"time"
 )
 
-func Run(ctx context.Context, cfg *config.Config) (err error) {
-	if cfg == nil {
-		log.Fatal("config is nil")
-	}
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
+func Start(ctx context.Context) (err error) {
 
 	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
 
-	//соединение
-	conn, err := connection.NewConnectionPool(ctx, cfg.Postgres.DSN(),
-		connection.WithMaxConnIdleTime(time.Minute),
-		connection.WithMinConnectionsCount(3),
-		connection.WithMaxConnectionsCount(10),
+	app, err := boot.NewApp(ctx,
+		boot.WithConfig(ctx, "./config/config.yaml"),
 	)
+
 	if err != nil {
-		log.Fatal(err)
+		return err
+	}
+
+	conn, txManager, err := app.Postgres(ctx)
+
+	if err != nil {
+		return err
 	}
 	defer conn.Close()
 
-	producer, err := kafka.NewSyncProducer(strings.Split(cfg.KafkaProducer.Brokers, ","), nil)
+	producer, err := app.SyncProducer(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//менеджер транзакций
-	txManager := transaction_manager.New(conn)
 
 	userServiceProvider := userprovider.New()
 	chatRepository := chatRepo.NewRepository(txManager)
@@ -78,25 +68,18 @@ func Run(ctx context.Context, cfg *config.Config) (err error) {
 		OutboxRepo:         outboxProcessor,
 	})
 
-	//grpc
-	grpcServer, err := chatGPRS.New(v1.Deps{
+	service := serv.New(serv.Deps{
 		ChatUseCase: chatUseCase,
-		Cfg:         &cfg.Grpc,
 	})
 
+	app.RegisterGRPC(func(srv *grpc.Server) {
+		pb.RegisterChatServiceServer(srv, service)
+	})
+
+	err = app.Run(ctx)
 	if err != nil {
-		return fmt.Errorf("%s - grpc.New: %w", cfg.App.Name, err)
+		return err
 	}
-
-	log.Println(fmt.Sprintf("%s started on port %d", cfg.App.Name, cfg.Grpc.Port))
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
-	<-sig // wait signal
-
-	grpcServer.Close()
-
-	log.Println(fmt.Sprintf("%s stopped!", cfg.App.Name))
 
 	return nil
 

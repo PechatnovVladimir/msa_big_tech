@@ -2,53 +2,44 @@ package app
 
 import (
 	"context"
-	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka"
-	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
-	tx "github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authprovider"
 	seh "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/socialeventshandler"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
-	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc"
-	v1 "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
+	serv "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
 	outboxRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/outbox"
 	socialRepo "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/repositories/social"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
+	pb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
+	"google.golang.org/grpc"
 	"log"
 	"os"
-	"os/signal"
-	"strings"
-	"syscall"
 	"time"
 )
 
-func Run(ctx context.Context, cfg *config.Config) (err error) {
-	if cfg == nil {
-		log.Fatal("config is nil")
+func Start(ctx context.Context) (err error) {
+	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
+
+	app, err := boot.NewApp(ctx,
+		boot.WithConfig(ctx, "./config/config.yaml"),
+	)
+
+	if err != nil {
+		return err
 	}
 
-	ctx, cancel := context.WithCancel(ctx)
-	defer cancel()
-	//соединение
-	conn, err := connection.NewConnectionPool(ctx, cfg.Postgres.DSN(),
-		connection.WithMaxConnIdleTime(time.Minute),
-		connection.WithMinConnectionsCount(3),
-		connection.WithMaxConnectionsCount(10),
-	)
+	conn, txManager, err := app.Postgres(ctx)
+
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer conn.Close()
 
-	producer, err := kafka.NewSyncProducer(strings.Split(cfg.KafkaProducer.Brokers, ","), nil)
+	producer, err := app.SyncProducer(ctx)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	//менеджер транзакций
-	txManager := tx.New(conn)
 
 	authServiceAdapter := authprovider.New()
 	userServiceAdapter := userprovider.New()
@@ -79,25 +70,18 @@ func Run(ctx context.Context, cfg *config.Config) (err error) {
 		OutboxRepo:         outboxProcessor,
 	})
 
-	//grpc
-	grpcServer, err := socialGPRS.New(v1.Deps{
+	service := serv.New(serv.Deps{
 		SocialUseCase: socialUseCase,
-		Cfg:           &cfg.Grpc,
 	})
 
+	app.RegisterGRPC(func(srv *grpc.Server) {
+		pb.RegisterSocialServiceServer(srv, service)
+	})
+
+	err = app.Run(ctx)
 	if err != nil {
-		return fmt.Errorf("%s - grpc.New: %w", cfg.App.Name, err)
+		return err
 	}
-
-	log.Println(fmt.Sprintf("%s started on port %d", cfg.App.Name, cfg.Grpc.Port))
-
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, os.Interrupt, syscall.SIGTERM)
-	<-sig // wait signal
-
-	grpcServer.Close()
-
-	log.Println(fmt.Sprintf("%s stopped!", cfg.App.Name))
 
 	return nil
 
