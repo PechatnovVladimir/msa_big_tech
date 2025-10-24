@@ -109,9 +109,14 @@ func (app *App) Run(ctx context.Context) error {
 
 	app.grpcServer.GracefulStop()
 
+	if app.syncProducer != nil {
+		app.syncProducer.Close()
+	}
+
 	if app.db != nil {
 		app.db.Close()
 	}
+
 	wg.Wait()
 	return nil
 }
