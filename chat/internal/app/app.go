@@ -17,12 +17,56 @@ import (
 	"time"
 )
 
+var (
+	defaultConfigValue = map[string]interface{}{
+		"app.mode":               "dev",
+		"app.name":               "CHAT-SERVICE",
+		"app.version":            "0.0.1",
+		"postgres.host":          "localhost",
+		"postgres.port":          "5432",
+		"postgres.user":          "postgres-chat-user",
+		"postgres.password":      "postgres-chat-psw",
+		"postgres.database":      "postgres-chat",
+		"postgres.sslmode":       "disable",
+		"grpc.port":              "50052",
+		"grpc.host":              "localhost",
+		"kafka_producer.brokers": "localhost:9092",
+		"kafka_consumer.brokers": "localhost:9092",
+	}
+
+	envConfigBinding = map[string]string{
+		"app.mode":               "CHAT_APP_MODE",
+		"app.name":               "CHAT_APP_NAME",
+		"app.version":            "CHAT_APP_VERSION",
+		"postgres.host":          "CHAT_POSTGRES_HOST",
+		"postgres.port":          "CHAT_POSTGRES_PORT",
+		"postgres.user":          "CHAT_POSTGRES_USER",
+		"postgres.password":      "CHAT_POSTGRES_PASSWORD",
+		"postgres.database":      "CHAT_POSTGRES_DATABASE",
+		"postgres.sslmode":       "CHAT_POSTGRES_SSLMODE",
+		"grpc.port":              "CHAT_GRPC_PORT",
+		"grpc.host":              "CHAT_GRPC_HOST",
+		"kafka_producer.brokers": "CHAT_PRODUCER_BROKERS",
+		"kafka_consumer.brokers": "CHAT_CONSUMER_BROKERS",
+	}
+)
+
+var (
+	config = boot.Config{
+		ConfigFile:   "./config/config.yaml",
+		DefaultValue: defaultConfigValue,
+		EnvBinding:   envConfigBinding,
+		//SecretProvider: secrets.NewFileProvider("/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
+		SecretKeys: []string{"postgres.user", "postgres.password"},
+	}
+)
+
 func Start(ctx context.Context) (err error) {
 
 	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
 
 	app, err := boot.NewApp(ctx,
-		boot.WithConfig(ctx, "./config/config.yaml"),
+		boot.WithConfigXXX(ctx, config),
 	)
 
 	if err != nil {

@@ -1,4 +1,4 @@
-package configsecrets
+package configold
 
 type App struct {
 	Name    string `mapstructure:"name"`

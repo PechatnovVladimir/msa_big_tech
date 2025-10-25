@@ -1,4 +1,4 @@
-package configsecrets
+package configold
 
 type Grpc struct {
 	Host string `mapstructure:"host"`

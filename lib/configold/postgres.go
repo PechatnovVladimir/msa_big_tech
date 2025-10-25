@@ -1,4 +1,4 @@
-package configsecrets
+package configold
 
 import "fmt"
 
