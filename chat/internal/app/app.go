@@ -56,7 +56,10 @@ var (
 		ConfigFile:   "./config/config.yaml",
 		DefaultValue: defaultConfigValue,
 		EnvBinding:   envConfigBinding,
+		//SecretProvider: secrets.NewEnvProvider(),
+		//SecretProvider: secrets.NewVaultProvider("http://localhost:8200", "secret/data/users-service"),
 		//SecretProvider: secrets.NewFileProvider("/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
+		//SecretProvider: secrets.NewCompositeProvider("http://localhost:8200", "secret/data/users-service", "/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
 		SecretKeys: []string{"postgres.user", "postgres.password"},
 	}
 )

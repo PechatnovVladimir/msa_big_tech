@@ -18,11 +18,58 @@ import (
 	"time"
 )
 
+var (
+	defaultConfigValue = map[string]interface{}{
+		"app.mode":               "dev",
+		"app.name":               "SOCIAL-SERVICE",
+		"app.version":            "0.0.1",
+		"postgres.host":          "localhost",
+		"postgres.port":          "5433",
+		"postgres.user":          "postgres-soc-user",
+		"postgres.password":      "postgres-soc-psw",
+		"postgres.database":      "postgres-soc",
+		"postgres.sslmode":       "disable",
+		"grpc.port":              "50053",
+		"grpc.host":              "localhost",
+		"kafka_producer.brokers": "localhost:9092",
+		"kafka_consumer.brokers": "localhost:9092",
+	}
+
+	envConfigBinding = map[string]string{
+		"app.mode":               "SOC_APP_MODE",
+		"app.name":               "SOC_APP_NAME",
+		"app.version":            "SOC_APP_VERSION",
+		"postgres.host":          "SOC_POSTGRES_HOST",
+		"postgres.port":          "SOC_POSTGRES_PORT",
+		"postgres.user":          "SOC_POSTGRES_USER",
+		"postgres.password":      "SOC_POSTGRES_PASSWORD",
+		"postgres.database":      "SOC_POSTGRES_DATABASE",
+		"postgres.sslmode":       "SOC_POSTGRES_SSLMODE",
+		"grpc.port":              "SOC_GRPC_PORT",
+		"grpc.host":              "SOC_GRPC_HOST",
+		"kafka_producer.brokers": "SOC_PRODUCER_BROKERS",
+		"kafka_consumer.brokers": "SOC_CONSUMER_BROKERS",
+	}
+)
+
+var (
+	config = boot.Config{
+		ConfigFile:   "./config/config.yaml",
+		DefaultValue: defaultConfigValue,
+		EnvBinding:   envConfigBinding,
+		//SecretProvider: secrets.NewEnvProvider()
+		//SecretProvider: secrets.NewVaultProvider("http://localhost:8200", "secret/data/users-service"),
+		//SecretProvider: secrets.NewFileProvider("/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
+		//SecretProvider: secrets.NewCompositeProvider("http://localhost:8200", "secret/data/users-service", "/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
+		//SecretKeys:     []string{"postgres.user", "postgres.password"},
+	}
+)
+
 func Start(ctx context.Context) (err error) {
 	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
 
 	app, err := boot.NewApp(ctx,
-		boot.WithConfig(ctx, "./config/config.yaml"),
+		boot.WithConfigXXX(ctx, config),
 	)
 
 	if err != nil {
