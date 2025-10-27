@@ -21,9 +21,9 @@ services:
     container_name: 'postgresql-chat'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${CHAT_POSTGRES_DATABASE}
-      POSTGRES_USER: ${CHAT_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${CHAT_POSTGRES_PASSWORD}
+      POSTGRES_DB: "postgres-chat"
+      POSTGRES_USER: "postgres-chat-user"
+      POSTGRES_PASSWORD: "postgres-chat-psw"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -45,9 +45,9 @@ services:
     container_name: 'postgresql-soc'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${SOC_POSTGRES_DATABASE}
-      POSTGRES_USER: ${SOC_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${SOC_POSTGRES_PASSWORD}
+      POSTGRES_DB: "postgres-soc"
+      POSTGRES_USER: "postgres-soc-user"
+      POSTGRES_PASSWORD: "postgres-soc-psw"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -69,9 +69,9 @@ services:
     container_name: 'postgresql-users'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${USERS_POSTGRES_DATABASE}
-      POSTGRES_USER: ${USERS_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
+      POSTGRES_DB: "postgres-users"
+      POSTGRES_USER: "postgres-users-user"
+      POSTGRES_PASSWORD: "postgres-users-psw"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -93,9 +93,9 @@ services:
     container_name: 'postgresql-notification'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ${NOTIFICATION_POSTGRES_DATABASE}
-      POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER}
-      POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD}
+      POSTGRES_DB: "postgres-notification"
+      POSTGRES_USER: "postgres-notification-user"
+      POSTGRES_PASSWORD: "postgres-notification-psw"
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
