@@ -33,7 +33,7 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${CHAT_POSTGRES_USER} -d ${CHAT_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -57,7 +57,7 @@ services:
     ports:
       - 5433:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${SOC_POSTGRES_USER} -d ${SOC_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -81,7 +81,7 @@ services:
     ports:
       - 5434:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${USERS_POSTGRES_USER} -d ${USERS_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -105,7 +105,7 @@ services:
     ports:
       - 5435:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${NOTIFICATION_POSTGRES_USER} -d ${NOTIFICATION_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -166,6 +166,8 @@ services:
       context: .
       dockerfile: auth/Dockerfile
     container_name: auth-service
+    env_file:
+      - .env
     ports:
       - "50051:50051"
     networks:
@@ -181,6 +183,8 @@ services:
       context: .
       dockerfile: chat/Dockerfile
     container_name: chat-service
+    env_file:
+      - .env
     ports:
       - "50052:50052"
     networks:
@@ -202,6 +206,8 @@ services:
       context: .
       dockerfile: social/Dockerfile
     container_name: social-service
+    env_file:
+      - .env
     ports:
       - "50053:50053"
     networks:
@@ -223,6 +229,8 @@ services:
       context: .
       dockerfile: users/Dockerfile
     container_name: users-service
+    env_file:
+      - .env
     ports:
       - "50054:50054"
     networks:
@@ -243,6 +251,8 @@ services:
       context: .
       dockerfile: notification/Dockerfile
     container_name: notification-service
+    env_file:
+      - .env
     ports:
       - "50055:50055"
     networks:
@@ -264,6 +274,8 @@ services:
       context: .
       dockerfile: gateway/Dockerfile
     container_name: api-gateway
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     networks:

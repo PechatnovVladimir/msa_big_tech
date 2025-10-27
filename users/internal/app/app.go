@@ -3,7 +3,6 @@ package app
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
-	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/adapters/userprovider"
 	serv "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc/v1"
 	repo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
@@ -30,19 +29,19 @@ var (
 	}
 
 	envConfigBinding = map[string]string{
-		"app.mode":               "APP_MODE",
-		"app.name":               "APP_NAME",
-		"app.version":            "APP_VERSION",
-		"postgres.host":          "POSTGRES_HOST",
-		"postgres.port":          "POSTGRES_PORT",
-		"postgres.user":          "POSTGRES_USER",
-		"postgres.password":      "POSTGRES_PASSWORD",
-		"postgres.database":      "POSTGRES_DATABASE",
-		"postgres.sslmode":       "POSTGRES_SSLMODE",
-		"grpc.port":              "GRPC_PORT",
-		"grpc.host":              "GRPC_HOST",
-		"kafka_producer.brokers": "PRODUCER_BROKERS",
-		"kafka_consumer.brokers": "CONSUMER_BROKERS",
+		"app.mode":               "USERS_APP_MODE",
+		"app.name":               "USERS_APP_NAME",
+		"app.version":            "USERS_APP_VERSION",
+		"postgres.host":          "USERS_POSTGRES_HOST",
+		"postgres.port":          "USERS_POSTGRES_PORT",
+		"postgres.user":          "USERS_POSTGRES_USER",
+		"postgres.password":      "USERS_POSTGRES_PASSWORD",
+		"postgres.database":      "USERS_POSTGRES_DATABASE",
+		"postgres.sslmode":       "USERS_POSTGRES_SSLMODE",
+		"grpc.port":              "USERS_GRPC_PORT",
+		"grpc.host":              "USERS_GRPC_HOST",
+		"kafka_producer.brokers": "USERS_PRODUCER_BROKERS",
+		"kafka_consumer.brokers": "USERS_CONSUMER_BROKERS",
 	}
 )
 
@@ -54,8 +53,8 @@ var (
 		//SecretProvider: secrets.NewEnvProvider()
 		//SecretProvider: secrets.NewVaultProvider("http://localhost:8200", "secret/data/users-service"),
 		//SecretProvider: secrets.NewFileProvider("/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
-		SecretProvider: secrets.NewCompositeProvider("http://localhost:8200", "secret/data/users-service", "/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
-		SecretKeys:     []string{"postgres.user", "postgres.password"},
+		//SecretProvider: secrets.NewCompositeProvider("http://localhost:8200", "secret/data/users-service", "/Users/pvv/Educ/Balun/msa_big_tech/secrets_example.yaml"),
+		//SecretKeys:     []string{"postgres.user", "postgres.password"},
 	}
 )
 

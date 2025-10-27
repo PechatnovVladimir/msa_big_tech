@@ -105,7 +105,9 @@ func (cl *ConfigLoader) LoadConfig(fileCfg string) (*Config, error) {
 	}
 
 	if cl.secretsProvider != nil {
-		cl.loadSecrets()
+		if cl.secretsProvider.IsSet() {
+			cl.loadSecrets()
+		}
 	}
 
 	var cfg Config
@@ -121,18 +123,18 @@ func (cl *ConfigLoader) loadSecrets() {
 	for _, key := range cl.secretKeys {
 		//Секреты в приоритете, поэтому перепишем, даже если уже установленное есть
 		// Проверяем, нужно ли загружать секрет (значение не установлено или пустое)
-		//if !cl.viper.IsSet(key) || cl.viper.GetString(key) == "" {
-		secretValue, err := cl.secretsProvider.Get(key)
-		if err != nil {
-			log.Printf("Warning: secret not found for key %s: %v\n", key, err)
-			continue
-		}
+		if !cl.viper.IsSet(key) || cl.viper.GetString(key) == "" {
+			secretValue, err := cl.secretsProvider.Get(key)
+			if err != nil {
+				log.Printf("Warning: secret not found for key %s: %v\n", key, err)
+				continue
+			}
 
-		// Устанавливаем значение в Viper
-		if secretValue != "" {
-			cl.viper.Set(key, secretValue)
+			// Устанавливаем значение в Viper
+			if secretValue != "" {
+				cl.viper.Set(key, secretValue)
+			}
 		}
-		//}
 	}
 	return
 }
