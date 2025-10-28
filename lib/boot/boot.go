@@ -7,6 +7,7 @@ import (
 	"github.com/IBM/sarama"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/interceptors"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka/consumer"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
@@ -22,14 +23,15 @@ import (
 )
 
 type App struct {
-	ctx          context.Context
-	cfg          *config.Config
-	secret       *secrets.Secrets
-	grpcServer   *grpc.Server
-	grpcRegister func(*grpc.Server)
-	db           *postgres.Connection
-	tx           *transaction_manager.TransactionManager
-	syncProducer sarama.SyncProducer
+	ctx             context.Context
+	cfg             *config.Config
+	secret          *secrets.Secrets
+	grpcServer      *grpc.Server
+	grpcRegister    func(*grpc.Server)
+	db              *postgres.Connection
+	tx              *transaction_manager.TransactionManager
+	syncProducer    sarama.SyncProducer
+	consumerManager *consumer.ConsumerManager
 }
 
 type Option func(*App) error
@@ -87,6 +89,13 @@ func (app *App) Run(ctx context.Context) error {
 		app.grpcRegister(app.grpcServer)
 	}
 
+	if app.consumerManager != nil {
+		err := app.consumerManager.StartAll(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
 	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Port))
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
@@ -117,8 +126,18 @@ func (app *App) Run(ctx context.Context) error {
 
 	app.grpcServer.GracefulStop()
 
+	if app.consumerManager != nil {
+		err := app.consumerManager.StopAll()
+		if err != nil {
+			log.Printf("failed to stop consumer manager: %v", err)
+		}
+	}
+
 	if app.syncProducer != nil {
-		app.syncProducer.Close()
+		err := app.syncProducer.Close()
+		if err != nil {
+			log.Printf("failed to close sync producer: %v", err)
+		}
 	}
 
 	if app.db != nil {

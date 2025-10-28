@@ -6,12 +6,11 @@ import (
 )
 
 type Config struct {
-	Brokers          []string
-	Topics           []string
-	GroupID          string
-	SaramaConfig     *sarama.Config
-	BatchSize        int
-	BatchTimeout     time.Duration
-	FlushOnRebalance bool
-	ConsumerID       string //Уникальный ID инстанса
+	Brokers      []string
+	Topics       []string
+	GroupID      string
+	SaramaConfig *sarama.Config
+	BatchSize    int
+	BatchTimeout time.Duration
+	ConsumerID   string //Уникальный ID инстанса
 }

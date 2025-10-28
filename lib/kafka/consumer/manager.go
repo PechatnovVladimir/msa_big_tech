@@ -3,6 +3,7 @@ package consumer
 import (
 	"context"
 	"fmt"
+	"log"
 	"sync"
 )
 
@@ -40,8 +41,8 @@ func (m *ConsumerManager) StartAll(ctx context.Context) error {
 		go func() {
 			defer m.wg.Done()
 			topics := c.topics
-			if err := c.Start(ctx, topics); err != nil {
-				c.logger.Printf("Start error: %v", err)
+			if err := c.Run(ctx, topics); err != nil {
+				log.Printf("Start error: %v", err)
 			}
 		}()
 	}
@@ -54,7 +55,7 @@ func (m *ConsumerManager) StopAll() error {
 
 	var errs []error
 	for _, c := range m.consumers {
-		if err := c.Stop(); err != nil {
+		if err := c.Close(); err != nil {
 			errs = append(errs, err)
 		}
 	}
