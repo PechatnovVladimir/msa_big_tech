@@ -2,6 +2,11 @@ include vendor.proto.mk
 
 SERVICE_NAME := social
 
+POSTGRES_DB := postgres-soc
+POSTGRES_USER := postgres-soc-user
+POSTGRES_PASSWORD := postgres-soc-psw
+
+
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
 
@@ -52,7 +57,24 @@ proto-format:
 vercommit: .ver-commit
 
 run:
-	go run ./cmd/app/main.go
+	CurrentUser="9def0b15-7ee9-425c-a9b3-ba875dfc6d11"  go run ./cmd/app/main.go
+
+pg-up:
+	docker-compose up -d
+
+pg-down:
+	docker-compose down
+
+#Cоздать миграцию goose create <migration_name> sql -dir=./migrations
+migration-status:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" status -dir ./migrations
+
+migration-up:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" up -dir ./migrations
+
+migration-down:
+	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5433 sslmode=disable" down -dir ./migrations
+
 
 .PHONY: \
 	.bin-deps \

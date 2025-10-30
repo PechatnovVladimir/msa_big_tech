@@ -12,6 +12,7 @@ import (
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -29,12 +30,14 @@ type UserProfile struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// user_id уникальный идентификатор пользователя в формате UUID
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	// email email пользователя
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	// nickname никнейм пользователя
-	Nickname string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Nickname string `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	// bio биография пользователя
-	Bio string `protobuf:"bytes,3,opt,name=bio,proto3" json:"bio,omitempty"`
+	Bio string `protobuf:"bytes,4,opt,name=bio,proto3" json:"bio,omitempty"`
 	// avatar_url ссылка на аватарку пользователя
-	AvatarUrl     string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
+	AvatarUrl     string `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -76,6 +79,13 @@ func (x *UserProfile) GetUserId() string {
 	return ""
 }
 
+func (x *UserProfile) GetEmail() string {
+	if x != nil {
+		return x.Email
+	}
+	return ""
+}
+
 func (x *UserProfile) GetNickname() string {
 	if x != nil {
 		return x.Nickname
@@ -103,12 +113,13 @@ type CreateProfileRequest struct {
 	// user_id - ID пользователя
 	UserId string `protobuf:"bytes,1,opt,name=user_id,json=userid,proto3" json:"user_id,omitempty"`
 	// nickname - никнейм пользователя
-	Nickname string `protobuf:"bytes,2,opt,name=nickname,proto3" json:"nickname,omitempty"`
+	Email string `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	// nickname - никнейм пользователя
+	Nickname string `protobuf:"bytes,3,opt,name=nickname,proto3" json:"nickname,omitempty"`
 	// bio биография пользователя
-	Bio *string `protobuf:"bytes,3,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	Bio *string `protobuf:"bytes,4,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
 	// avatar_url ссылка на аватарку пользователя
-	AvatarUrl     *string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
+	AvatarUrl     *string `protobuf:"bytes,5,opt,name=avatar_url,json=avatarUrl,proto3,oneof" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -146,6 +157,13 @@ func (*CreateProfileRequest) Descriptor() ([]byte, []int) {
 func (x *CreateProfileRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
+	}
+	return ""
+}
+
+func (x *CreateProfileRequest) GetEmail() string {
+	if x != nil {
+		return x.Email
 	}
 	return ""
 }
@@ -222,9 +240,10 @@ type UpdateProfileRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// user_id - ID пользователя в формате UUID
 	UserId        string  `protobuf:"bytes,1,opt,name=user_id,json=userid,proto3" json:"user_id,omitempty"`
-	Nickname      *string `protobuf:"bytes,2,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
-	Bio           *string `protobuf:"bytes,3,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
-	AvatarUrl     *string `protobuf:"bytes,4,opt,name=avatar_url,json=avatarurl,proto3,oneof" json:"avatar_url,omitempty"`
+	Email         *string `protobuf:"bytes,2,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Nickname      *string `protobuf:"bytes,3,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
+	Bio           *string `protobuf:"bytes,4,opt,name=bio,proto3,oneof" json:"bio,omitempty"`
+	AvatarUrl     *string `protobuf:"bytes,5,opt,name=avatar_url,json=avatarurl,proto3,oneof" json:"avatar_url,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -262,6 +281,13 @@ func (*UpdateProfileRequest) Descriptor() ([]byte, []int) {
 func (x *UpdateProfileRequest) GetUserId() string {
 	if x != nil {
 		return x.UserId
+	}
+	return ""
+}
+
+func (x *UpdateProfileRequest) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
 	}
 	return ""
 }
@@ -513,17 +539,94 @@ func (x *GetProfileByNicknameResponse) GetUserProfile() *UserProfile {
 	return nil
 }
 
+type Query struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// список ID пользователей
+	IDs           []string               `protobuf:"bytes,1,rep,name=IDs,proto3" json:"IDs,omitempty"`
+	Email         *string                `protobuf:"bytes,2,opt,name=email,proto3,oneof" json:"email,omitempty"`
+	Nickname      *string                `protobuf:"bytes,3,opt,name=nickname,proto3,oneof" json:"nickname,omitempty"`
+	Createdfrom   *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=createdfrom,proto3,oneof" json:"createdfrom,omitempty"`
+	Createdto     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=createdto,proto3,oneof" json:"createdto,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Query) Reset() {
+	*x = Query{}
+	mi := &file_api_users_v1_messages_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Query) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Query) ProtoMessage() {}
+
+func (x *Query) ProtoReflect() protoreflect.Message {
+	mi := &file_api_users_v1_messages_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Query.ProtoReflect.Descriptor instead.
+func (*Query) Descriptor() ([]byte, []int) {
+	return file_api_users_v1_messages_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *Query) GetIDs() []string {
+	if x != nil {
+		return x.IDs
+	}
+	return nil
+}
+
+func (x *Query) GetEmail() string {
+	if x != nil && x.Email != nil {
+		return *x.Email
+	}
+	return ""
+}
+
+func (x *Query) GetNickname() string {
+	if x != nil && x.Nickname != nil {
+		return *x.Nickname
+	}
+	return ""
+}
+
+func (x *Query) GetCreatedfrom() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Createdfrom
+	}
+	return nil
+}
+
+func (x *Query) GetCreatedto() *timestamppb.Timestamp {
+	if x != nil {
+		return x.Createdto
+	}
+	return nil
+}
+
 type SearchByNicknameRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Query         string                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
-	Limit         int64                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	Query         *Query                 `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
+	Limit         uint64                 `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *SearchByNicknameRequest) Reset() {
 	*x = SearchByNicknameRequest{}
-	mi := &file_api_users_v1_messages_proto_msgTypes[9]
+	mi := &file_api_users_v1_messages_proto_msgTypes[10]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -535,7 +638,7 @@ func (x *SearchByNicknameRequest) String() string {
 func (*SearchByNicknameRequest) ProtoMessage() {}
 
 func (x *SearchByNicknameRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_users_v1_messages_proto_msgTypes[9]
+	mi := &file_api_users_v1_messages_proto_msgTypes[10]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -548,17 +651,17 @@ func (x *SearchByNicknameRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchByNicknameRequest.ProtoReflect.Descriptor instead.
 func (*SearchByNicknameRequest) Descriptor() ([]byte, []int) {
-	return file_api_users_v1_messages_proto_rawDescGZIP(), []int{9}
+	return file_api_users_v1_messages_proto_rawDescGZIP(), []int{10}
 }
 
-func (x *SearchByNicknameRequest) GetQuery() string {
+func (x *SearchByNicknameRequest) GetQuery() *Query {
 	if x != nil {
 		return x.Query
 	}
-	return ""
+	return nil
 }
 
-func (x *SearchByNicknameRequest) GetLimit() int64 {
+func (x *SearchByNicknameRequest) GetLimit() uint64 {
 	if x != nil {
 		return x.Limit
 	}
@@ -574,7 +677,7 @@ type SearchByNicknameResponse struct {
 
 func (x *SearchByNicknameResponse) Reset() {
 	*x = SearchByNicknameResponse{}
-	mi := &file_api_users_v1_messages_proto_msgTypes[10]
+	mi := &file_api_users_v1_messages_proto_msgTypes[11]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -586,7 +689,7 @@ func (x *SearchByNicknameResponse) String() string {
 func (*SearchByNicknameResponse) ProtoMessage() {}
 
 func (x *SearchByNicknameResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_users_v1_messages_proto_msgTypes[10]
+	mi := &file_api_users_v1_messages_proto_msgTypes[11]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -599,7 +702,7 @@ func (x *SearchByNicknameResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SearchByNicknameResponse.ProtoReflect.Descriptor instead.
 func (*SearchByNicknameResponse) Descriptor() ([]byte, []int) {
-	return file_api_users_v1_messages_proto_rawDescGZIP(), []int{10}
+	return file_api_users_v1_messages_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *SearchByNicknameResponse) GetUserProfile() []*UserProfile {
@@ -613,36 +716,40 @@ var File_api_users_v1_messages_proto protoreflect.FileDescriptor
 
 const file_api_users_v1_messages_proto_rawDesc = "" +
 	"\n" +
-	"\x1bapi/users/v1/messages.proto\x126github.com.PechatnovVladimir.msa_big_tech.users.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xa3\x03\n" +
+	"\x1bapi/users/v1/messages.proto\x126github.com.PechatnovVladimir.msa_big_tech.users.api.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fgoogle/api/field_behavior.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a.protoc-gen-openapiv2/options/annotations.proto\"\xc1\x03\n" +
 	"\vUserProfile\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
-	"\bnickname\x18\x02 \x01(\tR\bnickname\x12\x10\n" +
-	"\x03bio\x18\x03 \x01(\tR\x03bio\x12\x1d\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
+	"\bnickname\x18\x03 \x01(\tR\bnickname\x12\x10\n" +
+	"\x03bio\x18\x04 \x01(\tR\x03bio\x12\x1d\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tR\tavatarUrl:\xad\x02\x92A\xa9\x02\n" +
-	"\xce\x01*\vUserProfile25UserProfile - профиль пользователяJ`{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}\xd2\x01\auser_id\xd2\x01\bnickname\xd2\x01\x03bio\xd2\x01\n" +
+	"avatar_url\x18\x05 \x01(\tR\tavatarUrl:\xb5\x02\x92A\xb1\x02\n" +
+	"\xd6\x01*\vUserProfile25UserProfile - профиль пользователяJ`{\"nickname\": \"pvv\", \"email\": \"my-mail@mail.ru\", \"bio\": \"biography pvv\", \"avatar_url\": \"pvv.jpg\"}\xd2\x01\auser_id\xd2\x01\x05email\xd2\x01\bnickname\xd2\x01\x03bio\xd2\x01\n" +
 	"avatar_url*V\n" +
-	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\x9c\x03\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gateway\"\xd2\x03\n" +
 	"\x14CreateProfileRequest\x12'\n" +
-	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid\x12>\n" +
-	"\bnickname\x18\x02 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12 \n" +
-	"\x03bio\x18\x03 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x00R\x03bio\x88\x01\x01\x12-\n" +
+	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid\x12#\n" +
+	"\x05email\x18\x02 \x01(\tB\r\xe0A\x02\xbaH\a\xc8\x01\x01r\x02`\x01R\x05email\x12>\n" +
+	"\bnickname\x18\x03 \x01(\tB\"\xe0A\x02\xbaH\x1c\xc8\x01\x01r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$R\bnickname\x12 \n" +
+	"\x03bio\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x00R\x03bio\x88\x01\x01\x12-\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01:\xb2\x01\x92A\xae\x01\n" +
-	"T*\x14CreateProfileRequest21CreateProfileRequest - запрос CreateProfile\xd2\x01\bnickname*V\n" +
+	"avatar_url\x18\x05 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\tavatarUrl\x88\x01\x01:\xc3\x01\x92A\xbf\x01\n" +
+	"e*\x14CreateProfileRequest21CreateProfileRequest - запрос CreateProfile\xd2\x01\x06userid\xd2\x01\x05email\xd2\x01\bnickname*V\n" +
 	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_url\"~\n" +
 	"\x15CreateProfileResponse\x12e\n" +
-	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\xad\x03\n" +
+	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\xe1\x03\n" +
 	"\x14UpdateProfileRequest\x12'\n" +
-	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid\x12C\n" +
-	"\bnickname\x18\x02 \x01(\tB\"\xe0A\x01\xbaH\x1c\xc8\x01\x00r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$H\x00R\bnickname\x88\x01\x01\x12 \n" +
-	"\x03bio\x18\x03 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x01R\x03bio\x88\x01\x01\x12-\n" +
+	"\auser_id\x18\x01 \x01(\tB\x0e\xe0A\x02\xbaH\b\xc8\x01\x01r\x03\xb0\x01\x01R\x06userid\x12(\n" +
+	"\x05email\x18\x02 \x01(\tB\r\xe0A\x01\xbaH\a\xc8\x01\x00r\x02`\x01H\x00R\x05email\x88\x01\x01\x12C\n" +
+	"\bnickname\x18\x03 \x01(\tB\"\xe0A\x01\xbaH\x1c\xc8\x01\x00r\x17\x10\x03\x18\x142\x11^[a-z0-9_]{3,20}$H\x01R\bnickname\x88\x01\x01\x12 \n" +
+	"\x03bio\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x02R\x03bio\x88\x01\x01\x12-\n" +
 	"\n" +
-	"avatar_url\x18\x04 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x02R\tavatarurl\x88\x01\x01:\xb1\x01\x92A\xad\x01\n" +
+	"avatar_url\x18\x05 \x01(\tB\t\xe0A\x01\xbaH\x03\xc8\x01\x00H\x03R\tavatarurl\x88\x01\x01:\xb1\x01\x92A\xad\x01\n" +
 	"S*\x14UpdateProfileRequest21UpdateProfileRequest - запрос UpdateProfile\xd2\x01\auser_id*V\n" +
-	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\v\n" +
+	"$Find out more about ABitOfEverything\x12.https://github.com/grpc-ecosystem/grpc-gatewayB\b\n" +
+	"\x06_emailB\v\n" +
 	"\t_nicknameB\x06\n" +
 	"\x04_bioB\r\n" +
 	"\v_avatar_url\"~\n" +
@@ -657,10 +764,21 @@ const file_api_users_v1_messages_proto_rawDesc = "" +
 	"\x1bGetProfileByNicknameRequest\x12\x1a\n" +
 	"\bnickname\x18\x01 \x01(\tR\bnickname\"\x85\x01\n" +
 	"\x1cGetProfileByNicknameResponse\x12e\n" +
-	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"E\n" +
-	"\x17SearchByNicknameRequest\x12\x14\n" +
-	"\x05query\x18\x01 \x01(\tR\x05query\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x03R\x05limit\"\x81\x01\n" +
+	"\vUserProfile\x18\x01 \x01(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfile\"\x8c\x02\n" +
+	"\x05Query\x12\x10\n" +
+	"\x03IDs\x18\x01 \x03(\tR\x03IDs\x12\x19\n" +
+	"\x05email\x18\x02 \x01(\tH\x00R\x05email\x88\x01\x01\x12\x1f\n" +
+	"\bnickname\x18\x03 \x01(\tH\x01R\bnickname\x88\x01\x01\x12A\n" +
+	"\vcreatedfrom\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampH\x02R\vcreatedfrom\x88\x01\x01\x12=\n" +
+	"\tcreatedto\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampH\x03R\tcreatedto\x88\x01\x01B\b\n" +
+	"\x06_emailB\v\n" +
+	"\t_nicknameB\x0e\n" +
+	"\f_createdfromB\f\n" +
+	"\n" +
+	"_createdto\"\x84\x01\n" +
+	"\x17SearchByNicknameRequest\x12S\n" +
+	"\x05query\x18\x01 \x01(\v2=.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.QueryR\x05query\x12\x14\n" +
+	"\x05limit\x18\x02 \x01(\x04R\x05limit\"\x81\x01\n" +
 	"\x18SearchByNicknameResponse\x12e\n" +
 	"\vUserProfile\x18\x01 \x03(\v2C.github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfileR\vUserProfileB\x8c\x03\n" +
 	":com.github.com.PechatnovVladimir.msa_big_tech.users.api.v1B\rMessagesProtoP\x01ZFgithub.com/PechatnovVladimir/msa_big_tech/users/pkg/api/users/v1;users\xa2\x02\x06GCPMUA\xaa\x024Github.Com.PechatnovVladimir.MsaBigTech.Users.Api.V1\xca\x024Github\\Com\\PechatnovVladimir\\MsaBigTech\\Users\\Api\\V1\xe2\x02@Github\\Com\\PechatnovVladimir\\MsaBigTech\\Users\\Api\\V1\\GPBMetadata\xea\x02:Github::Com::PechatnovVladimir::MsaBigTech::Users::Api::V1b\x06proto3"
@@ -677,7 +795,7 @@ func file_api_users_v1_messages_proto_rawDescGZIP() []byte {
 	return file_api_users_v1_messages_proto_rawDescData
 }
 
-var file_api_users_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 11)
+var file_api_users_v1_messages_proto_msgTypes = make([]protoimpl.MessageInfo, 12)
 var file_api_users_v1_messages_proto_goTypes = []any{
 	(*UserProfile)(nil),                  // 0: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
 	(*CreateProfileRequest)(nil),         // 1: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.CreateProfileRequest
@@ -688,20 +806,25 @@ var file_api_users_v1_messages_proto_goTypes = []any{
 	(*GetProfileByIDResponse)(nil),       // 6: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByIDResponse
 	(*GetProfileByNicknameRequest)(nil),  // 7: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByNicknameRequest
 	(*GetProfileByNicknameResponse)(nil), // 8: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByNicknameResponse
-	(*SearchByNicknameRequest)(nil),      // 9: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameRequest
-	(*SearchByNicknameResponse)(nil),     // 10: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameResponse
+	(*Query)(nil),                        // 9: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.Query
+	(*SearchByNicknameRequest)(nil),      // 10: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameRequest
+	(*SearchByNicknameResponse)(nil),     // 11: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameResponse
+	(*timestamppb.Timestamp)(nil),        // 12: google.protobuf.Timestamp
 }
 var file_api_users_v1_messages_proto_depIdxs = []int32{
-	0, // 0: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.CreateProfileResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
-	0, // 1: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UpdateProfileResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
-	0, // 2: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByIDResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
-	0, // 3: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByNicknameResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
-	0, // 4: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0,  // 0: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.CreateProfileResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
+	0,  // 1: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UpdateProfileResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
+	0,  // 2: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByIDResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
+	0,  // 3: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.GetProfileByNicknameResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
+	12, // 4: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.Query.createdfrom:type_name -> google.protobuf.Timestamp
+	12, // 5: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.Query.createdto:type_name -> google.protobuf.Timestamp
+	9,  // 6: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameRequest.query:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.Query
+	0,  // 7: github.com.PechatnovVladimir.msa_big_tech.users.api.v1.SearchByNicknameResponse.UserProfile:type_name -> github.com.PechatnovVladimir.msa_big_tech.users.api.v1.UserProfile
+	8,  // [8:8] is the sub-list for method output_type
+	8,  // [8:8] is the sub-list for method input_type
+	8,  // [8:8] is the sub-list for extension type_name
+	8,  // [8:8] is the sub-list for extension extendee
+	0,  // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_api_users_v1_messages_proto_init() }
@@ -711,13 +834,14 @@ func file_api_users_v1_messages_proto_init() {
 	}
 	file_api_users_v1_messages_proto_msgTypes[1].OneofWrappers = []any{}
 	file_api_users_v1_messages_proto_msgTypes[3].OneofWrappers = []any{}
+	file_api_users_v1_messages_proto_msgTypes[9].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_users_v1_messages_proto_rawDesc), len(file_api_users_v1_messages_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   11,
+			NumMessages:   12,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

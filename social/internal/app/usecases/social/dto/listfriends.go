@@ -5,8 +5,8 @@ import (
 )
 
 type Cursor struct {
-	UserID    string
-	CreatedAt time.Time
+	ID   string
+	Time time.Time
 }
 
 type ListFriendsIN struct {
