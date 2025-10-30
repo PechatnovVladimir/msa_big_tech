@@ -53,4 +53,8 @@ make down
 * make migration-all-up - применить миграции во всех сервисах
 * make send-message-to-chat - создаст чат и запишет в него 100 сообщений и можно посмотреть работу с outbox и inbox в chat-service и notification-service
 * make down - остановить стенд
- 
+
+# Домашнее задание № 5
+* единые **gRPC-клиентские адаптеры** (обёртки) ко внешним сервисам;
+* **серверные и клиентские мидлвары**: **timeouts**, **retries** ([экспоненциальный backoff + jitter](https://habr.com/ru/articles/903576/)), **circuit breaker**, **rate limit**, **panic recovery**;
+* корректный **graceful shutdown** каждого сервиса: перестать принимать новые запросы, **дождаться** (или прервать по таймауту) «в полёте», **закрыть** ресурсы в правильном порядке.
