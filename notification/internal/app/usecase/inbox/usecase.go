@@ -26,6 +26,7 @@ type Service struct {
 
 type UseCase interface {
 	SaveMessage(ctx context.Context, msg *sarama.ConsumerMessage) error
+	HandleBatch(ctx context.Context, msg *sarama.ConsumerMessage) error
 }
 
 var _ UseCase = (*Service)(nil)

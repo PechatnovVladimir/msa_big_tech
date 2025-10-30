@@ -1,0 +1,18 @@
+app:
+  name:     CHAT_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     localhost
+  port:     5432
+  database: postgres-chat
+  user:     postgres-chat-user
+  password: postgres-chat-psw
+  sslmode:  disable
+grpc:
+  host: localhost
+  port: 50052
+kafka_producer:
+  brokers: localhost:9092
+kafka_consumer:
+  brokers: localhost:9092

@@ -7,7 +7,9 @@ import (
 )
 
 func main() {
-	err := app.Run(context.Background())
+	ctx := context.Background()
+
+	err := app.Start(ctx)
 	if err != nil {
 		log.Fatalln("app.Run error:", err)
 	}

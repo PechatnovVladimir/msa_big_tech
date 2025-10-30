@@ -2,10 +2,12 @@ package grpc
 
 import (
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc/v1"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	usersPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/users/pkg/validate"
+	"strconv"
 
 	"buf.build/go/protovalidate"
 
@@ -17,7 +19,7 @@ import (
 )
 
 const (
-	grpcPort = "50054"
+	defaultGrpcPort = "50054"
 )
 
 type Server struct {
@@ -25,7 +27,7 @@ type Server struct {
 	validator *protovalidate.Validator
 }
 
-func New(uc *usersUC.Service) (*Server, error) {
+func New(uc *usersUC.Service, cfg config.Grpc) (*Server, error) {
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
 		grpc.ChainUnaryInterceptor(validate.Interseptor),
@@ -36,6 +38,13 @@ func New(uc *usersUC.Service) (*Server, error) {
 	usersPB.RegisterUserServiceServer(grpcServer, userService)
 
 	reflection.Register(grpcServer)
+
+	var grpcPort string
+	if cfg.Port == 0 {
+		grpcPort = defaultGrpcPort
+	} else {
+		grpcPort = strconv.Itoa(cfg.Port)
+	}
 
 	err := start(grpcServer, grpcPort)
 	if err != nil {
@@ -72,13 +81,9 @@ func start(server *grpc.Server, port string) error {
 		}
 	}()
 
-	log.Println("grpc server: UserService started on port: " + port)
-
 	return nil
 }
 
 func (s *Server) Close() {
 	s.server.GracefulStop()
-
-	log.Println("grpc server: UserService closed")
 }

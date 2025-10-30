@@ -5,7 +5,7 @@ endif
 
 
 migrate-up:
-	@goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=127.0.0.1 port=5435 sslmode=disable" up -dir ./migrations
+	@goose postgres "user=${NOTIFICATION_POSTGRES_USER} password=${NOTIFICATION_POSTGRES_PASSWORD} dbname=${NOTIFICATION_POSTGRES_DATABASE} host=${NOTIFICATION_POSTGRES_HOST} port=${NOTIFICATION_POSTGRES_PORT} sslmode=disable" up -dir ./migrations
 
 .up-postgres:
 	@docker-compose up postgresql -d
@@ -23,13 +23,13 @@ down:
 
 #Cоздать миграцию goose create <migration_name> sql -dir=./migrations
 migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5435 sslmode=disable" status -dir ./migrations
+	goose postgres "user=${NOTIFICATION_POSTGRES_USER} password=${NOTIFICATION_POSTGRES_PASSWORD} dbname=${NOTIFICATION_POSTGRES_DATABASE} host=${NOTIFICATION_POSTGRES_HOST} port=${NOTIFICATION_POSTGRES_PORT} sslmode=disable" status -dir ./migrations
 
 migration-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5435 sslmode=disable" up -dir ./migrations
+	goose postgres "user=${NOTIFICATION_POSTGRES_USER} password=${NOTIFICATION_POSTGRES_PASSWORD} dbname=${NOTIFICATION_POSTGRES_DATABASE} host=${NOTIFICATION_POSTGRES_HOST} port=${NOTIFICATION_POSTGRES_PORT} sslmode=disable" up -dir ./migrations
 
 migration-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5435 sslmode=disable" down -dir ./migrations
+	goose postgres "user=${NOTIFICATION_POSTGRES_USER} password=${NOTIFICATION_POSTGRES_PASSWORD} dbname=${NOTIFICATION_POSTGRES_DATABASE} host=${NOTIFICATION_POSTGRES_HOST} port=${NOTIFICATION_POSTGRES_PORT} sslmode=disable" down -dir ./migrations
 
 run:
 	go run ./cmd/app/main.go

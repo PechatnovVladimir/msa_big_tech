@@ -1,0 +1,18 @@
+app:
+  name:     NOTIFICATION_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     localhost
+  port:     5435
+  database: postgres-notification
+  user:     postgres-notification-user
+  password: postgres-notification-psw
+  sslmode:  disable
+grpc:
+  host:
+  port:
+kafka_producer:
+  brokers: localhost:9092
+kafka_consumer:
+  brokers: localhost:9092

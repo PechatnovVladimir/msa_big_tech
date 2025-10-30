@@ -10,10 +10,11 @@ import (
 	"google.golang.org/grpc/reflection"
 	"log"
 	"net"
+	"strconv"
 )
 
 const (
-	grpcPort = "50052"
+	defaultGrpcPort = "50052"
 )
 
 type Server struct {
@@ -21,6 +22,14 @@ type Server struct {
 }
 
 func New(d chatGPRS.Deps) (*Server, error) {
+	if d.Cfg == nil {
+		return nil, fmt.Errorf("missing configuration")
+	}
+
+	if d.ChatUseCase == nil {
+		return nil, fmt.Errorf("ChatUseCase is not initialized")
+	}
+
 	grpcServer := grpc.NewServer(
 		grpc.Creds(insecure.NewCredentials()),
 		grpc.ChainUnaryInterceptor(validate.Interseptor),
@@ -31,6 +40,13 @@ func New(d chatGPRS.Deps) (*Server, error) {
 	chatPB.RegisterChatServiceServer(grpcServer, chatService)
 
 	reflection.Register(grpcServer)
+
+	var grpcPort string
+	if d.Cfg.Port == 0 {
+		grpcPort = defaultGrpcPort
+	} else {
+		grpcPort = strconv.Itoa(d.Cfg.Port)
+	}
 
 	err := start(grpcServer, grpcPort)
 	if err != nil {
@@ -53,13 +69,9 @@ func start(server *grpc.Server, port string) error {
 		}
 	}()
 
-	log.Println("grpc server: AuthService started on port: " + port)
-
 	return nil
 }
 
 func (s *Server) Close() {
 	s.server.GracefulStop()
-
-	log.Println("grpc server: UserService closed")
 }

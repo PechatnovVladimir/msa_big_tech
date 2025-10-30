@@ -5,14 +5,25 @@ networks:
     driver: bridge
 
 services:
+  vault:
+    image: hashicorp/vault:1.15
+    environment:
+      VAULT_DEV_ROOT_TOKEN_ID: root
+      VAULT_DEV_LISTEN_ADDRESS: "0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    ports:
+      - "8200:8200"
+    command: [ "server", "-dev" ]  # не для продакшена
+
   postgresql-chat:
     image: postgres:17.6 # Версия PostgreSQL
     container_name: 'postgresql-chat'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgres-chat"
-      POSTGRES_USER: "postgres-chat-user"
-      POSTGRES_PASSWORD: "postgres-chat-psw"
+      POSTGRES_DB: ${CHAT_POSTGRES_DATABASE}
+      POSTGRES_USER: ${CHAT_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${CHAT_POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -22,7 +33,7 @@ services:
     ports:
       - 5432:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${CHAT_POSTGRES_USER} -d ${CHAT_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -34,9 +45,9 @@ services:
     container_name: 'postgresql-soc'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgres-soc"
-      POSTGRES_USER: "postgres-soc-user"
-      POSTGRES_PASSWORD: "postgres-soc-psw"
+      POSTGRES_DB: ${SOC_POSTGRES_DATABASE}
+      POSTGRES_USER: ${SOC_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${SOC_POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -46,7 +57,7 @@ services:
     ports:
       - 5433:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${SOC_POSTGRES_USER} -d ${SOC_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -58,9 +69,9 @@ services:
     container_name: 'postgresql-users'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgres-users"
-      POSTGRES_USER: "postgres-users-user"
-      POSTGRES_PASSWORD: "postgres-users-psw"
+      POSTGRES_DB: ${USERS_POSTGRES_DATABASE}
+      POSTGRES_USER: ${USERS_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${USERS_POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -70,7 +81,7 @@ services:
     ports:
       - 5434:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${USERS_POSTGRES_USER} -d ${USERS_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -82,9 +93,9 @@ services:
     container_name: 'postgresql-notification'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgres-notification"
-      POSTGRES_USER: "postgres-notification-user"
-      POSTGRES_PASSWORD: "postgres-notification-psw"
+      POSTGRES_DB: ${NOTIFICATION_POSTGRES_DATABASE}
+      POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -94,7 +105,7 @@ services:
     ports:
       - 5435:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${NOTIFICATION_POSTGRES_USER} -d ${NOTIFICATION_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
@@ -155,6 +166,8 @@ services:
       context: .
       dockerfile: auth/Dockerfile
     container_name: auth-service
+    env_file:
+      - .env
     ports:
       - "50051:50051"
     networks:
@@ -170,6 +183,8 @@ services:
       context: .
       dockerfile: chat/Dockerfile
     container_name: chat-service
+    env_file:
+      - .env
     ports:
       - "50052:50052"
     networks:
@@ -191,6 +206,8 @@ services:
       context: .
       dockerfile: social/Dockerfile
     container_name: social-service
+    env_file:
+      - .env
     ports:
       - "50053:50053"
     networks:
@@ -212,6 +229,8 @@ services:
       context: .
       dockerfile: users/Dockerfile
     container_name: users-service
+    env_file:
+      - .env
     ports:
       - "50054:50054"
     networks:
@@ -232,6 +251,8 @@ services:
       context: .
       dockerfile: notification/Dockerfile
     container_name: notification-service
+    env_file:
+      - .env
     ports:
       - "50055:50055"
     networks:
@@ -253,6 +274,8 @@ services:
       context: .
       dockerfile: gateway/Dockerfile
     container_name: api-gateway
+    env_file:
+      - .env
     ports:
       - "8080:8080"
     networks:
