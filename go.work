@@ -4,8 +4,8 @@ use (
 	./auth
 	./chat
 	./gateway
+	./lib
 	./notification
-	./pkg
 	./social
 	./users
 )

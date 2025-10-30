@@ -1,11 +1,11 @@
+ifneq (,$(wildcard .env))
+    include .env
+    export $(shell sed 's/=.*//' .env)
+endif
+
 include vendor.proto.mk
 
 SERVICE_NAME := chat
-
-POSTGRES_DB := postgres-$(SERVICE_NAME)
-POSTGRES_USER := postgres-$(SERVICE_NAME)-user
-POSTGRES_PASSWORD := postgres-$(SERVICE_NAME)-psw
-
 
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
@@ -67,13 +67,13 @@ pg-down:
 	docker-compose down
 
 migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" status -dir ./migrations
+	goose postgres "user=${CHAT_POSTGRES_USER} password=${CHAT_POSTGRES_PASSWORD} dbname=${CHAT_POSTGRES_DATABASE} host=${CHAT_POSTGRES_HOST} port=${CHAT_POSTGRES_PORT} sslmode=disable" status -dir ./migrations
 
 migration-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" up -dir ./migrations
+	goose postgres "user=${CHAT_POSTGRES_USER} password=${CHAT_POSTGRES_PASSWORD} dbname=${CHAT_POSTGRES_DATABASE} host=${CHAT_POSTGRES_HOST} port=${CHAT_POSTGRES_PORT} sslmode=disable" up -dir ./migrations
 
 migration-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5432 sslmode=disable" down -dir ./migrations
+	goose postgres "user=${CHAT_POSTGRES_USER} password=${CHAT_POSTGRES_PASSWORD} dbname=${CHAT_POSTGRES_DB} host=${CHAT_POSTGRES_HOST} port=${CHAT_POSTGRES_PORT} sslmode=disable" down -dir ./migrations
 
 
 .PHONY: \

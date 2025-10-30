@@ -7,8 +7,10 @@ import (
 )
 
 func main() {
-	err := app.Run(context.Background())
+	ctx := context.Background()
+
+	err := app.Start(ctx)
 	if err != nil {
-		log.Fatalln("social app.Run error:", err)
+		log.Fatalln("app.Run error:", err)
 	}
 }

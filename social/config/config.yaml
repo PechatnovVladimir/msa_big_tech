@@ -1,0 +1,18 @@
+app:
+  name:     SOCIAL_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     localhost
+  port:     5433
+  database: postgres-soc
+  user:     postgres-soc-user
+  password: postgres-soc-psw
+  sslmode:  disable
+grpc:
+  host: localhost
+  port: 50053
+kafka_producer:
+  brokers: localhost:9092
+kafka_consumer:
+  brokers: localhost:9092

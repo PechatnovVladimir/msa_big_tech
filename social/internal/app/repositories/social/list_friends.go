@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	sq "github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/pagination"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
 	"log"
 	"strings"

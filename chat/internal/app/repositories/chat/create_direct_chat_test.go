@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 	chat2 "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
-	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/google/uuid"
 	"log"
 	"testing"
