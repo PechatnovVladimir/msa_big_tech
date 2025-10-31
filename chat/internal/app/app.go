@@ -28,8 +28,8 @@ var (
 		"postgres.password":      "postgres-chat-psw",
 		"postgres.database":      "postgres-chat",
 		"postgres.sslmode":       "disable",
-		"grpc.port":              "50052",
-		"grpc.host":              "localhost",
+		"grpc.server.port":       "50052",
+		"grpc.server.host":       "localhost",
 		"kafka_producer.brokers": "localhost:9092",
 		"kafka_consumer.brokers": "localhost:9092",
 	}
@@ -44,8 +44,8 @@ var (
 		"postgres.password":      "CHAT_POSTGRES_PASSWORD",
 		"postgres.database":      "CHAT_POSTGRES_DATABASE",
 		"postgres.sslmode":       "CHAT_POSTGRES_SSLMODE",
-		"grpc.port":              "CHAT_GRPC_PORT",
-		"grpc.host":              "CHAT_GRPC_HOST",
+		"grpc.server.port":       "CHAT_GRPC_PORT",
+		"grpc.server.host":       "CHAT_GRPC_HOST",
 		"kafka_producer.brokers": "CHAT_PRODUCER_BROKERS",
 		"kafka_consumer.brokers": "CHAT_CONSUMER_BROKERS",
 	}

@@ -10,8 +10,9 @@ postgres:
   password: postgres-notification-psw
   sslmode:  disable
 grpc:
-  host:
-  port:
+  server:
+    host:
+    port:
 kafka_producer:
   brokers: localhost:9092
 kafka_consumer:

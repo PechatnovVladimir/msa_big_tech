@@ -22,8 +22,8 @@ var (
 		"postgres.password":      "postgres-users-psw",
 		"postgres.database":      "postgres-users",
 		"postgres.sslmode":       "disable",
-		"grpc.port":              "50054",
-		"grpc.host":              "localhost",
+		"grpc.server.port":       "50054",
+		"grpc.server.host":       "localhost",
 		"kafka_producer.brokers": "localhost:9092",
 		"kafka_consumer.brokers": "localhost:9092",
 	}

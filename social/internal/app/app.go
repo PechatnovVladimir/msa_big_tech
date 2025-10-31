@@ -29,8 +29,8 @@ var (
 		"postgres.password":      "postgres-soc-psw",
 		"postgres.database":      "postgres-soc",
 		"postgres.sslmode":       "disable",
-		"grpc.port":              "50053",
-		"grpc.host":              "localhost",
+		"grpc.server.port":       "50053",
+		"grpc.server.host":       "localhost",
 		"kafka_producer.brokers": "localhost:9092",
 		"kafka_consumer.brokers": "localhost:9092",
 	}
@@ -45,8 +45,8 @@ var (
 		"postgres.password":      "SOC_POSTGRES_PASSWORD",
 		"postgres.database":      "SOC_POSTGRES_DATABASE",
 		"postgres.sslmode":       "SOC_POSTGRES_SSLMODE",
-		"grpc.port":              "SOC_GRPC_PORT",
-		"grpc.host":              "SOC_GRPC_HOST",
+		"grpc.server.port":       "SOC_GRPC_PORT",
+		"grpc.server.host":       "SOC_GRPC_HOST",
 		"kafka_producer.brokers": "SOC_PRODUCER_BROKERS",
 		"kafka_consumer.brokers": "SOC_CONSUMER_BROKERS",
 	}

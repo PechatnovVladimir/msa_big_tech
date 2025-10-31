@@ -96,7 +96,7 @@ func (app *App) Run(ctx context.Context) error {
 		}
 	}
 
-	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Port))
+	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Server.Port))
 	if err != nil {
 		return fmt.Errorf("failed to listen: %w", err)
 	}
@@ -107,7 +107,7 @@ func (app *App) Run(ctx context.Context) error {
 	// Run gRPC server in a goroutine
 	go func() {
 		defer wg.Done()
-		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Port))
+		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Server.Port))
 		if err := app.grpcServer.Serve(lis); err != nil && err != grpc.ErrServerStopped {
 			log.Fatalf("gRPC server failed: %v", err)
 		}

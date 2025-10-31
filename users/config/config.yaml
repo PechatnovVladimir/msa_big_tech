@@ -10,8 +10,9 @@ postgres:
   #password: postgres-users-psw_config
   sslmode:  disable
 grpc:
-  host: localhost
-  port: 50054
+  server:
+    host: localhost
+    port: 50054
 kafka_producer:
   brokers:
 kafka_consumer:
