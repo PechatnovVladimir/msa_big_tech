@@ -12,8 +12,20 @@ import (
 func main() {
 	ctx := context.Background()
 
+	log.Println("Starting client 1...")
 	cfgLoader := config.NewConfigLoader()
+
+	log.Println("Starting client 2...")
+
 	cfg, err := cfgLoader.LoadConfig("/Users/pvv/Educ/Balun/msa_big_tech/chat/cmd/client/config.yaml")
+
+	log.Println("Starting client 3...")
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println(cfg.Grpc.Client)
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
