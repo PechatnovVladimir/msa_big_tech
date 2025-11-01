@@ -19,7 +19,7 @@ type Client struct {
 	grpcClient *grpc.ClientConn
 }
 
-func NewGRPCClientConn(target string, cfg config.Config) (*Client, error) {
+func NewGRPCClientConn(target string, cfg *config.Config) (*Client, error) {
 	var unaryInterceptors []grpc.UnaryClientInterceptor
 
 	// 1. Timeout interceptor

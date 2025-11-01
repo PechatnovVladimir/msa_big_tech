@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/brianvoe/gofakeit/v7"
 	"github.com/google/uuid"
 	"log"
@@ -11,13 +12,16 @@ import (
 func main() {
 	ctx := context.Background()
 
-	chat, err := NewClient("localhost:50052")
+	cfgLoader := config.NewConfigLoader()
+	cfg, err := cfgLoader.LoadConfig("config.yaml")
+
+	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
 		log.Println("Error creating client:", err)
 		log.Fatal(err)
 
 	}
-	defer chat.Close()
+	defer chat
 
 	userID1 := uuid.New().String()
 
