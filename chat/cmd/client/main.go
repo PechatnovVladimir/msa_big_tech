@@ -3,7 +3,9 @@ package main
 import (
 	"context"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
+
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
+
 	"github.com/brianvoe/gofakeit/v7"
 	"github.com/google/uuid"
 	"log"
@@ -22,10 +24,11 @@ func main() {
 	log.Println("Starting client 3...")
 
 	if err != nil {
+		log.Println("Error loading config:", err)
 		log.Fatal(err)
 	}
 
-	log.Println(cfg.Grpc.Client)
+	log.Println(cfg)
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
@@ -33,6 +36,7 @@ func main() {
 		log.Fatal(err)
 
 	}
+
 	//defer chat.Close()
 
 	userID1 := uuid.New().String()

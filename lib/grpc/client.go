@@ -16,11 +16,11 @@ import (
 )
 
 type Client struct {
-	grpcClient *grpc.ClientConn
+	GrpcClient *grpc.ClientConn
 }
 
 func (c *Client) Close() {
-	_ = c.grpcClient.Close()
+	_ = c.GrpcClient.Close()
 }
 
 func NewGRPCClientConn(target string, cfg *config.Config) (*Client, error) {
@@ -78,7 +78,7 @@ func NewGRPCClientConn(target string, cfg *config.Config) (*Client, error) {
 		return nil, err
 	}
 
-	return &Client{grpcClient: conn}, nil
+	return &Client{GrpcClient: conn}, nil
 }
 
 func buildBackoffFunc(b config.BackoffConfig) retry.BackoffFunc {

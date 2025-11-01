@@ -16,8 +16,12 @@ func NewClientNew(target string, cfg *config.Config) (*ClientNew, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	c := chatPB.NewChatServiceClient(client.GrpcClient)
+
 	return &ClientNew{
-		conn: client,
+		client: c,
+		conn:   client,
 	}, nil
 
 }
