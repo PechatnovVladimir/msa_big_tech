@@ -14,22 +14,15 @@ import (
 func main() {
 	ctx := context.Background()
 
-	log.Println("Starting client 1...")
 	cfgLoader := config.NewConfigLoader()
-
-	log.Println("Starting client 2...")
 
 	//cfg, err := cfgLoader.LoadConfig("/Users/pvv/Educ/Balun/msa_big_tech/chat/cmd/client/config.yaml")
 	cfg, err := cfgLoader.LoadConfig("./chat/cmd/client/config.yaml")
-
-	log.Println("Starting client 3...")
 
 	if err != nil {
 		log.Println("Error loading config:", err)
 		log.Fatal(err)
 	}
-
-	log.Println(cfg)
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
