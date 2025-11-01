@@ -19,7 +19,8 @@ func main() {
 
 	log.Println("Starting client 2...")
 
-	cfg, err := cfgLoader.LoadConfig("/Users/pvv/Educ/Balun/msa_big_tech/chat/cmd/client/config.yaml")
+	//cfg, err := cfgLoader.LoadConfig("/Users/pvv/Educ/Balun/msa_big_tech/chat/cmd/client/config.yaml")
+	cfg, err := cfgLoader.LoadConfig("./chat/cmd/client/config.yaml")
 
 	log.Println("Starting client 3...")
 
