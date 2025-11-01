@@ -13,7 +13,7 @@ func main() {
 	ctx := context.Background()
 
 	cfgLoader := config.NewConfigLoader()
-	cfg, err := cfgLoader.LoadConfig("config.yaml")
+	cfg, err := cfgLoader.LoadConfig("/Users/pvv/Educ/Balun/msa_big_tech/chat/cmd/client/config.yaml")
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 
 	}
-	defer chat
+	//defer chat.Close()
 
 	userID1 := uuid.New().String()
 

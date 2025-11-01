@@ -23,5 +23,6 @@ func NewClientNew(target string, cfg *config.Config) (*ClientNew, error) {
 }
 
 func (c *ClientNew) Close() error {
-	c.conn.
+	_ = c.Close()
+	return nil
 }

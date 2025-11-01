@@ -19,6 +19,10 @@ type Client struct {
 	grpcClient *grpc.ClientConn
 }
 
+func (c *Client) Close() {
+	_ = c.grpcClient.Close()
+}
+
 func NewGRPCClientConn(target string, cfg *config.Config) (*Client, error) {
 	var unaryInterceptors []grpc.UnaryClientInterceptor
 

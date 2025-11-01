@@ -13,6 +13,21 @@ grpc:
   server:
     host: localhost
     port: 50052
+  client:
+    timeout: 2s                 # общий deadline на RPC, можно overridden per-call
+    retry:
+      maxAttempts: 3
+      backoff:
+        base: 100ms
+        max: 2s
+        jitter: true
+      retryableCodes: ["UNAVAILABLE","DEADLINE_EXCEEDED","RESOURCE_EXHAUSTED","ABORTED"]
+    circuitBreaker:
+      failuresForOpen: 5        # за окно
+      window: 30s
+      halfOpenMaxCalls: 5
+      openStateFor: 60s
+    metrics: true
 kafka_producer:
   brokers: localhost:9092
 kafka_consumer:
