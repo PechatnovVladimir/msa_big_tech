@@ -3,8 +3,8 @@ package chat
 import (
 	"context"
 	"fmt"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/pagination"
-	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/pagination"
+	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"log"
 	"testing"
 	"time"

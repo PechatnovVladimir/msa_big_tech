@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	connection "github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
 	userRepo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"

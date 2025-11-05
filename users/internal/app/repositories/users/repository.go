@@ -2,7 +2,7 @@ package users
 
 import (
 	"github.com/Masterminds/squirrel"
-	"github.com/PechatnovVladimir/msa_big_tech/pkg/postgres"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 )
 
 type Repository struct {
@@ -10,7 +10,7 @@ type Repository struct {
 	sb squirrel.StatementBuilderType
 }
 
-func NewRepository(txManager postgres.QueryEngineProvider) *Repository {
+func New(txManager postgres.QueryEngineProvider) *Repository {
 	return &Repository{
 		db: txManager,
 		sb: squirrel.StatementBuilder.PlaceholderFormat(squirrel.Dollar),

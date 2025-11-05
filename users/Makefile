@@ -1,10 +1,11 @@
+ifneq (,$(wildcard .env))
+    include .env
+    export $(shell sed 's/=.*//' .env)
+endif
+
 include vendor.proto.mk
 
 SERVICE_NAME := users
-
-POSTGRES_DB := postgres-$(SERVICE_NAME)
-POSTGRES_USER := postgres-$(SERVICE_NAME)-user
-POSTGRES_PASSWORD := postgres-$(SERVICE_NAME)-psw
 
 # Путь до завендореных protobuf файлов
 VENDOR_PROTO_PATH := $(CURDIR)/vendor.protobuf
@@ -55,6 +56,7 @@ proto-format:
 
 vercommit: .ver-commit
 
+#SECRET_DB_USER="postgres-users-user" SECRET_DB_PASSWORD="postgres-users-psw" go run ./cmd/app/main.go
 run:
 	go run ./cmd/app/main.go
 
@@ -65,13 +67,13 @@ pg-down:
 	docker-compose down
 
 migration-status:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" status -dir ./migrations
+	goose postgres "user=${USERS_POSTGRES_USER} password=${USERS_POSTGRES_PASSWORD} dbname=${USERS_POSTGRES_DATABASE} host=${USERS_POSTGRES_HOST} port=${USERS_POSTGRES_PORT} sslmode=disable" status -dir ./migrations
 
 migration-up:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" up -dir ./migrations
+	goose postgres "user=${USERS_POSTGRES_USER} password=${USERS_POSTGRES_PASSWORD} dbname=${USERS_POSTGRES_DATABASE} host=${USERS_POSTGRES_HOST} port=${USERS_POSTGRES_PORT} sslmode=disable" up -dir ./migrations
 
 migration-down:
-	goose postgres "user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB} host=localhost port=5434 sslmode=disable" down -dir ./migrations
+	goose postgres "user=${USERS_POSTGRES_USER} password=${USERS_POSTGRES_PASSWORD} dbname=${USERS_POSTGRES_DATABASE} host=${USERS_POSTGRES_HOST} port=${USERS_POSTGRES_PORT} sslmode=disable" down -dir ./migrations
 
 .PHONY: \
 	.bin-deps \

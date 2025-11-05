@@ -11,9 +11,9 @@ services:
     container_name: 'postgresql-notification'
     restart: unless-stopped
     environment:
-      POSTGRES_DB: "postgres-notification"
-      POSTGRES_USER: "postgres-notification-user"
-      POSTGRES_PASSWORD: "postgres-notification-psw"
+      POSTGRES_DB: ${NOTIFICATION_POSTGRES_DATABASE}
+      POSTGRES_USER: ${NOTIFICATION_POSTGRES_USER}
+      POSTGRES_PASSWORD: ${NOTIFICATION_POSTGRES_PASSWORD}
       PGDATA: "/var/lib/postgresql/data/pgdata"
       POSTGRES_HOST_AUTH_METHOD: trust
     volumes:
@@ -23,7 +23,7 @@ services:
     ports:
       - 5435:5432
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: [ "CMD-SHELL", "pg_isready -U ${NOTIFICATION_POSTGRES_USER} -d ${NOTIFICATION_POSTGRES_DATABASE}" ]
       interval: 30s
       timeout: 10s
       retries: 5
