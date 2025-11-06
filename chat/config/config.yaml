@@ -13,6 +13,20 @@ grpc:
   server:
     host: localhost
     port: 50052
+    timeout:
+      enabled: true
+      ignore: [""] # black list
+      timeoutMs: 5000 # дефолтный серверный таймаут
+      paths:
+        - path: "/api.chat.v1.ChatService/CreateDirectChat"
+          timeoutMs: 1000 # переопределенный таймаут для метода
+    rateLimit:
+      enabled: true
+      ignore: [""] # black list
+      reqPerSec: 1000 # дефолтный серверный ratelimit
+      paths:
+        - path: "/api.chat.v1.ChatService/CreateDirectChat"
+          reqPerSec: 10 # переопределенный ratelimit для метода
   client:
     timeout: 2s                 # общий deadline на RPC, можно overridden per-call
     retry:
