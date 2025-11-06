@@ -12,7 +12,6 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net"
 	"os"
@@ -26,6 +25,7 @@ type App struct {
 	ctx             context.Context
 	cfg             *config.Config
 	secret          *secrets.Secrets
+	lis             net.Listener
 	grpcServer      *grpc.Server
 	grpcRegister    func(*grpc.Server)
 	db              *postgres.Connection
@@ -50,9 +50,16 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 		return nil, errors.New("config is required")
 	}
 
+	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Server.Port))
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+
+	app.lis = lis
+
 	app.grpcServer = grpc.NewServer(
-		grpc.Creds(insecure.NewCredentials()),
-		grpc.ChainUnaryInterceptor(interceptors.ProtoValidate),
+		interceptors.ServerInterceptors(app.cfg.Grpc.Server)...,
 	)
 
 	return app, nil
@@ -96,10 +103,10 @@ func (app *App) Run(ctx context.Context) error {
 		}
 	}
 
-	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Server.Port))
-	if err != nil {
-		return fmt.Errorf("failed to listen: %w", err)
-	}
+	//lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Server.Port))
+	//if err != nil {
+	//	return fmt.Errorf("failed to listen: %w", err)
+	//}
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -108,7 +115,7 @@ func (app *App) Run(ctx context.Context) error {
 	go func() {
 		defer wg.Done()
 		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Server.Port))
-		if err := app.grpcServer.Serve(lis); err != nil && err != grpc.ErrServerStopped {
+		if err := app.grpcServer.Serve(app.lis); err != nil && err != grpc.ErrServerStopped {
 			log.Fatalf("gRPC server failed: %v", err)
 		}
 	}()
