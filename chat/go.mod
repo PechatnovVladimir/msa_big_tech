@@ -7,7 +7,7 @@ require (
 	buf.build/go/protovalidate v1.0.0
 	github.com/IBM/sarama v1.46.2
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251107071346-9777eba95607
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251107085339-8f4bd044b757
 	github.com/brianvoe/gofakeit/v7 v7.7.3
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2

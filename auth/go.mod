@@ -5,7 +5,7 @@ go 1.25.1
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1
 	buf.build/go/protovalidate v1.0.0
-	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251107071346-9777eba95607
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251107085339-8f4bd044b757
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	google.golang.org/genproto/googleapis/api v0.0.0-20250818200422-3122310a409c
