@@ -66,6 +66,7 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
+
 	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
@@ -80,7 +81,7 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	defer conn.Close()
 

@@ -175,8 +175,6 @@ services:
     restart: unless-stopped
     environment:
       - GRPC_PORT=50051
-    # volumes:
-    #   - ./auth/configs:/root/configs:ro
 
   chat-service:
     build:
@@ -184,7 +182,7 @@ services:
       dockerfile: chat/Dockerfile
     container_name: chat-service
     volumes:
-      - ./chat/config/config.yaml:/app/config.yaml:ro
+      - ./chat/config_dc:/root/config:ro
     env_file:
       - .env
     ports:
@@ -200,8 +198,6 @@ services:
       - auth-service
       - postgresql-chat
       - kafka
-    # volumes:
-    #   - ./chat/configs:/root/configs:ro
 
   social-service:
     build:
@@ -209,7 +205,7 @@ services:
       dockerfile: social/Dockerfile
     container_name: social-service
     volumes:
-      - ./social/config/config.yaml:/app/config.yaml:ro
+      - ./social/config_dc:/root/config:ro
     env_file:
       - .env
     ports:
@@ -225,8 +221,6 @@ services:
       - auth-service
       - postgresql-soc
       - kafka
-    # volumes:
-    #   - ./social/configs:/root/configs:ro
 
   users-service:
     build:
@@ -234,7 +228,7 @@ services:
       dockerfile: users/Dockerfile
     container_name: users-service
     volumes:
-      - ./users/config/config.yaml:/app/config.yaml:ro
+      - ./users/config_dc:/root/config:ro
     env_file:
       - .env
     ports:
@@ -249,8 +243,6 @@ services:
     depends_on:
       - auth-service
       - postgresql-users
-    # volumes:
-    #   - ./social/configs:/root/configs:ro
 
   notification-service:
     build:
@@ -258,7 +250,7 @@ services:
       dockerfile: notification/Dockerfile
     container_name: notification-service
     volumes:
-      - ./notification/config/config.yaml:/app/config.yaml:ro
+      - ./notification/config_dc:/root/config:ro
     env_file:
       - .env
     ports:
@@ -273,9 +265,6 @@ services:
     depends_on:
       - auth-service
       - postgresql-notification
-    # volumes:
-    #   - ./social/configs:/root/configs:ro
-
 
   api-gateway:
     build:

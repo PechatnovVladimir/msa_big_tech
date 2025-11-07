@@ -9,6 +9,7 @@ import (
 	uc "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	pb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"google.golang.org/grpc"
+	"log"
 	"os/signal"
 	"syscall"
 )
@@ -77,7 +78,7 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	defer conn.Close()
 

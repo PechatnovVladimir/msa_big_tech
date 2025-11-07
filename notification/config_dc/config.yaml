@@ -1,0 +1,19 @@
+app:
+  name:     NOTIFICATION_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     postgresql-notification
+  port:     5432
+  database: postgres-notification
+  user:     postgres-notification-user
+  password: postgres-notification-psw
+  sslmode:  disable
+grpc:
+  server:
+    host:
+    port:
+kafka_producer:
+  brokers: kafka:29092
+kafka_consumer:
+  brokers: kafka:29092

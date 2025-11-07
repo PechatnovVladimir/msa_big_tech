@@ -83,6 +83,6 @@ migration-all-down: .migration-down-chat .migration-down-soc .migration-down-use
 migration-all-status: .migration-status-chat .migration-status-soc .migration-status-users .migration-status-notification
 
 send-message-to-chat:
-	go run ./chat/cmd/client/*
+	go run ./chat/cmd/client/*.go
 
 .PHONY: build up

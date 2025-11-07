@@ -83,7 +83,7 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	defer conn.Close()
 

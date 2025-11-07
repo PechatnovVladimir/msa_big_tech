@@ -1,0 +1,48 @@
+app:
+  name:     CHAT_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     postgresql-chat
+  port:     5432
+  database: postgres-chat
+  user:     postgres-chat-user
+  password: postgres-chat-psw
+  sslmode:  disable
+grpc:
+  server:
+    host: chat-service
+    port: 50052
+    timeout:
+      enabled: true
+      ignore: [""] # black list
+      timeoutMs: 5000 # дефолтный серверный таймаут
+      paths:
+        - path: "/api.chat.v1.ChatService/CreateDirectChat"
+          timeoutMs: 1000 # переопределенный таймаут для метода
+    rateLimit:
+      enabled: true
+      ignore: [""] # black list
+      reqPerSec: 1000 # дефолтный серверный ratelimit
+      paths:
+        - path: "/api.chat.v1.ChatService/CreateDirectChat"
+          reqPerSec: 10 # переопределенный ratelimit для метода
+  client:
+    timeout: 2s                 # общий deadline на RPC, можно overridden per-call
+    retry:
+      maxAttempts: 3
+      backoff:
+        base: 100ms
+        max: 2s
+        jitter: true
+      retryableCodes: ["UNAVAILABLE","DEADLINE_EXCEEDED","RESOURCE_EXHAUSTED","ABORTED"]
+    circuitBreaker:
+      failuresForOpen: 5        # за окно
+      window: 30s
+      halfOpenMaxCalls: 5
+      openStateFor: 60s
+    metrics: true
+kafka_producer:
+  brokers: kafka:29092
+kafka_consumer:
+  brokers: kafka:29092

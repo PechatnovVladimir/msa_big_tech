@@ -1,0 +1,33 @@
+app:
+  name:     SOCIAL_SERVICE
+  version:  v.0.0.1
+  mode:     debug # debug | production
+postgres:
+  host:     postgresql-soc
+  port:     5432
+  database: postgres-soc
+  user:     postgres-soc-user
+  password: postgres-soc-psw
+  sslmode:  disable
+grpc:
+  server:
+    host: localhost
+    port: 50053
+    timeout:
+      enabled: true
+      ignore: [""] # black list
+      timeoutMs: 5000 # дефолтный серверный таймаут
+      paths:
+        - path: "/api.social.v1.SocialService/ListRequests"
+          timeoutMs: 1000 # переопределенный таймаут для метода
+    rateLimit:
+      enabled: true
+      ignore: [""] # black list
+      reqPerSec: 1000 # дефолтный серверный ratelimit
+      paths:
+        - path: "/api.social.v1.SocialService/ListRequests"
+          reqPerSec: 10 # переопределенный ratelimit для метода
+kafka_producer:
+  brokers: kafka:29092
+kafka_consumer:
+  brokers: kafka:29092
