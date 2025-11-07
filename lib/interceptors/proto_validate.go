@@ -10,7 +10,7 @@ import (
 	"log"
 )
 
-func ProtoValidate(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
+func ProtoValidateUnaryInterseptor(ctx context.Context, req any, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (any, error) {
 	//валидация по proto описанию
 	err := protovalidate.Validate(req.(proto.Message))
 	if err != nil {

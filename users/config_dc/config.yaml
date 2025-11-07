@@ -3,11 +3,11 @@ app:
   version:  v.0.0.1
   mode:     debug # debug | production
 postgres:
-  host:     localhost
-  port:     5434
+  host:     postgresql-users
+  port:     5432
   database: postgres-users
-  #user:     postgres-users-user_config
-  #password: postgres-users-psw_config
+  user:     postgres-users-user
+  password: postgres-users-psw
   sslmode:  disable
 grpc:
   server:

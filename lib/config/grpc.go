@@ -1,6 +1,6 @@
 package config
 
 type Grpc struct {
-	Host string `mapstructure:"host"`
-	Port int    `mapstructure:"port"`
+	Server GrpcServerConfig `mapstructure:"server"`
+	Client GrpcClientConfig `mapstructure:"client"`
 }
