@@ -1,0 +1,17 @@
+grpc:
+  client:
+    timeout: 10s                 # общий deadline на RPC, можно overridden per-call
+    retry:
+      maxAttempts: 5
+      backoff:
+        base: 100ms
+        max: 2s
+        jitter: true
+        jitterFraction: 0.5
+      retryableCodes: ["UNAVAILABLE","DEADLINE_EXCEEDED","RESOURCE_EXHAUSTED","ABORTED"]
+    circuitBreaker:
+      failuresForOpen: 5        # за окно
+      window: 30s
+      halfOpenMaxCalls: 5
+      openStateFor: 60s
+    metrics: true

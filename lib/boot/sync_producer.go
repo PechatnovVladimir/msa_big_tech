@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/IBM/sarama"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka"
+	"log"
 	"strings"
 )
 
@@ -15,6 +16,12 @@ func (app *App) SyncProducer(ctx context.Context) (sarama.SyncProducer, error) {
 		}
 		app.syncProducer = producer
 	}
+
+	app.Cl.Add(func(ctx context.Context) error {
+		log.Println("sync producer closed")
+		app.syncProducer.Close()
+		return nil
+	})
 
 	return app.syncProducer, nil
 }

@@ -9,6 +9,9 @@ import (
 	uc "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	pb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"google.golang.org/grpc"
+	"log"
+	"os/signal"
+	"syscall"
 )
 
 var (
@@ -22,8 +25,8 @@ var (
 		"postgres.password":      "postgres-users-psw",
 		"postgres.database":      "postgres-users",
 		"postgres.sslmode":       "disable",
-		"grpc.port":              "50054",
-		"grpc.host":              "localhost",
+		"grpc.server.port":       "50054",
+		"grpc.server.host":       "localhost",
 		"kafka_producer.brokers": "localhost:9092",
 		"kafka_consumer.brokers": "localhost:9092",
 	}
@@ -59,6 +62,10 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	//конфигурируем приложение
 	app, err := boot.NewApp(ctx,
 		boot.WithConfigXXX(ctx, config),
 	)
@@ -66,11 +73,12 @@ func Start(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		return err
+		log.Fatal(err)
 	}
 	defer conn.Close()
 
