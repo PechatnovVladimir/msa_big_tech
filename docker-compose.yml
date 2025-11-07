@@ -183,6 +183,8 @@ services:
       context: .
       dockerfile: chat/Dockerfile
     container_name: chat-service
+    volumes:
+      - ./chat/config/config.yaml:/app/config.yaml:ro
     env_file:
       - .env
     ports:
@@ -206,6 +208,8 @@ services:
       context: .
       dockerfile: social/Dockerfile
     container_name: social-service
+    volumes:
+      - ./social/config/config.yaml:/app/config.yaml:ro
     env_file:
       - .env
     ports:
@@ -229,6 +233,8 @@ services:
       context: .
       dockerfile: users/Dockerfile
     container_name: users-service
+    volumes:
+      - ./users/config/config.yaml:/app/config.yaml:ro
     env_file:
       - .env
     ports:
@@ -251,6 +257,8 @@ services:
       context: .
       dockerfile: notification/Dockerfile
     container_name: notification-service
+    volumes:
+      - ./notification/config/config.yaml:/app/config.yaml:ro
     env_file:
       - .env
     ports:

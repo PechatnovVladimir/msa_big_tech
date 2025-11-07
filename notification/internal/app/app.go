@@ -7,6 +7,8 @@ import (
 	inboxRepo "github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/repository/inbox"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/usecase/inbox"
 	"log"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -64,6 +66,8 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
 	//конфигурируем приложение
 	app, err := boot.NewApp(ctx,
@@ -73,6 +77,7 @@ func Start(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	//коннект к БД и менеджер транзакций
 	conn, txManager, err := app.Postgres(ctx)
@@ -91,21 +96,6 @@ func Start(ctx context.Context) (err error) {
 		inbox.WithBatchSize(10),
 	)
 	go worker.Run(ctx)
-
-	//dedup := kafkaconsumer.NewInMemoryDeduper(ctx, 24*time.Hour)
-	//consumer, err := kafkaconsumer.NewInboxConsumer([]string{KafkaBrokers},
-	//	KafkaConsumerGroup,
-	//	KafkaConsumerName,
-	//	dedup,
-	//	usecase,
-	//)
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-	//defer consumer.Close()
-	//if err := consumer.Run(ctx, KafkaTopicName); err != nil && ctx.Err() == nil {
-	//	log.Println("consumer stopped", err)
-	//}
 
 	manager := app.ConsumerManager(ctx)
 

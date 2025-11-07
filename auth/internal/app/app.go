@@ -7,6 +7,9 @@ import (
 	pb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
 	"google.golang.org/grpc"
+	"os/signal"
+	"syscall"
+
 	//authRepo "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth/inmemory"
 	authRepo "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/repositories/auth"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth"
@@ -60,6 +63,9 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
 	app, err := boot.NewApp(ctx,
 		boot.WithConfigXXX(ctx, config),
 	)
@@ -67,6 +73,7 @@ func Start(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	userServiceAdapter := userservice.New()
 

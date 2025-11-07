@@ -14,7 +14,8 @@ import (
 	pb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"google.golang.org/grpc"
 	"log"
-	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -66,8 +67,10 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
-	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
+	//конфигурируем приложение
 	app, err := boot.NewApp(ctx,
 		boot.WithConfigXXX(ctx, config),
 	)
@@ -75,6 +78,7 @@ func Start(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	conn, txManager, err := app.Postgres(ctx)
 

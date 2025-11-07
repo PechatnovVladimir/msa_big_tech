@@ -9,6 +9,8 @@ import (
 	uc "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	pb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"google.golang.org/grpc"
+	"os/signal"
+	"syscall"
 )
 
 var (
@@ -59,6 +61,10 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	//конфигурируем приложение
 	app, err := boot.NewApp(ctx,
 		boot.WithConfigXXX(ctx, config),
 	)
@@ -66,6 +72,7 @@ func Start(ctx context.Context) (err error) {
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	conn, txManager, err := app.Postgres(ctx)
 

@@ -13,7 +13,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
 	"google.golang.org/grpc"
 	"log"
-	"os"
+	"os/signal"
+	"syscall"
 	"time"
 )
 
@@ -65,16 +66,16 @@ var (
 )
 
 func Start(ctx context.Context) (err error) {
-
-	ctx = context.WithValue(ctx, "CurrentUser", os.Getenv("CurrentUser"))
+	ctx, stop := signal.NotifyContext(ctx, syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
 
 	app, err := boot.NewApp(ctx,
 		boot.WithConfigXXX(ctx, config),
 	)
-
 	if err != nil {
 		return err
 	}
+	defer app.Cl.CloseAll(context.TODO())
 
 	conn, txManager, err := app.Postgres(ctx)
 
@@ -103,6 +104,12 @@ func Start(ctx context.Context) (err error) {
 		outbox.WithRetryInterval(30*time.Second),
 		outbox.WithWindow(time.Hour),
 	)
+
+	app.Cl.Add(func(ctx context.Context) error {
+		log.Println("worker outbox chat closed")
+		//TODO тут остановку worker надо
+		return nil
+	})
 
 	go worker.Run(ctx)
 
