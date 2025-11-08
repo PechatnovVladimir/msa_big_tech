@@ -4,8 +4,7 @@ import (
 	"context"
 	"errors"
 	models "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
-	"log"
-
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -37,7 +36,7 @@ func ErrorsUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 			case errors.Is(err, models.ErrInvalidArgument):
 				return nil, status.Error(codes.InvalidArgument, err.Error())
 			default:
-				log.Println(err)
+				logger.Error(ctx, err)
 				return nil, status.Error(codes.Internal, err.Error())
 			}
 		}

@@ -5,6 +5,7 @@ import (
 	chatGPRS "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/controllers/chat/grpc/v1"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/pkg/validate"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
@@ -65,7 +66,7 @@ func start(server *grpc.Server, port string) error {
 
 	go func() {
 		if err := server.Serve(conn); err != nil {
-			log.Println("grpc server: Serve")
+			logger.Info(ctx, "grpc server: Serve")
 		}
 	}()
 

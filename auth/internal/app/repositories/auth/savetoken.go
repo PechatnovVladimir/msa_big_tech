@@ -2,10 +2,10 @@ package auth
 
 import (
 	"context"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 func (r *Repository) SaveToken(ctx context.Context, userID string, accessToken string, refreshToken string) error {
-	log.Println("save token in repository")
+	logger.Info(ctx, "save token in repository")
 	return nil
 }

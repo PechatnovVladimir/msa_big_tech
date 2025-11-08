@@ -3,7 +3,7 @@ package outbox
 import (
 	"context"
 	"errors"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"time"
 )
 
@@ -88,7 +88,7 @@ func NewOutboxFriendRequestWorker(
 // Run — запускает бесконечный цикл обработки до отмены ctx.
 // Селектит batch с FOR UPDATE SKIP LOCKED, обрабатывает, коммитит.
 func (w *OutboxFriendRequestWorker) Run(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker started")
+	logger.Info(ctx, "OutboxFriendRequestWorker started")
 
 	t := time.NewTicker(w.pollInterval)
 	defer t.Stop()
@@ -98,16 +98,16 @@ func (w *OutboxFriendRequestWorker) Run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.C:
-			log.Println("OutboxFriendRequestWorker tick")
+			logger.Info(ctx, "OutboxFriendRequestWorker tick")
 
 			// Один "тик" — одна транзакция
 			if err := w.tm.RunRepeatableRead(ctx, w.FetchFriendRequest); err != nil {
-				log.Printf("outbox FriendRequest: error: %v\n", err)
+				logger.Errorf(ctx, "outbox FriendRequest: error: %v\n", err)
 			}
 
-			log.Println("OutboxFriendUpdatedWorker tick")
+			logger.Info(ctx, "OutboxFriendUpdatedWorker tick")
 			if err := w.tm.RunRepeatableRead(ctx, w.FetchFriendUpdated); err != nil {
-				log.Printf("outbox: friendUpdated error: %v\n", err)
+				logger.Errorf(ctx, "outbox: friendUpdated error: %v\n", err)
 			}
 		}
 	}
@@ -115,8 +115,8 @@ func (w *OutboxFriendRequestWorker) Run(ctx context.Context) error {
 
 // Fetch обработка событий
 func (w *OutboxFriendRequestWorker) FetchFriendRequest(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker.Fetch start")
-	defer log.Println("OutboxFetchFriendRequestWorker.Fetch end")
+	logger.Info(ctx, "OutboxFriendRequestWorker.Fetch start")
+	defer logger.Info(ctx, "OutboxFetchFriendRequestWorker.Fetch end")
 
 	err := w.fetch(ctx, AggregateTypeFriendRequest, EventTypeFriendRequest)
 
@@ -124,8 +124,8 @@ func (w *OutboxFriendRequestWorker) FetchFriendRequest(ctx context.Context) erro
 }
 
 func (w *OutboxFriendRequestWorker) FetchFriendUpdated(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker.Fetch start")
-	defer log.Println("OutboxFetchFriendRequestWorker.Fetch end")
+	logger.Info(ctx, "OutboxFriendRequestWorker.Fetch start")
+	defer logger.Info(ctx, "OutboxFetchFriendRequestWorker.Fetch end")
 
 	err := w.fetch(ctx, AggregateTypeFriendUpdated, EventTypeFriendUpdated)
 
@@ -155,13 +155,13 @@ func (w *OutboxFriendRequestWorker) fetch(ctx context.Context, aggregateType Agg
 		WithLock(), // FOR UPDATE
 	)
 	if len(events) == 0 {
-		log.Println("outbox no events")
+		logger.Info(ctx, "outbox no events")
 		return nil
 	}
 
 	succeeded, failed, err := w.handler.HandleBatch(ctx, events)
 	if err != nil {
-		log.Printf("outbox batch handle error: %v", err)
+		logger.Errorf(ctx, "outbox batch handle error: %v", err)
 		return err
 	}
 

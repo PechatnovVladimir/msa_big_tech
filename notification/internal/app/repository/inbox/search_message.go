@@ -3,9 +3,9 @@ package inbox
 import (
 	"context"
 	"github.com/Masterminds/squirrel"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/model"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/usecase/inbox"
-	"log"
 	"time"
 )
 
@@ -37,7 +37,7 @@ func (r *Repository) SearchMessage(ctx context.Context, opts ...inbox.SearchMess
 
 	var rows []Inbox
 	if err := conn.Selectx(ctx, &rows, qb); err != nil {
-		log.Println(err.Error())
+		logger.Error(ctx, err)
 		return nil
 	}
 
@@ -62,8 +62,6 @@ func (r *Repository) SearchMessage(ctx context.Context, opts ...inbox.SearchMess
 			ProcessedAt: processedAt,
 		})
 	}
-
-	log.Println(messages)
 
 	return messages
 }

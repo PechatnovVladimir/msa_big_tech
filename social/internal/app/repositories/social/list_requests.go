@@ -4,7 +4,6 @@ import (
 	"context"
 	sq "github.com/Masterminds/squirrel"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
-	"log"
 )
 
 func (r *Repository) ListRequests(ctx context.Context, userID string) ([]*social.FriendRequest, error) {
@@ -16,8 +15,6 @@ func (r *Repository) ListRequests(ctx context.Context, userID string) ([]*social
 	pool := r.db.GetQueryEngine(ctx)
 
 	var rowsFriendRequests []FriendRequestsRow
-
-	log.Println(query.ToSql())
 
 	err := pool.Selectx(ctx, &rowsFriendRequests, query)
 

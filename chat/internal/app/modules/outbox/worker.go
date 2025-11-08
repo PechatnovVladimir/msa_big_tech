@@ -3,7 +3,7 @@ package outbox
 import (
 	"context"
 	"errors"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"time"
 )
 
@@ -88,7 +88,7 @@ func NewOutboxChatWorker(
 // Run — запускает бесконечный цикл обработки до отмены ctx.
 // Селектит batch с FOR UPDATE SKIP LOCKED, обрабатывает, коммитит.
 func (w *OutboxChatWorker) Run(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker started")
+	logger.Info(ctx, "OutboxFriendRequestWorker started")
 
 	t := time.NewTicker(w.pollInterval)
 	defer t.Stop()
@@ -98,11 +98,11 @@ func (w *OutboxChatWorker) Run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.C:
-			log.Println("OutboxChatWorker tick")
+			logger.Info(ctx, "OutboxChatWorker tick")
 
 			// Один "тик" — одна транзакция
 			if err := w.tm.RunRepeatableRead(ctx, w.FetchMessageSent); err != nil {
-				log.Printf("outbox FriendRequest: error: %v\n", err)
+				logger.Infof(ctx, "outbox FriendRequest: error: %v\n", err)
 			}
 
 		}
@@ -111,8 +111,8 @@ func (w *OutboxChatWorker) Run(ctx context.Context) error {
 
 // Fetch обработка событий
 func (w *OutboxChatWorker) FetchMessageSent(ctx context.Context) error {
-	log.Println("OutboxFriendRequestWorker.Fetch start")
-	defer log.Println("OutboxFetchFriendRequestWorker.Fetch end")
+	logger.Info(ctx, "OutboxFriendRequestWorker.Fetch start")
+	defer logger.Info(ctx, "OutboxFetchFriendRequestWorker.Fetch end")
 
 	err := w.fetch(ctx, AggregateTypeMessageSent, EventTypeMessageSent)
 
@@ -142,13 +142,13 @@ func (w *OutboxChatWorker) fetch(ctx context.Context, aggregateType AggregateTyp
 		WithLock(), // FOR UPDATE
 	)
 	if len(events) == 0 {
-		log.Println("outbox no events")
+		logger.Info(ctx, "outbox no events")
 		return nil
 	}
 
 	succeeded, failed, err := w.handler.HandleBatch(ctx, events)
 	if err != nil {
-		log.Printf("outbox batch handle error: %v", err)
+		logger.Infof(ctx, "outbox batch handle error: %v", err)
 		return err
 	}
 

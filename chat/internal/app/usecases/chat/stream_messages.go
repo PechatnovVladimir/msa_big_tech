@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat/dto"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 func (s *Service) StreamMessages(ctx context.Context, in *dto.StreamMessagesIN) (<-chan *chat.Message, error) {
@@ -36,7 +36,7 @@ func (s *Service) StreamMessages(ctx context.Context, in *dto.StreamMessagesIN) 
 			})
 			res, err := s.ChatRepo.ListMessages(ctx, in.ChatID, paginationOpts)
 			if err != nil {
-				log.Printf("%s: GetMessages error: %s", api, err)
+				logger.Errorf(ctx, "%s: GetMessages error: %s", api, err)
 				return
 			}
 			for _, msg := range res {
@@ -49,7 +49,7 @@ func (s *Service) StreamMessages(ctx context.Context, in *dto.StreamMessagesIN) 
 		}
 		streamChanel, errStream := s.ChatRepo.StreamMessage(ctx, in.ChatID)
 		if errStream != nil {
-			log.Printf("%s: StreamMessage error: %s", api, errStream)
+			logger.Errorf(ctx, "%s: StreamMessage error: %s", api, errStream)
 			return
 		}
 

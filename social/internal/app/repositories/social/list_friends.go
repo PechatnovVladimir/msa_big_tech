@@ -6,13 +6,10 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/pagination"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/models/social"
-	"log"
 	"strings"
 )
 
 func (r *Repository) ListFriends(ctx context.Context, userID string, p pagination.Options) ([]*social.Friend, error) {
-
-	log.Println("Repo - ", userID, p.Limit(), p.Cursor())
 
 	query := r.sb.
 		Select("user_id,friend_user_id,created_at").
@@ -36,8 +33,6 @@ func (r *Repository) ListFriends(ctx context.Context, userID string, p paginatio
 	}
 
 	pool := r.db.GetQueryEngine(ctx)
-
-	log.Println(query.ToSql())
 
 	var outRow []FriendRow
 	if err := pool.Selectx(ctx, &outRow, query); err != nil {

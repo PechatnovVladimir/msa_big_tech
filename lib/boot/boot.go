@@ -9,11 +9,12 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/interceptors"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka/consumer"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
+	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
-	"log"
 	"net"
 	"strconv"
 	"sync"
@@ -64,6 +65,19 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 		interceptors.ServerInterceptors(app.cfg.Grpc.Server)...,
 	)
 
+	switch app.cfg.Logger.Level {
+	case "dev":
+		logger.SetLevel(zapcore.DebugLevel)
+	case "stg":
+		logger.SetLevel(zapcore.InfoLevel)
+	case "prod":
+		logger.SetLevel(zapcore.WarnLevel)
+	default:
+		logger.SetLevel(zapcore.DebugLevel)
+	}
+
+	logger.Logger().With("service", app.cfg.App.Name)
+
 	return app, nil
 }
 
@@ -106,7 +120,7 @@ func (app *App) Run(ctx context.Context) error {
 	}
 
 	app.Cl.Add(func(ctx context.Context) error {
-		log.Println("grpc server stopped")
+		logger.Info(ctx, "grpc server stopped")
 		app.grpcServer.GracefulStop()
 		return nil
 	})
@@ -117,16 +131,16 @@ func (app *App) Run(ctx context.Context) error {
 	// Run gRPC server in a goroutine
 	go func() {
 		defer wg.Done()
-		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Server.Port))
+		logger.Infof(ctx, "%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Server.Port))
 		if err := app.grpcServer.Serve(app.lis); err != nil && err != grpc.ErrServerStopped {
-			log.Fatalf("gRPC server failed: %v", err)
+			logger.Fatalf(ctx, "gRPC server failed: %v", err)
 		}
 	}()
 
 	//ждем сигнал на останов
 	<-ctx.Done()
 
-	log.Println("server: shutting down server gracefully")
+	logger.Info(ctx, "server: shutting down server gracefully")
 
 	// Create a context with a 20-second timeout
 	shutdownCtx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
@@ -134,11 +148,11 @@ func (app *App) Run(ctx context.Context) error {
 
 	err := app.Cl.CloseAll(shutdownCtx)
 	if err != nil {
-		log.Printf("failed to close clients: %v", err)
+		logger.Infof(ctx, "failed to close clients: %v", err)
 		return fmt.Errorf("closer: %v", err)
 	}
 
-	log.Println("server: shutdown completed")
+	logger.Info(ctx, "server: shutdown completed")
 
 	wg.Wait()
 	return nil

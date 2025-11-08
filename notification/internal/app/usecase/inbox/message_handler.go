@@ -3,8 +3,8 @@ package inbox
 import (
 	"context"
 	"encoding/json"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/model"
-	"log"
 	"time"
 )
 
@@ -23,16 +23,16 @@ func (n *Notificator) HandleBatch(ctx context.Context, messages []*model.Inbox) 
 		if message.Topic == "chat.message.sent" {
 			err := json.Unmarshal([]byte(message.Payload), &data)
 			if err != nil {
-				log.Println("[error unmarshal message]", err)
+				logger.Errorf(ctx, "[error unmarshal message] %v", err)
 			}
 		}
 
 		if i%5 == 0 {
 			failed = append(failed, message.ID)
-			log.Println("failed message", message.Topic, message.ID, data.Text)
+			logger.Error(ctx, "failed message", message.Topic, message.ID, data.Text)
 		} else {
 			succeeded = append(succeeded, message.ID)
-			log.Println("succeeded message", message.Topic, message.ID, data.Text)
+			logger.Info(ctx, "succeeded message", message.Topic, message.ID, data.Text)
 		}
 	}
 	return succeeded, failed, nil

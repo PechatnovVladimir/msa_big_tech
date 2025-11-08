@@ -2,11 +2,11 @@ package auth
 
 import (
 	"context"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 // CheckUserByEmail - проверить существование пользователя по e-mail
 func (r *Repository) CheckUserByEmail(ctx context.Context, email string) error {
-	log.Println("CheckUserByEmail in repository")
+	logger.Info(ctx, "CheckUserByEmail in repository")
 	return nil
 }

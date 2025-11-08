@@ -1,7 +1,9 @@
 package grpc
 
 import (
+	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	socialGPRS "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/controllers/social/grpc/v1"
 	socialPB "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/social/pkg/validate"
@@ -65,7 +67,7 @@ func start(server *grpc.Server, port string) error {
 
 	go func() {
 		if err := server.Serve(conn); err != nil {
-			log.Println("grpc server: Serve")
+			logger.Info(context.TODO(), "grpc server: Serve")
 		}
 	}()
 

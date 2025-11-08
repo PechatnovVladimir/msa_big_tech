@@ -1,9 +1,10 @@
 package secrets
 
 import (
+	"context"
 	"errors"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	vault "github.com/hashicorp/vault/api"
-	"log"
 	"os"
 )
 
@@ -33,7 +34,7 @@ func NewVaultProvider(addr string, path string) *VaultProvider {
 	cfg.Address = getenv("VAULT_ADDR", addr)
 	client, err := vault.NewClient(cfg)
 	if err != nil {
-		log.Printf("WARN: Failed to create vault client: %v", err)
+		logger.Warnf(context.TODO(), "Failed to create vault client: %v", err)
 		return &VaultProvider{
 			isSet: false,
 		}
@@ -44,7 +45,7 @@ func NewVaultProvider(addr string, path string) *VaultProvider {
 
 	secret, err := client.Logical().Read(secretPath)
 	if err != nil {
-		log.Printf("WARN: Failed to read secret from vault: %v", err)
+		logger.Warnf(context.TODO(), "Failed to read secret from vault: %v", err)
 		return &VaultProvider{
 			isSet: false,
 		}

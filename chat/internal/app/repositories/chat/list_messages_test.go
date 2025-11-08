@@ -3,6 +3,7 @@ package chat
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/pagination"
 	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"log"
@@ -20,7 +21,7 @@ func TestRepository_ListMessages(t *testing.T) {
 		connection.WithMaxConnectionsCount(10),
 	)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 

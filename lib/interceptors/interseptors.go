@@ -13,6 +13,9 @@ func ServerInterceptors(cfg config.GrpcServerConfig) []grpc.ServerOption {
 	//валидация
 	unaryInterceptors = append(unaryInterceptors, ProtoValidateUnaryInterseptor)
 
+	//log errors
+	unaryInterceptors = append(unaryInterceptors, LogErrorUnaryInterceptor())
+
 	//panic recovery
 	unaryInterceptors = append(unaryInterceptors, PanicRecoveryUnaryInterceptor)
 	streamInterceptors = append(streamInterceptors, PanicRecoveryStreamInterceptor)

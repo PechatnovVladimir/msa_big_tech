@@ -2,11 +2,11 @@ package auth
 
 import (
 	"context"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 // SaveUser - сохранить пользователя
 func (r *Repository) SaveUser(ctx context.Context, userID string, email string, password string) error {
-	log.Println("save user in repository")
+	logger.Info(ctx, "save user in repository")
 	return nil
 }

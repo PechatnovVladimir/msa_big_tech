@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"github.com/IBM/sarama"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
-	"log"
 	"slices"
 	"time"
 )
@@ -80,15 +80,15 @@ const headerEventID = "event_id"
 
 func (h *KafkaBatchHandler) HandleBatch(ctx context.Context, events []*outbox.Event) (succeeded []string, failed []string, err error) {
 	if len(events) == 0 {
-		log.Println("KafkaBatchHandler", "nothing to send")
+		logger.Info(ctx, "KafkaBatchHandler", "nothing to send")
 		return nil, nil, nil
 	}
 
 	defer func() {
 		if err != nil {
-			log.Println("HandleBatch", err)
+			logger.Error(ctx, "HandleBatch", err)
 		} else {
-			log.Println("HandleBatch", "succeeded", succeeded, "failed", failed)
+			logger.Info(ctx, "HandleBatch", "succeeded", succeeded, "failed", failed)
 		}
 	}()
 
@@ -129,7 +129,7 @@ func (h *KafkaBatchHandler) HandleBatch(ctx context.Context, events []*outbox.Ev
 			if perrs, ok := sendErr.(sarama.ProducerErrors); ok {
 				failedSet := make(map[string]struct{}, len(perrs))
 				for _, pe := range perrs {
-					log.Println("Write to kafka failed:", pe)
+					logger.Error(ctx, "Write to kafka failed:", pe)
 
 					if pe == nil || pe.Msg == nil {
 						continue

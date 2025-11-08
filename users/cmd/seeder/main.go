@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
@@ -21,7 +22,7 @@ func main() {
 		connection.WithMaxConnectionsCount(10),
 	)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 
@@ -42,7 +43,7 @@ func main() {
 		}
 		_, err := repo.CreateProfile(ctx, &p)
 		if err != nil {
-			log.Println(err)
+			logger.Error(ctx, err)
 		}
 	}
 

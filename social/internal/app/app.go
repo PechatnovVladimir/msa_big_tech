@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/authprovider"
 	seh "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/socialeventshandler"
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/adapters/userprovider"
@@ -13,7 +14,6 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/social/internal/app/usecases/social"
 	pb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	"google.golang.org/grpc"
-	"log"
 	"os/signal"
 	"syscall"
 	"time"
@@ -83,13 +83,13 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 
 	producer, err := app.SyncProducer(ctx)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 
 	authServiceAdapter := authprovider.New()

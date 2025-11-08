@@ -1,8 +1,10 @@
 package grpc
 
 import (
+	"context"
 	"fmt"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	usersGPRS "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc/v1"
 	usersUC "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	usersPB "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
@@ -77,7 +79,7 @@ func start(server *grpc.Server, port string) error {
 
 	go func() {
 		if err := server.Serve(conn); err != nil {
-			log.Println("grpc server: Serve")
+			logger.Errorf(context.TODO(), "grpc server: Serve %v", err)
 		}
 	}()
 

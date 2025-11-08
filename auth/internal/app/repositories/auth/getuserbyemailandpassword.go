@@ -2,10 +2,10 @@ package auth
 
 import (
 	"context"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 func (r *Repository) GetUserByEmailAndPassword(ctx context.Context, email string, password string) (string, error) {
-	log.Println("GetUserByEmailAndPassword in repository")
+	logger.Info(ctx, "GetUserByEmailAndPassword in repository")
 	return "", nil
 }

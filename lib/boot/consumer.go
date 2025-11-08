@@ -3,7 +3,7 @@ package boot
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka/consumer"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"time"
 )
 
@@ -11,7 +11,7 @@ func (app *App) ConsumerManager(ctx context.Context) *consumer.ConsumerManager {
 	manager := consumer.NewManager()
 	app.consumerManager = manager
 	app.Cl.Add(func(ctx context.Context) error {
-		log.Println("consumer stopped")
+		logger.Info(ctx, "consumer stopped")
 		app.consumerManager.StopAll()
 		return nil
 	})

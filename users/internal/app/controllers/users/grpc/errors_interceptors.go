@@ -3,9 +3,8 @@ package grpc
 import (
 	"context"
 	"errors"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	models "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/models/users"
-	"log"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -37,7 +36,7 @@ func ErrorsUnaryServerInterceptor() grpc.UnaryServerInterceptor {
 			case errors.Is(err, models.ErrUserInvalidArgument):
 				return nil, status.Error(codes.InvalidArgument, err.Error())
 			default:
-				log.Println(err)
+				logger.Error(ctx, err)
 				return nil, status.Error(codes.Internal, err.Error())
 			}
 		}

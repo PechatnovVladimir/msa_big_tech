@@ -3,8 +3,8 @@ package outbox
 import (
 	"context"
 	"github.com/Masterminds/squirrel"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	appoutbox "github.com/PechatnovVladimir/msa_big_tech/social/internal/app/modules/outbox"
-	"log"
 	"time"
 )
 
@@ -58,11 +58,9 @@ func (r *Repository) SearchEvents(ctx context.Context, opts ...appoutbox.SearchE
 	// Выполнение
 	conn := r.db.GetQueryEngine(ctx)
 
-	log.Println(qb.ToSql())
-
 	var rows []OutboxEvent
 	if err := conn.Selectx(ctx, &rows, qb); err != nil {
-		log.Println(err.Error())
+		logger.Error(ctx, err)
 		return nil
 	}
 
@@ -91,8 +89,6 @@ func (r *Repository) SearchEvents(ctx context.Context, opts ...appoutbox.SearchE
 			NextAttemptAt: nextAttemptAt,
 		})
 	}
-
-	log.Println(events)
 
 	return events
 }

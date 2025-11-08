@@ -3,13 +3,13 @@ package app
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/users/internal/app/adapters/userprovider"
 	serv "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/controllers/users/grpc/v1"
 	repo "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/repositories/users"
 	uc "github.com/PechatnovVladimir/msa_big_tech/users/internal/app/usecases/users"
 	pb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"google.golang.org/grpc"
-	"log"
 	"os/signal"
 	"syscall"
 )
@@ -78,7 +78,7 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 

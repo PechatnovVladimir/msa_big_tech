@@ -1,11 +1,12 @@
 package config
 
 import (
+	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-	"log"
 	"strings"
 )
 
@@ -15,6 +16,7 @@ type Config struct {
 	Postgres      Postgres      `mapstructure:"postgres"`
 	KafkaProducer KafkaProducer `mapstructure:"kafka_producer"`
 	KafkaConsumer KafkaConsumer `mapstructure:"kafka_consumer"`
+	Logger        Logger        `mapstructure:"logger"`
 }
 
 type ConfigLoader struct {
@@ -101,7 +103,7 @@ func (cl *ConfigLoader) LoadConfig(fileCfg string) (*Config, error) {
 
 	if err := cl.viper.ReadInConfig(); err != nil {
 		// файл не обязателен — можно работать только с ENV/дефолтами
-		log.Printf("warn: cannot read config file: %v (using env/defaults)", err)
+		logger.Warnf(context.TODO(), "cannot read config file: %v (using env/defaults)", err)
 	}
 
 	if cl.secretsProvider != nil {
@@ -126,7 +128,7 @@ func (cl *ConfigLoader) loadSecrets() {
 		if !cl.viper.IsSet(key) || cl.viper.GetString(key) == "" {
 			secretValue, err := cl.secretsProvider.Get(key)
 			if err != nil {
-				log.Printf("Warning: secret not found for key %s: %v\n", key, err)
+				logger.Warnf(context.TODO(), "secret not found for key %s: %v\n", key, err)
 				continue
 			}
 

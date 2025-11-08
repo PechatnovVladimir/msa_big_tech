@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 
 	"github.com/brianvoe/gofakeit/v7"
 	"github.com/google/uuid"
-	"log"
 )
 
 func main() {
@@ -20,14 +20,14 @@ func main() {
 	cfg, err := cfgLoader.LoadConfig("./chat/cmd/client/config.yaml")
 
 	if err != nil {
-		log.Println("Error loading config:", err)
-		log.Fatal(err)
+		logger.Error(ctx, "Error loading config:", err)
+		logger.Fatal(ctx, err)
 	}
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
-		log.Println("Error creating client:", err)
-		log.Fatal(err)
+		logger.Infof(ctx, "Error creating client: %v", err)
+		logger.Fatal(ctx, err)
 
 	}
 
@@ -43,7 +43,7 @@ func main() {
 
 		resp, err := chat.client.CreateDirectChat(ctx, in)
 		if err != nil {
-			log.Fatal(err)
+			logger.Fatal(ctx, err)
 		}
 
 		chatID1 := resp.ChatId
@@ -57,9 +57,9 @@ func main() {
 			rsp, err := chat.client.SendMessage(ctx, message)
 
 			if err != nil {
-				log.Fatal(err)
+				logger.Fatal(ctx, err)
 			}
-			log.Println(chatID1, rsp)
+			logger.Info(ctx, chatID1, rsp)
 		}
 	}
 }

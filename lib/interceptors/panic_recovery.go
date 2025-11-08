@@ -2,10 +2,10 @@ package interceptors
 
 import (
 	"context"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 	"runtime"
 )
 
@@ -14,7 +14,7 @@ func PanicRecoveryUnaryInterceptor(ctx context.Context, req interface{}, info *g
 		if err := recover(); err != nil {
 			buf := make([]byte, 4096)
 			n := runtime.Stack(buf, false)
-			log.Printf("[PANIC] %s: %v\n%s", info.FullMethod, err, buf[:n])
+			logger.Panicf(ctx, "[PANIC] %s: %v\n%s", info.FullMethod, err, buf[:n])
 			_ = status.Error(codes.Internal, "internal server error")
 		}
 	}()
@@ -26,7 +26,7 @@ func PanicRecoveryStreamInterceptor(srv interface{}, stream grpc.ServerStream, i
 		if err := recover(); err != nil {
 			buf := make([]byte, 4096)
 			n := runtime.Stack(buf, false)
-			log.Printf("[PANIC] %s: %v\n%s", info.FullMethod, err, buf[:n])
+			logger.Panicf(context.TODO(), "[PANIC] %s: %v\n%s", info.FullMethod, err, buf[:n])
 		}
 	}()
 	return handler(srv, stream)

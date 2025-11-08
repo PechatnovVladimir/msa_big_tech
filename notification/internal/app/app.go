@@ -4,9 +4,9 @@ import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka/consumer"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	inboxRepo "github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/repository/inbox"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/usecase/inbox"
-	"log"
 	"os/signal"
 	"syscall"
 	"time"
@@ -83,7 +83,7 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 
@@ -104,7 +104,7 @@ func Start(ctx context.Context) (err error) {
 
 	c1, err := app.Consumer(ctx, Topics, deduplicator, handler, ConsumerID, ConsumerGroup)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	manager.Add(c1)
 
@@ -113,7 +113,7 @@ func Start(ctx context.Context) (err error) {
 
 	c2, err := app.Consumer(ctx, []string{"social.friend.request", "social.friend.updated"}, deduplicator2, handler2, "notification-service-social", ConsumerGroup)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 
 	manager.Add(c2)

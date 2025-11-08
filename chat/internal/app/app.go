@@ -11,8 +11,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/usecases/chat"
 	pb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/boot"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc"
-	"log"
 	"os/signal"
 	"syscall"
 	"time"
@@ -81,13 +81,13 @@ func Start(ctx context.Context) (err error) {
 	conn, txManager, err := app.Postgres(ctx)
 
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 
 	producer, err := app.SyncProducer(ctx)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 
 	userServiceProvider := userprovider.New()
@@ -107,7 +107,7 @@ func Start(ctx context.Context) (err error) {
 	)
 
 	app.Cl.Add(func(ctx context.Context) error {
-		log.Println("worker outbox chat closed")
+		logger.Info(ctx, "worker outbox chat closed")
 		//TODO тут остановку worker надо
 		return nil
 	})

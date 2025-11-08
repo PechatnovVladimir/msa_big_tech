@@ -3,9 +3,9 @@ package configold
 import (
 	"context"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type Config struct {
@@ -70,7 +70,7 @@ func LoadConfig(ctx context.Context, fileCfg string) (*Config, error) {
 
 	if err := v.ReadInConfig(); err != nil {
 		// файл не обязателен — можно работать только с ENV/дефолтами
-		log.Printf("warn: cannot read config file: %v (using env/defaults)", err)
+		logger.Warnf(context.TODO(), "cannot read config file: %v (using env/defaults)", err)
 	}
 
 	var cfg Config
@@ -81,28 +81,6 @@ func LoadConfig(ctx context.Context, fileCfg string) (*Config, error) {
 	if cfg.App.Mode == "" {
 		cfg.App.Mode = "debug"
 	}
-
-	////Если провайдер секретов не задан, то все... выходим...
-	//if secret == nil || !secret.IsSet(ctx) {
-	//	log.Println("WARNING: no secret provided")
-	//	return &cfg, nil
-	//}
-	//
-	////если есть установленные секреты для postgres, то используем их
-	//pass, err := secret.Get(ctx, "SECRET_DB_PASSWORD")
-	//if err != nil {
-	//	log.Printf("warn: cannot get secret password: %v", err)
-	//}
-	//
-	//user, err := secret.Get(ctx, "SECRET_DB_USER")
-	//if err != nil {
-	//	log.Printf("warn: cannot get secret password: %v", err)
-	//}
-	//
-	//if pass != "" && user != "" {
-	//	cfg.Postgres.Password = pass
-	//	cfg.Postgres.User = user
-	//}
 
 	return &cfg, nil
 }

@@ -5,13 +5,13 @@ import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 func (s *Service) Refresh(ctx context.Context, request *auth.RefreshRequest) (*auth.RefreshResponse, error) {
-	log.Println("Auth Service Refresh called")
+	logger.Info(ctx, "Auth Service Refresh called")
 	//валидация по proto описанию
 	err := protovalidate.Validate(request)
 	if err != nil {

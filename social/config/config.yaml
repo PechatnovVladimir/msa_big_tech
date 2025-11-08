@@ -2,6 +2,8 @@ app:
   name:     SOCIAL_SERVICE
   version:  v.0.0.1
   mode:     debug # debug | production
+logger:
+  level: dev # prod | stg | dev
 postgres:
   host:     localhost
   port:     5433

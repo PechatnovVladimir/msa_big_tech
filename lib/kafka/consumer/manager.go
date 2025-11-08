@@ -3,7 +3,7 @@ package consumer
 import (
 	"context"
 	"fmt"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"sync"
 )
 
@@ -42,7 +42,7 @@ func (m *ConsumerManager) StartAll(ctx context.Context) error {
 			defer m.wg.Done()
 			topics := c.topics
 			if err := c.Run(ctx, topics); err != nil {
-				log.Printf("Start error: %v", err)
+				logger.Infof(ctx, "Start error: %v", err)
 			}
 		}()
 	}

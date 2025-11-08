@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 func main() {
@@ -11,6 +11,6 @@ func main() {
 
 	err := app.Start(ctx)
 	if err != nil {
-		log.Fatalln("app.Run error:", err)
+		logger.Fatalf(ctx, "app.Run error: %v", err)
 	}
 }

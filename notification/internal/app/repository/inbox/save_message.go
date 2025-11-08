@@ -13,8 +13,6 @@ func (r *Repository) SaveMessage(ctx context.Context, msg *model.Inbox) error {
 		Columns(tableInboxMessagesColumns...).
 		Values(row.Values(tableInboxMessagesColumns...)...)
 
-	//log.Println(query.ToSql())
-
 	pool := r.db.GetQueryEngine(ctx)
 
 	_, err := pool.Execx(ctx, query)

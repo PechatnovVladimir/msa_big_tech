@@ -1,13 +1,14 @@
 package grpc
 
 import (
+	"context"
 	"fmt"
 	authGPRS "github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/controllers/auth/grpc/v1"
 	authPB "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
-	"log"
 	"net"
 )
 
@@ -46,11 +47,11 @@ func start(server *grpc.Server, port string) error {
 
 	go func() {
 		if err := server.Serve(conn); err != nil {
-			log.Println("grpc server: Serve")
+			logger.Info(context.TODO(), "grpc server: Serve")
 		}
 	}()
 
-	log.Println("grpc server: AuthService started on port: " + port)
+	logger.Infof(context.TODO(), "grpc server: AuthService started on port:", port)
 
 	return nil
 }
@@ -58,5 +59,5 @@ func start(server *grpc.Server, port string) error {
 func (s *Server) Close() {
 	s.server.GracefulStop()
 
-	log.Println("grpc server: UserService closed")
+	logger.Info(context.TODO(), "grpc server: UserService closed")
 }

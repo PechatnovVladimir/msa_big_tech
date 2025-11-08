@@ -5,13 +5,13 @@ import (
 	"context"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/internal/app/usecases/auth/dto"
 	"github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"log"
 )
 
 func (s *Service) Register(ctx context.Context, request *auth.RegisterRequest) (*auth.RegisterResponse, error) {
-	log.Println("Auth Service Register called")
+	logger.Info(ctx, "Auth Service Register called")
 
 	//валидация по proto описанию
 	err := protovalidate.Validate(request)
@@ -34,7 +34,7 @@ func (s *Service) Register(ctx context.Context, request *auth.RegisterRequest) (
 		UserId: outDTO.UserID,
 	}
 
-	log.Println("Auth Service Register success userid=", outDTO.UserID)
+	logger.Infof(ctx, "Auth Service Register success userid=%s", outDTO.UserID)
 
 	return out, nil
 }

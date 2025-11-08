@@ -5,12 +5,12 @@ import (
 	authpb "github.com/PechatnovVladimir/msa_big_tech/auth/pkg/proto/api/auth/v1"
 	chatpb "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/gateway/swagger"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	socialpb "github.com/PechatnovVladimir/msa_big_tech/social/pkg/proto/api/social/v1"
 	userspb "github.com/PechatnovVladimir/msa_big_tech/users/pkg/proto/api/users/v1"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-	"log"
 	"net/http"
 )
 
@@ -46,7 +46,7 @@ func Rest() {
 
 	mux.Handle("/v1/", muxGRPC)
 
-	log.Printf("server listening at 8080")
+	logger.Info(ctx, "server listening at 8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {
 		panic(err)
 	}

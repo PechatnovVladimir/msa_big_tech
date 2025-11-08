@@ -3,8 +3,8 @@ package kafkaconsumer
 import (
 	"context"
 	"github.com/IBM/sarama"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/usecase/inbox"
-	"log"
 	"regexp"
 	"strings"
 	"time"
@@ -66,7 +66,7 @@ func (c *InboxConsumer) Run(ctx context.Context, topics ...string) error {
 	// отдельная горутина для ошибок Сonsumer Group (полезно для диагностики)
 	go func() {
 		for err := range c.group.Errors() {
-			log.Printf("[consumer-group] error: %v", err)
+			logger.Errorf(ctx, "[consumer-group] error: %v", err)
 		}
 	}()
 
@@ -102,7 +102,7 @@ func (h *consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, cl
 			if !ok {
 				// без ID не можем гарантировать идемпотентность — безопаснее скипнуть и скоммитить,
 				// либо отправить в DLQ.
-				log.Printf("skip message without ID (commit offset): topic=%s p=%d off=%d",
+				logger.Infof(context.TODO(), "skip message without ID (commit offset): topic=%s p=%d off=%d",
 					msg.Topic, msg.Partition, msg.Offset)
 				sess.MarkMessage(msg, "")
 				continue
@@ -117,7 +117,7 @@ func (h *consumerGroupHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, cl
 			// бизнес-обработка (идемпотентная)
 			if err := h.c.handler.SaveMessage(sess.Context(), msg); err != nil {
 				// обработка упала: НЕ коммитим offset -> Kafka переотправит (at-least-once)
-				log.Printf("handle failed (will retry): id=%s topic=%s p=%d off=%d err=%v",
+				logger.Infof(context.TODO(), "handle failed (will retry): id=%s topic=%s p=%d off=%d err=%v",
 					id, msg.Topic, msg.Partition, msg.Offset, err)
 				continue
 			}

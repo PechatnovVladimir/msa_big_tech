@@ -2,10 +2,10 @@ package auth
 
 import (
 	"context"
-	"log"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 )
 
 func (r *Repository) GetUserIDByRefreshToken(ctx context.Context, refreshToken string) (string, error) {
-	log.Println("GetUserIDByRefreshToken in repository")
+	logger.Info(ctx, "GetUserIDByRefreshToken in repository")
 	return "", nil
 }

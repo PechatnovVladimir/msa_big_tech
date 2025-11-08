@@ -3,8 +3,8 @@ package inbox
 import (
 	"context"
 	"errors"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/notification/internal/app/model"
-	"log"
 	"time"
 )
 
@@ -69,7 +69,7 @@ func NewInboxMessageWorker(
 // Run — запускает бесконечный цикл обработки до отмены ctx.
 // Селектит batch с FOR UPDATE SKIP LOCKED, обрабатывает, коммитит.
 func (w *InboxMessageWorker) Run(ctx context.Context) error {
-	log.Println("InboxFriendRequestWorker started")
+	logger.Info(ctx, "InboxFriendRequestWorker started")
 
 	t := time.NewTicker(w.pullInterval)
 	defer t.Stop()
@@ -79,11 +79,11 @@ func (w *InboxMessageWorker) Run(ctx context.Context) error {
 		case <-ctx.Done():
 			return ctx.Err()
 		case <-t.C:
-			log.Println("InboxMessageWorker tick")
+			logger.Info(ctx, "InboxMessageWorker tick")
 
 			// Один "тик" — одна транзакция
 			if err := w.tm.RunRepeatableRead(ctx, w.Fetch); err != nil {
-				log.Printf("Inbox Message: error: %v\n", err)
+				logger.Errorf(ctx, "Inbox Message: error: %v\n", err)
 			}
 
 		}
@@ -92,8 +92,8 @@ func (w *InboxMessageWorker) Run(ctx context.Context) error {
 
 // Fetch обработка событий
 func (w *InboxMessageWorker) Fetch(ctx context.Context) error {
-	log.Println("InboxMessageWorker.Fetch start")
-	defer log.Println("InboxFetchMessageWorker.Fetch end")
+	logger.Info(ctx, "InboxMessageWorker.Fetch start")
+	defer logger.Info(ctx, "InboxFetchMessageWorker.Fetch end")
 
 	messages := w.repo.SearchMessage(
 		ctx,
@@ -103,7 +103,7 @@ func (w *InboxMessageWorker) Fetch(ctx context.Context) error {
 		WithLock(), // FOR UPDATE
 	)
 	if len(messages) == 0 {
-		log.Println("Inbox no messages")
+		logger.Info(ctx, "Inbox no messages")
 		return nil
 	}
 
@@ -123,7 +123,7 @@ func (w *InboxMessageWorker) Fetch(ctx context.Context) error {
 
 	succeeded, failed, err := w.handler.HandleBatch(ctx, messages)
 	if err != nil {
-		log.Printf("Inbox batch handle error: %v", err)
+		logger.Errorf(ctx, "Inbox batch handle error: %v", err)
 		return err
 	}
 

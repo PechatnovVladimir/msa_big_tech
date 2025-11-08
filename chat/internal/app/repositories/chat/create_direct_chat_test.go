@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 	chat2 "github.com/PechatnovVladimir/msa_big_tech/chat/internal/app/models/chat"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	connection "github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/google/uuid"
-	"log"
 	"testing"
 	"time"
 )
@@ -35,14 +35,14 @@ func TestRepository_CreateDirectChat(t *testing.T) {
 		connection.WithMaxConnectionsCount(10),
 	)
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(ctx, err)
 	}
 	defer conn.Close()
 
 	//менеджер транзакций
-	txManager := connection.NewTxManager(conn)
+	//txManager := connection.N(conn)
 
-	r := NewRepository(txManager)
+	r := NewRepository(conn)
 
 	chat := chat2.Chat{
 		ChatID: uuid.New().String(),

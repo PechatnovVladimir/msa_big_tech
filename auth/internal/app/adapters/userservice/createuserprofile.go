@@ -7,7 +7,7 @@ import (
 )
 
 func (c *Client) CreateUserProfile(ctx context.Context, in dto.CreateUserProfileInDTO) (out dto.CreateUserProfileOutDTO, err error) {
-	log.Println("Create User Profile called userid:", in.UserID)
+	logger.Println("Create User Profile called userid:", in.UserID)
 	out.UserID = in.UserID
 	return out, nil
 }

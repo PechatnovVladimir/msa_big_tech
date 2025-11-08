@@ -2,9 +2,9 @@ package boot
 
 import (
 	"context"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
-	"log"
 	"time"
 )
 
@@ -25,7 +25,7 @@ func (app *App) Postgres(ctx context.Context) (*postgres.Connection, *transactio
 		app.tx = tx
 	}
 	app.Cl.Add(func(ctx context.Context) error {
-		log.Println("postgres connection closed")
+		logger.Info(ctx, "postgres connection closed")
 		app.db.Close()
 		return nil
 	})

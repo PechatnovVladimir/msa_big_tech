@@ -1,10 +1,10 @@
 package postgres
 
 import (
+	"context"
 	"errors"
 	"fmt"
-	"log"
-
+	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
 	"github.com/jackc/pgerrcode"
 	"github.com/jackc/pgx/v5/pgconn"
 )
@@ -21,8 +21,8 @@ func ConvertPGError(err error) error {
 	// https://github.com/jackc/pgx/wiki/Error-Handling
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) {
-		log.Println(pgErr.Message) // => syntax error at end of input
-		log.Println(pgErr.Code)    // => 42601
+		logger.Error(context.TODO(), pgErr.Message) // => syntax error at end of input
+		logger.Error(context.TODO(), pgErr.Code)    // => 42601
 
 		switch pgErr.Code {
 		case pgerrcode.UniqueViolation:
