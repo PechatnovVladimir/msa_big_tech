@@ -3,10 +3,11 @@ module github.com/PechatnovVladimir/msa_big_tech/gateway
 go 1.25.1
 
 require (
-	github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20251107085339-8f4bd044b757
-	github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20251107085339-8f4bd044b757
-	github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20251107085339-8f4bd044b757
-	github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20251107085339-8f4bd044b757
+	github.com/PechatnovVladimir/msa_big_tech/auth v0.0.0-20251108141657-cbe523a171c1
+	github.com/PechatnovVladimir/msa_big_tech/chat v0.0.0-20251108141657-cbe523a171c1
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251108141657-cbe523a171c1
+	github.com/PechatnovVladimir/msa_big_tech/social v0.0.0-20251108141657-cbe523a171c1
+	github.com/PechatnovVladimir/msa_big_tech/users v0.0.0-20251108141657-cbe523a171c1
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
 	google.golang.org/grpc v1.76.0
 )
@@ -20,6 +21,8 @@ require (
 
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.10-20250912141014-52f32327d4b0.1 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/zap v1.27.0 // indirect
 	golang.org/x/net v0.46.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect

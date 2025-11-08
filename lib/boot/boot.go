@@ -65,6 +65,8 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 		interceptors.ServerInterceptors(app.cfg.Grpc.Server)...,
 	)
 
+	logger.Init(fmt.Sprintf("%s: %s", app.cfg.App.Name, app.cfg.App.Version))
+
 	switch app.cfg.Logger.Level {
 	case "dev":
 		logger.SetLevel(zapcore.DebugLevel)
@@ -75,8 +77,6 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 	default:
 		logger.SetLevel(zapcore.DebugLevel)
 	}
-
-	logger.Logger().With("service", app.cfg.App.Name)
 
 	return app, nil
 }

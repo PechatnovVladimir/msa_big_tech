@@ -77,6 +77,10 @@ clean:
 .migration-down-notification:
 	goose postgres "user=${NOTIFICATION_POSTGRES_USER} password=${NOTIFICATION_POSTGRES_PASSWORD} dbname=${NOTIFICATION_POSTGRES_DATABASE} host=localhost port=5435 sslmode=disable" down -dir ./notification/migrations
 
+.ver-commit:
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech@HW6-dev
+
+
 
 migration-all-up: .migration-up-chat .migration-up-soc .migration-up-users .migration-up-notification
 migration-all-down: .migration-down-chat .migration-down-soc .migration-down-users .migration-down-notification
@@ -84,5 +88,12 @@ migration-all-status: .migration-status-chat .migration-status-soc .migration-st
 
 send-message-to-chat:
 	go run ./chat/cmd/client/*.go
+
+MODULES := auth chat gateway lib notification social users
+
+tidy:
+	$(foreach mod,$(MODULES), \
+		(echo "Tiding: $(mod)..." && cd $(mod) && go mod tidy && echo "Tidied: $(mod)") || exit 1; \
+	)
 
 .PHONY: build up

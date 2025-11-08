@@ -11,10 +11,8 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20250907135507-afb5586c32a6
 	github.com/jackc/pgx/v5 v5.7.6
 	github.com/joho/godotenv v1.5.1
-	github.com/opentracing/opentracing-go v1.2.0
 	github.com/sony/gobreaker/v2 v2.3.0
 	github.com/spf13/viper v1.21.0
-	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	github.com/vgarvardt/pgx-google-uuid/v5 v5.6.0
 	go.uber.org/zap v1.27.0
 	golang.org/x/time v0.12.0
@@ -26,7 +24,6 @@ require (
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1 // indirect
 	cel.dev/expr v0.24.0 // indirect
-	github.com/HdrHistogram/hdrhistogram-go v1.1.2 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/cenkalti/backoff/v4 v4.3.0 // indirect
 	github.com/davecgh/go-spew v1.1.1 // indirect
@@ -72,8 +69,6 @@ require (
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/uber/jaeger-lib v2.4.1+incompatible // indirect
-	go.uber.org/atomic v1.11.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.43.0 // indirect

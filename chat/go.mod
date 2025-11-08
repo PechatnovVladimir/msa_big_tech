@@ -7,7 +7,7 @@ require (
 	buf.build/go/protovalidate v1.0.0
 	github.com/IBM/sarama v1.46.2
 	github.com/Masterminds/squirrel v1.5.4
-	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251107085339-8f4bd044b757
+	github.com/PechatnovVladimir/msa_big_tech/lib v0.0.0-20251108141657-cbe523a171c1
 	github.com/brianvoe/gofakeit/v7 v7.7.3
 	github.com/google/uuid v1.6.0
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.27.2
@@ -75,6 +75,8 @@ require (
 	github.com/stoewer/go-strcase v1.3.1 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/vgarvardt/pgx-google-uuid/v5 v5.6.0 // indirect
+	go.uber.org/multierr v1.10.0 // indirect
+	go.uber.org/zap v1.27.0 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.org/x/crypto v0.43.0 // indirect
 	golang.org/x/exp v0.0.0-20250620022241-b7579e27df2b // indirect

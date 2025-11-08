@@ -16,10 +16,10 @@ var (
 	defaultLevel = zap.NewAtomicLevelAt(zap.InfoLevel)
 )
 
-func init() {
+func Init(serviceName string) {
 	SetLogger(New(defaultLevel,
 		zap.AddStacktrace(zap.FatalLevel),
-	))
+	).With("service", serviceName))
 }
 
 func New(level zapcore.LevelEnabler, options ...zap.Option) *zap.SugaredLogger {
@@ -45,7 +45,7 @@ func newZapCore(level zapcore.LevelEnabler, sink io.Writer) zapcore.Core {
 	//encoderJSON := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
 
 	//encoderConsole := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
-	encoderConsole := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
+	encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
 		TimeKey:        "T",
 		LevelKey:       "L",
 		NameKey:        "N",
@@ -60,7 +60,7 @@ func newZapCore(level zapcore.LevelEnabler, sink io.Writer) zapcore.Core {
 		EncodeCaller:   zapcore.ShortCallerEncoder,
 	})
 
-	//encoderCustom := 		zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+	//encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
 	//	TimeKey:        "ts",
 	//	LevelKey:       "level",
 	//	NameKey:        "logger",
@@ -74,7 +74,7 @@ func newZapCore(level zapcore.LevelEnabler, sink io.Writer) zapcore.Core {
 	//	EncodeCaller:   zapcore.ShortCallerEncoder,
 	//})
 
-	return zapcore.NewCore(encoderConsole,
+	return zapcore.NewCore(encoder,
 		zapcore.AddSync(sink),
 		level,
 	)
