@@ -2,7 +2,7 @@ package logger
 
 import (
 	"context"
-
+	"go.opentelemetry.io/otel/trace"
 	"go.uber.org/zap"
 )
 
@@ -17,23 +17,16 @@ func ToContext(ctx context.Context, l *zap.SugaredLogger) context.Context {
 	return context.WithValue(ctx, loggerContextKey, l)
 }
 
-// FromContext достает логгер из контекста. Если в контексте логгер не
-// обнаруживается - возвращает глобальный логгер. В обоих случаях логгер уже
-// содержит аннотации в виде trace_id и span_id
+// FromContext возвращает логгер с trace_id и span_id
 func FromContext(ctx context.Context) *zap.SugaredLogger {
 	l := getLogger(ctx)
-
-	//span := opentracing.SpanFromContext(ctx)
-	//if span != nil {
-	//	spanContext, ok := span.Context().(jaeger.SpanContext)
-	//	if ok {
-	//		return l.With(
-	//			"trace_id", spanContext.TraceID(),
-	//			"span_id", spanContext.SpanID(),
-	//		)
-	//	}
-	//}
-
+	span := trace.SpanFromContext(ctx)
+	if span.SpanContext().IsValid() {
+		return l.With(
+			"trace_id", span.SpanContext().TraceID().String(),
+			"span_id", span.SpanContext().SpanID().String(),
+		)
+	}
 	return l
 }
 
