@@ -45,34 +45,34 @@ func newZapCore(level zapcore.LevelEnabler, sink io.Writer) zapcore.Core {
 	//encoderJSON := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
 
 	//encoderConsole := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
-	encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
-		TimeKey:        "T",
-		LevelKey:       "L",
-		NameKey:        "N",
-		CallerKey:      "C",
-		FunctionKey:    zapcore.OmitKey,
-		MessageKey:     "M",
-		StacktraceKey:  "S",
-		LineEnding:     zapcore.DefaultLineEnding,
-		EncodeLevel:    zapcore.CapitalColorLevelEncoder, // Цветные уровни
-		EncodeTime:     consoleTimeEncoder,               // 2025/11/08 15:05:05
-		EncodeDuration: zapcore.StringDurationEncoder,
-		EncodeCaller:   zapcore.ShortCallerEncoder,
-	})
-
-	//encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
-	//	TimeKey:        "ts",
-	//	LevelKey:       "level",
-	//	NameKey:        "logger",
-	//	CallerKey:      "caller",
-	//	MessageKey:     "message",
-	//	StacktraceKey:  "stacktrace",
+	//encoder := zapcore.NewConsoleEncoder(zapcore.EncoderConfig{
+	//	TimeKey:        "T",
+	//	LevelKey:       "L",
+	//	NameKey:        "N",
+	//	CallerKey:      "C",
+	//	FunctionKey:    zapcore.OmitKey,
+	//	MessageKey:     "M",
+	//	StacktraceKey:  "S",
 	//	LineEnding:     zapcore.DefaultLineEnding,
-	//	EncodeLevel:    zapcore.LowercaseLevelEncoder,
-	//	EncodeTime:     zapcore.ISO8601TimeEncoder,
-	//	EncodeDuration: zapcore.SecondsDurationEncoder,
+	//	EncodeLevel:    zapcore.CapitalColorLevelEncoder, // Цветные уровни
+	//	EncodeTime:     consoleTimeEncoder,               // 2025/11/08 15:05:05
+	//	EncodeDuration: zapcore.StringDurationEncoder,
 	//	EncodeCaller:   zapcore.ShortCallerEncoder,
 	//})
+
+	encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+		TimeKey:        "ts",
+		LevelKey:       "level",
+		NameKey:        "logger",
+		CallerKey:      "caller",
+		MessageKey:     "message",
+		StacktraceKey:  "stacktrace",
+		LineEnding:     zapcore.DefaultLineEnding,
+		EncodeLevel:    zapcore.LowercaseLevelEncoder,
+		EncodeTime:     zapcore.ISO8601TimeEncoder,
+		EncodeDuration: zapcore.SecondsDurationEncoder,
+		EncodeCaller:   zapcore.ShortCallerEncoder,
+	})
 
 	return zapcore.NewCore(encoder,
 		zapcore.AddSync(sink),

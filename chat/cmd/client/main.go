@@ -4,6 +4,7 @@ import (
 	"context"
 	chatPB "github.com/PechatnovVladimir/msa_big_tech/chat/pkg/proto/api/chat/v1"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/logger"
+	"log"
 
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 
@@ -20,14 +21,14 @@ func main() {
 	cfg, err := cfgLoader.LoadConfig("./chat/cmd/client/config.yaml")
 
 	if err != nil {
-		logger.Error(ctx, "Error loading config:", err)
-		logger.Fatal(ctx, err)
+		log.Println("Error loading config:", err)
+		log.Fatal(err)
 	}
 
 	chat, err := NewClientNew("localhost:50052", cfg)
 	if err != nil {
-		logger.Infof(ctx, "Error creating client: %v", err)
-		logger.Fatal(ctx, err)
+		log.Printf("Error creating client: %v", err)
+		log.Fatal(err)
 
 	}
 
@@ -59,7 +60,7 @@ func main() {
 			if err != nil {
 				logger.Fatal(ctx, err)
 			}
-			logger.Info(ctx, chatID1, rsp)
+			log.Println(chatID1, rsp)
 		}
 	}
 }

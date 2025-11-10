@@ -13,6 +13,8 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/tracing"
+	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"google.golang.org/grpc"
 	"net"
@@ -77,6 +79,12 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 	default:
 		logger.SetLevel(zapcore.DebugLevel)
 	}
+
+	err = tracing.Init(fmt.Sprintf("%s: %s", app.cfg.App.Name, app.cfg.App.Version))
+	if err != nil {
+		logger.Fatal(ctx, "failed to init tracing", zap.Error(err))
+	}
+	defer tracing.Shutdown(ctx)
 
 	return app, nil
 }

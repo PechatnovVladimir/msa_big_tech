@@ -13,6 +13,9 @@ func ServerInterceptors(cfg config.GrpcServerConfig) []grpc.ServerOption {
 	//валидация
 	unaryInterceptors = append(unaryInterceptors, ProtoValidateUnaryInterseptor)
 
+	//tracing
+	unaryInterceptors = append(unaryInterceptors, OtelUnaryInterceptor)
+
 	//log errors
 	unaryInterceptors = append(unaryInterceptors, LogErrorUnaryInterceptor())
 
