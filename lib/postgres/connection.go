@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"fmt"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/tracing"
 	"time"
 
 	"github.com/georgysavva/scany/v2/pgxscan"
@@ -179,6 +180,9 @@ func (c *Connection) Getx(ctx context.Context, dest interface{}, sqlizer Sqlizer
 		return fmt.Errorf("postgres: to sql: %w", err)
 	}
 
+	ctx, span := tracing.Start(ctx, "postgres.Getx")
+	defer span.End()
+
 	return pgxscan.Get(ctx, c.pool, dest, query, args...)
 }
 
@@ -189,6 +193,9 @@ func (c *Connection) Selectx(ctx context.Context, dest interface{}, sqlizer Sqli
 		return fmt.Errorf("postgres: to sql: %w", err)
 	}
 
+	ctx, span := tracing.Start(ctx, "postgres.Selectx")
+	defer span.End()
+
 	return pgxscan.Select(ctx, c.pool, dest, query, args...)
 }
 
@@ -198,6 +205,9 @@ func (c *Connection) Execx(ctx context.Context, sqlizer Sqlizer) (pgconn.Command
 	if err != nil {
 		return pgconn.CommandTag{}, fmt.Errorf("postgres: to sql: %w", err)
 	}
+
+	ctx, span := tracing.Start(ctx, "postgres.Execx")
+	defer span.End()
 
 	return c.pool.Exec(ctx, query, args...)
 }
