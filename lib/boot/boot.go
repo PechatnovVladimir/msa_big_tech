@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/IBM/sarama"
+	"github.com/PechatnovVladimir/msa_big_tech/lib/closer"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/config"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/interceptors"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/kafka/consumer"
@@ -12,26 +13,25 @@ import (
 	"github.com/PechatnovVladimir/msa_big_tech/lib/postgres/transaction_manager"
 	"github.com/PechatnovVladimir/msa_big_tech/lib/secrets"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"net"
-	"os"
-	"os/signal"
 	"strconv"
 	"sync"
-	"syscall"
+	"time"
 )
 
 type App struct {
 	ctx             context.Context
 	cfg             *config.Config
 	secret          *secrets.Secrets
+	lis             net.Listener
 	grpcServer      *grpc.Server
 	grpcRegister    func(*grpc.Server)
 	db              *postgres.Connection
 	tx              *transaction_manager.TransactionManager
 	syncProducer    sarama.SyncProducer
 	consumerManager *consumer.ConsumerManager
+	Cl              *closer.Closer
 }
 
 type Option func(*App) error
@@ -50,9 +50,18 @@ func NewApp(ctx context.Context, opts ...Option) (*App, error) {
 		return nil, errors.New("config is required")
 	}
 
+	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Server.Port))
+
+	if err != nil {
+		return nil, fmt.Errorf("failed to listen: %w", err)
+	}
+
+	app.lis = lis
+
+	app.Cl = &closer.Closer{}
+
 	app.grpcServer = grpc.NewServer(
-		grpc.Creds(insecure.NewCredentials()),
-		grpc.ChainUnaryInterceptor(interceptors.ProtoValidate),
+		interceptors.ServerInterceptors(app.cfg.Grpc.Server)...,
 	)
 
 	return app, nil
@@ -96,10 +105,11 @@ func (app *App) Run(ctx context.Context) error {
 		}
 	}
 
-	lis, err := net.Listen("tcp", ":"+strconv.Itoa(app.cfg.Grpc.Port))
-	if err != nil {
-		return fmt.Errorf("failed to listen: %w", err)
-	}
+	app.Cl.Add(func(ctx context.Context) error {
+		log.Println("grpc server stopped")
+		app.grpcServer.GracefulStop()
+		return nil
+	})
 
 	var wg sync.WaitGroup
 	wg.Add(1)
@@ -107,42 +117,28 @@ func (app *App) Run(ctx context.Context) error {
 	// Run gRPC server in a goroutine
 	go func() {
 		defer wg.Done()
-		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Port))
-		if err := app.grpcServer.Serve(lis); err != nil && err != grpc.ErrServerStopped {
+		log.Printf("%s %s - gRPC server listening on :%s", app.cfg.App.Name, app.cfg.App.Version, strconv.Itoa(app.cfg.Grpc.Server.Port))
+		if err := app.grpcServer.Serve(app.lis); err != nil && err != grpc.ErrServerStopped {
 			log.Fatalf("gRPC server failed: %v", err)
 		}
 	}()
 
-	// Handle graceful shutdown
-	sigChan := make(chan os.Signal, 1)
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
+	//ждем сигнал на останов
+	<-ctx.Done()
 
-	select {
-	case <-ctx.Done():
-		log.Println("Context cancelled, shutting down")
-	case sig := <-sigChan:
-		log.Printf("Received signal %v, shutting down", sig)
+	log.Println("server: shutting down server gracefully")
+
+	// Create a context with a 20-second timeout
+	shutdownCtx, cancel := context.WithTimeout(context.Background(), 20*time.Second)
+	defer cancel()
+
+	err := app.Cl.CloseAll(shutdownCtx)
+	if err != nil {
+		log.Printf("failed to close clients: %v", err)
+		return fmt.Errorf("closer: %v", err)
 	}
 
-	app.grpcServer.GracefulStop()
-
-	if app.consumerManager != nil {
-		err := app.consumerManager.StopAll()
-		if err != nil {
-			log.Printf("failed to stop consumer manager: %v", err)
-		}
-	}
-
-	if app.syncProducer != nil {
-		err := app.syncProducer.Close()
-		if err != nil {
-			log.Printf("failed to close sync producer: %v", err)
-		}
-	}
-
-	if app.db != nil {
-		app.db.Close()
-	}
+	log.Println("server: shutdown completed")
 
 	wg.Wait()
 	return nil

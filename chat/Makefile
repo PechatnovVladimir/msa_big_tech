@@ -44,7 +44,7 @@ PKG_PROTO_PATH := $(CURDIR)/pkg
 	buf generate
 
 .ver-commit:
-	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/$(SERVICE_NAME)@HW3-dev
+	go list -m -f '{{.Version}}' github.com/PechatnovVladimir/msa_big_tech/@HW5
 
 #generate-protoc: .protoc-generate
 generate: .buf-generate
